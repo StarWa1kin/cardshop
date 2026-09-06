@@ -57,6 +57,7 @@ export interface AdminProduct {
   slug: string
   seo_meta: Record<string, LocalizedText>
   title: LocalizedText
+  payment_subject: string
   description: LocalizedText
   content: LocalizedText
   price_amount: number

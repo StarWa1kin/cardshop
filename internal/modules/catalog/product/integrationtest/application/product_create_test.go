@@ -70,6 +70,7 @@ func TestProductServiceCreateFiltersUnavailablePaymentChannels(t *testing.T) {
 		CategoryID:        category.ID,
 		Slug:              "payment-channel-create",
 		TitleJSON:         map[string]interface{}{"zh-CN": "payment-channel-create"},
+		PaymentSubject:    " 数字服务 ",
 		PriceAmount:       decimal.NewFromInt(10),
 		PurchaseType:      constants.ProductPurchaseMember,
 		FulfillmentType:   constants.FulfillmentTypeAuto,
@@ -86,6 +87,9 @@ func TestProductServiceCreateFiltersUnavailablePaymentChannels(t *testing.T) {
 	got := productdomain.DecodePaymentChannelIDs(product.PaymentChannelIDs)
 	if len(got) != 1 || got[0] != activeChannel.ID {
 		t.Fatalf("expected only active payment channel %d, got %v", activeChannel.ID, got)
+	}
+	if product.PaymentSubject != "数字服务" {
+		t.Fatalf("expected trimmed payment subject, got %q", product.PaymentSubject)
 	}
 }
 

@@ -58,6 +58,7 @@ func TestProductServiceUpdateKeepsMappedProductFulfillmentUpstream(t *testing.T)
 		CategoryID:      category.ID,
 		Slug:            "mapped-product-updated",
 		TitleJSON:       map[string]interface{}{"zh-CN": "mapped-product-updated"},
+		PaymentSubject:  " 更新后的支付别名 ",
 		PriceAmount:     decimal.NewFromInt(20),
 		PurchaseType:    constants.ProductPurchaseMember,
 		FulfillmentType: constants.FulfillmentTypeAuto,
@@ -76,6 +77,9 @@ func TestProductServiceUpdateKeepsMappedProductFulfillmentUpstream(t *testing.T)
 	if updated.FulfillmentType != constants.FulfillmentTypeUpstream {
 		t.Fatalf("expected mapped product fulfillment type to remain upstream, got %s", updated.FulfillmentType)
 	}
+	if updated.PaymentSubject != "更新后的支付别名" {
+		t.Fatalf("expected updated payment subject, got %q", updated.PaymentSubject)
+	}
 
 	reloaded, err := svc.Read.GetAdminByID(strconv.FormatUint(uint64(product.ID), 10))
 	if err != nil {
@@ -83,6 +87,9 @@ func TestProductServiceUpdateKeepsMappedProductFulfillmentUpstream(t *testing.T)
 	}
 	if reloaded.FulfillmentType != constants.FulfillmentTypeUpstream {
 		t.Fatalf("expected persisted fulfillment type upstream, got %s", reloaded.FulfillmentType)
+	}
+	if reloaded.PaymentSubject != "更新后的支付别名" {
+		t.Fatalf("expected persisted payment subject, got %q", reloaded.PaymentSubject)
 	}
 }
 

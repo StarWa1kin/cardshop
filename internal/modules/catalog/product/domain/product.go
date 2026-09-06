@@ -16,6 +16,7 @@ type Product struct {
 	Slug                 string              `gorm:"uniqueIndex;not null" json:"slug"`                                    // 唯一标识
 	SeoMetaJSON          jsonmap.JSON        `gorm:"type:json" json:"seo_meta"`                                           // SEO 元数据
 	TitleJSON            jsonmap.JSON        `gorm:"type:json;not null" json:"title"`                                     // 多语言标题
+	PaymentSubject       string              `gorm:"type:varchar(128);not null;default:''" json:"payment_subject"`        // 提交支付渠道的商品名称，空值时使用标题
 	DescriptionJSON      jsonmap.JSON        `gorm:"type:json" json:"description"`                                        // 多语言描述
 	ContentJSON          jsonmap.JSON        `gorm:"type:json" json:"content"`                                            // 多语言详情（Markdown）
 	InstructionsJSON     jsonmap.JSON        `gorm:"type:json" json:"instructions"`                                       // 多语言交付后使用说明（仅订单详情可见）

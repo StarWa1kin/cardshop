@@ -88,6 +88,7 @@ type CreateProductInput struct {
 	Slug                 string
 	SeoMetaJSON          map[string]interface{}
 	TitleJSON            map[string]interface{}
+	PaymentSubject       string
 	DescriptionJSON      map[string]interface{}
 	ContentJSON          map[string]interface{}
 	InstructionsJSON     map[string]interface{}

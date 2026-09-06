@@ -1583,6 +1583,9 @@ const messages = {
         form: {
           title: '商品名称（{lang}） *',
           titlePlaceholder: '请输入商品名称',
+          paymentSubject: '支付商品别名',
+          paymentSubjectPlaceholder: '例如：数字服务',
+          paymentSubjectTip: '仅用于提交给支付渠道，不影响商城和订单中的商品名称；留空时使用商品名称。',
           slug: 'Slug (URL 标识) *',
           slugPlaceholder: 'example-product',
           slugTip: '用于 URL，建议小写与连字符',
@@ -6033,6 +6036,9 @@ const messages = {
         form: {
           title: '商品名稱（{lang}） *',
           titlePlaceholder: '請輸入商品名稱',
+          paymentSubject: '支付商品別名',
+          paymentSubjectPlaceholder: '例如：數位服務',
+          paymentSubjectTip: '僅用於提交給支付渠道，不影響商城和訂單中的商品名稱；留空時使用商品名稱。',
           slug: 'Slug (URL 標識) *',
           slugPlaceholder: 'example-product',
           slugTip: '用於 URL，建議小寫與連字號',
@@ -10483,6 +10489,9 @@ const messages = {
         form: {
           title: 'Product title ({lang}) *',
           titlePlaceholder: 'Enter product title',
+          paymentSubject: 'Payment product alias',
+          paymentSubjectPlaceholder: 'e.g. Digital service',
+          paymentSubjectTip: 'Used only for payment providers. Storefront and order names stay unchanged; leave blank to use the product title.',
           slug: 'Slug (URL identifier) *',
           slugPlaceholder: 'example-product',
           slugTip: 'For URL use, lowercase letters and hyphens recommended',

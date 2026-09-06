@@ -15,6 +15,7 @@ type OrderItem struct {
 	ProductID                    uint              `gorm:"index;not null" json:"product_id"`                                       // 商品ID
 	SKUID                        uint              `gorm:"column:sku_id;index;not null;default:0" json:"sku_id"`                   // SKU ID
 	TitleJSON                    jsonmap.JSON      `gorm:"type:json;not null" json:"title"`                                        // 商品标题快照
+	PaymentSubject               string            `gorm:"type:varchar(128);not null;default:''" json:"-"`                         // 支付商品名称快照
 	SKUSnapshotJSON              jsonmap.JSON      `gorm:"type:json" json:"sku_snapshot"`                                          // SKU 快照（编码/规格）
 	Tags                         jsonslice.Strings `gorm:"type:json" json:"tags"`                                                  // 标签快照
 	OriginalUnitPrice            money.Amount      `gorm:"type:decimal(20,2);not null;default:0" json:"original_unit_price"`       // 原始单价快照

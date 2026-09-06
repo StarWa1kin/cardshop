@@ -232,9 +232,10 @@ func (s *OrderService) buildOrderResult(input orderCreateParams) (*orderBuildRes
 		}
 
 		orderItem := orderdomain.OrderItem{
-			ProductID: product.ID,
-			SKUID:     sku.ID,
-			TitleJSON: product.TitleJSON,
+			ProductID:      product.ID,
+			SKUID:          sku.ID,
+			TitleJSON:      product.TitleJSON,
+			PaymentSubject: product.PaymentSubject,
 			SKUSnapshotJSON: jsonmap.JSON{
 				"sku_id":      sku.ID,
 				"sku_code":    sku.SKUCode,

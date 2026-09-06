@@ -2,6 +2,7 @@ package productwrite
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/dujiao-next/internal/constants"
 	productcontract "github.com/dujiao-next/internal/modules/catalog/product/contract"
@@ -101,6 +102,7 @@ func (s *WriteService) Create(input CreateProductInput) (*productdomain.Product,
 		Slug:                 input.Slug,
 		SeoMetaJSON:          jsonmap.JSON(input.SeoMetaJSON),
 		TitleJSON:            jsonmap.JSON(input.TitleJSON),
+		PaymentSubject:       strings.TrimSpace(input.PaymentSubject),
 		DescriptionJSON:      jsonmap.JSON(input.DescriptionJSON),
 		ContentJSON:          jsonmap.JSON(input.ContentJSON),
 		InstructionsJSON:     jsonmap.JSON(input.InstructionsJSON),

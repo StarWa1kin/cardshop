@@ -68,6 +68,26 @@ func TestBuildOrderSubject(t *testing.T) {
 			want: "",
 		},
 		{
+			name: "payment subject takes precedence over title",
+			order: &orderdomain.Order{
+				OrderNo: "DJ-ALIAS-1",
+				Items: []orderdomain.OrderItem{
+					{PaymentSubject: " 数字服务 ", TitleJSON: jsonmap.JSON{"zh-CN": "真实商品名称"}},
+				},
+			},
+			want: "数字服务",
+		},
+		{
+			name: "blank payment subject falls back to title",
+			order: &orderdomain.Order{
+				OrderNo: "DJ-ALIAS-2",
+				Items: []orderdomain.OrderItem{
+					{PaymentSubject: " ", TitleJSON: jsonmap.JSON{"zh-CN": "真实商品名称"}},
+				},
+			},
+			want: "真实商品名称",
+		},
+		{
 			name: "legacy parent item title",
 			order: &orderdomain.Order{
 				OrderNo: "DJ-LEGACY-1",

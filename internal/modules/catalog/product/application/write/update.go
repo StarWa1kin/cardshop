@@ -46,6 +46,7 @@ func (s *WriteService) Update(id string, input CreateProductInput) (*productdoma
 	product.Slug = input.Slug
 	product.SeoMetaJSON = jsonmap.JSON(input.SeoMetaJSON)
 	product.TitleJSON = jsonmap.JSON(input.TitleJSON)
+	product.PaymentSubject = strings.TrimSpace(input.PaymentSubject)
 	product.DescriptionJSON = jsonmap.JSON(input.DescriptionJSON)
 	product.ContentJSON = jsonmap.JSON(input.ContentJSON)
 	product.InstructionsJSON = jsonmap.JSON(input.InstructionsJSON)

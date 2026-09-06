@@ -182,12 +182,18 @@ func buildOrderSubject(order *orderdomain.Order) string {
 		return ""
 	}
 	for i := range order.Items {
+		if subject := strings.TrimSpace(order.Items[i].PaymentSubject); subject != "" {
+			return subject
+		}
 		if title := pickOrderItemTitle(order.Items[i].TitleJSON); title != "" {
 			return title
 		}
 	}
 	for i := range order.Children {
 		for j := range order.Children[i].Items {
+			if subject := strings.TrimSpace(order.Children[i].Items[j].PaymentSubject); subject != "" {
+				return subject
+			}
 			if title := pickOrderItemTitle(order.Children[i].Items[j].TitleJSON); title != "" {
 				return title
 			}

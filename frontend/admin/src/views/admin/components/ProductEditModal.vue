@@ -141,6 +141,7 @@ const createSKUFormItem = (raw?: Partial<AdminProductSKU>): SKUFormItem => ({
 const form = reactive({
   id: 0,
   title: { 'zh-CN': '', 'zh-TW': '', 'en-US': '' } as LocalizedText,
+  payment_subject: '',
   slug: '',
   seo_meta: { keywords: { 'zh-CN': '', 'zh-TW': '', 'en-US': '' }, description: { 'zh-CN': '', 'zh-TW': '', 'en-US': '' } } as { keywords: LocalizedText; description: LocalizedText; [key: string]: LocalizedText },
   description: { 'zh-CN': '', 'zh-TW': '', 'en-US': '' } as LocalizedText,
@@ -483,6 +484,7 @@ const resetForm = () => {
   Object.assign(form, {
     id: 0,
     title: { 'zh-CN': '', 'zh-TW': '', 'en-US': '' },
+    payment_subject: '',
     slug: '',
     seo_meta: { keywords: { 'zh-CN': '', 'zh-TW': '', 'en-US': '' }, description: { 'zh-CN': '', 'zh-TW': '', 'en-US': '' } },
     description: { 'zh-CN': '', 'zh-TW': '', 'en-US': '' },
@@ -531,6 +533,7 @@ const populateForm = (product: AdminProduct) => {
   Object.assign(form, {
     id: product.id,
     title: product.title || { 'zh-CN': '', 'zh-TW': '', 'en-US': '' },
+    payment_subject: String(product.payment_subject || ''),
     slug: product.slug,
     seo_meta: normalizeSeoMeta(product.seo_meta),
     description: product.description || { 'zh-CN': '', 'zh-TW': '', 'en-US': '' },
@@ -606,6 +609,7 @@ const handleSubmit = async () => {
       category_id: Math.floor(normalizedCategoryID),
       seo_meta: form.seo_meta,
       title: form.title,
+      payment_subject: String(form.payment_subject || '').trim(),
       description: form.description,
       content: form.content,
       instructions: form.instructions,
@@ -736,6 +740,21 @@ watch(
           <div class="col-span-1 md:col-span-2">
             <label class="block text-xs font-medium text-muted-foreground mb-1.5">{{ t('admin.products.form.title', { lang: getCurrentLangName() }) }}</label>
             <Input v-model="form.title[currentLang]" required :placeholder="t('admin.products.form.titlePlaceholder')" />
+          </div>
+
+          <div class="col-span-1 md:col-span-2 rounded-lg border border-border bg-muted/20 p-4">
+            <label class="block text-xs font-medium text-foreground mb-1.5" for="product-payment-subject">
+              {{ t('admin.products.form.paymentSubject') }}
+            </label>
+            <Input
+              id="product-payment-subject"
+              v-model="form.payment_subject"
+              maxlength="128"
+              :placeholder="t('admin.products.form.paymentSubjectPlaceholder')"
+            />
+            <p class="mt-1.5 text-xs leading-5 text-muted-foreground">
+              {{ t('admin.products.form.paymentSubjectTip') }}
+            </p>
           </div>
 
           <div class="col-span-1">

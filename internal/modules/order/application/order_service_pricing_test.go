@@ -395,6 +395,7 @@ func TestBuildOrderResultStacksPromotionAndMemberDiscount(t *testing.T) {
 		CategoryID:      category.ID,
 		Slug:            "stack-promo-member-product",
 		TitleJSON:       jsonmap.JSON{"zh-CN": "叠加优惠商品"},
+		PaymentSubject:  "数字服务",
 		PriceAmount:     money.FromDecimal(decimal.NewFromInt(100)),
 		PurchaseType:    constants.ProductPurchaseMember,
 		FulfillmentType: constants.FulfillmentTypeAuto,
@@ -477,6 +478,9 @@ func TestBuildOrderResultStacksPromotionAndMemberDiscount(t *testing.T) {
 		t.Fatalf("expected one plan, got %d", len(result.Plans))
 	}
 	item := result.Plans[0].Item
+	if item.PaymentSubject != "数字服务" {
+		t.Fatalf("expected payment subject snapshot, got %q", item.PaymentSubject)
+	}
 	if item.OriginalUnitPrice.String() != "100.00" {
 		t.Fatalf("expected original unit price 100.00, got %s", item.OriginalUnitPrice.String())
 	}
