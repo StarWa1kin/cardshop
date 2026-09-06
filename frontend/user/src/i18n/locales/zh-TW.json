@@ -1,4 +1,15 @@
 {
+  "siteContact": {
+    "wechat": "微信",
+    "scanHint": "使用{channel}掃描 QR Code，或儲存圖片後在應用程式中辨識。",
+    "accountHint": "複製帳號後，在{channel}中搜尋新增。",
+    "qrAlt": "{channel}聯絡 QR Code",
+    "copyAccount": "複製帳號",
+    "copied": "帳號已複製",
+    "copyFailed": "複製失敗，請長按或選取帳號手動複製。",
+    "imageFailed": "QR Code 載入失敗，請稍後再試。",
+    "close": "關閉"
+  },
   "common": {
     "siteName": "Dujiao-Next",
     "loading": "載入中...",

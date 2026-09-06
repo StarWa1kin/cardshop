@@ -712,3 +712,56 @@ func TestUpdateTelegramAuthSettingNormalized(t *testing.T) {
 		t.Fatalf("unexpected replay_ttl_seconds: %v", result["replay_ttl_seconds"])
 	}
 }
+
+func TestSiteContactAccountsAndQRCodesRoundTrip(t *testing.T) {
+	for _, tc := range []struct {
+		name    string
+		contact map[string]interface{}
+	}{
+		{"accounts_only", map[string]interface{}{"qq": "00123456", "wechat": "support_wechat"}},
+		{"qrcodes_only", map[string]interface{}{"qq_qrcode": "/uploads/qq.png", "wechat_qrcode": "/uploads/wechat.png"}},
+		{"both", map[string]interface{}{"qq": "00123456", "qq_qrcode": "/uploads/qq.png", "wechat": "support_wechat", "wechat_qrcode": "/uploads/wechat.png"}},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			svc := NewService(newMockSettingRepo())
+			input := map[string]interface{}{"telegram": "https://t.me/demo", "whatsapp": "https://wa.me/123"}
+			for key, value := range tc.contact {
+				input[key] = "  " + value.(string) + "  "
+			}
+			if _, err := svc.Update(constants.SettingKeySiteConfig, map[string]interface{}{"contact": input}); err != nil {
+				t.Fatal(err)
+			}
+			stored, err := svc.GetByKey(constants.SettingKeySiteConfig)
+			if err != nil {
+				t.Fatal(err)
+			}
+			contact := stored["contact"].(map[string]interface{})
+			for _, key := range []string{"qq", "qq_qrcode", "wechat", "wechat_qrcode"} {
+				want := tc.contact[key]
+				if want == nil {
+					want = ""
+				}
+				if contact[key] != want {
+					t.Fatalf("%s: got %v, want %v", key, contact[key], want)
+				}
+				input[key] = ""
+			}
+			if contact["telegram"] != input["telegram"] || contact["whatsapp"] != input["whatsapp"] {
+				t.Fatal("existing contact channels changed")
+			}
+			if _, err := svc.Update(constants.SettingKeySiteConfig, map[string]interface{}{"contact": input}); err != nil {
+				t.Fatal(err)
+			}
+			stored, err = svc.GetByKey(constants.SettingKeySiteConfig)
+			if err != nil {
+				t.Fatal(err)
+			}
+			contact = stored["contact"].(map[string]interface{})
+			for key := range tc.contact {
+				if contact[key] != "" {
+					t.Fatalf("%s was not cleared: %v", key, contact[key])
+				}
+			}
+		})
+	}
+}

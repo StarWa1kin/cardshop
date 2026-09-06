@@ -191,6 +191,10 @@ const form = reactive({
   contact: {
     telegram: '',
     whatsapp: '',
+    qq: '',
+    qq_qrcode: '',
+    wechat: '',
+    wechat_qrcode: '',
   },
   seo: {
     title: createLocalizedField(),
@@ -1032,6 +1036,30 @@ onMounted(() => {
           <div class="space-y-2">
             <label class="text-xs font-medium text-muted-foreground">{{ t('admin.settings.contact.whatsapp') }}</label>
             <Input v-model="form.contact.whatsapp" :placeholder="t('admin.settings.contact.whatsappPlaceholder')" />
+          </div>
+          <div class="space-y-4 rounded-lg border border-border p-4">
+            <h3 class="text-sm font-semibold">{{ t('admin.settings.contact.qq') }}</h3>
+            <p class="text-xs text-muted-foreground">{{ t('admin.settings.contact.accountOrQrHint') }}</p>
+            <div class="space-y-2">
+              <Label for="contact-qq">{{ t('admin.settings.contact.account') }}</Label>
+              <Input id="contact-qq" v-model="form.contact.qq" :placeholder="t('admin.settings.contact.qqPlaceholder')" />
+            </div>
+            <div class="space-y-2" role="group" aria-labelledby="contact-qq-qrcode-label">
+              <p id="contact-qq-qrcode-label" class="text-sm font-medium">{{ t('admin.settings.contact.qrcode') }}</p>
+              <MediaPicker v-model="form.contact.qq_qrcode" scene="common" />
+            </div>
+          </div>
+          <div class="space-y-4 rounded-lg border border-border p-4">
+            <h3 class="text-sm font-semibold">{{ t('admin.settings.contact.wechat') }}</h3>
+            <p class="text-xs text-muted-foreground">{{ t('admin.settings.contact.accountOrQrHint') }}</p>
+            <div class="space-y-2">
+              <Label for="contact-wechat">{{ t('admin.settings.contact.account') }}</Label>
+              <Input id="contact-wechat" v-model="form.contact.wechat" :placeholder="t('admin.settings.contact.wechatPlaceholder')" />
+            </div>
+            <div class="space-y-2" role="group" aria-labelledby="contact-wechat-qrcode-label">
+              <p id="contact-wechat-qrcode-label" class="text-sm font-medium">{{ t('admin.settings.contact.qrcode') }}</p>
+              <MediaPicker v-model="form.contact.wechat_qrcode" scene="common" />
+            </div>
           </div>
         </div>
       </div>

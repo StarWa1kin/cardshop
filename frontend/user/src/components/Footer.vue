@@ -70,6 +70,7 @@
               </svg>
               <span>WhatsApp</span>
             </a>
+          <ContactAccounts compact />
           </div>
         </div>
       </div>
@@ -116,6 +117,7 @@
 </template>
 
 <script setup lang="ts">
+import ContactAccounts from '@/components/ContactAccounts.vue'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Home, LayoutGrid, Newspaper, Info } from 'lucide-vue-next'

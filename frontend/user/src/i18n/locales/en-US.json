@@ -1,4 +1,15 @@
 {
+  "siteContact": {
+    "wechat": "WeChat",
+    "scanHint": "Scan with {channel}, or save the image and open it in the app.",
+    "accountHint": "Copy the account and search for it in {channel}.",
+    "qrAlt": "{channel} contact QR code",
+    "copyAccount": "Copy account",
+    "copied": "Account copied",
+    "copyFailed": "Copy failed. Select or long-press the account to copy it manually.",
+    "imageFailed": "QR code could not load. Please try again later.",
+    "close": "Close"
+  },
   "common": {
     "siteName": "Dujiao-Next",
     "loading": "Loading...",

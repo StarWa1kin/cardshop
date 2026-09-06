@@ -1,4 +1,15 @@
 {
+  "siteContact": {
+    "wechat": "微信",
+    "scanHint": "使用{channel}扫描二维码，或保存图片后在应用中识别。",
+    "accountHint": "复制账号后，在{channel}中搜索添加。",
+    "qrAlt": "{channel}联系二维码",
+    "copyAccount": "复制账号",
+    "copied": "账号已复制",
+    "copyFailed": "复制失败，请长按或选中账号手动复制。",
+    "imageFailed": "二维码加载失败，请稍后重试。",
+    "close": "关闭"
+  },
   "common": {
     "siteName": "Dujiao-Next",
     "loading": "加载中...",

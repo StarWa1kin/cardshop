@@ -60,6 +60,7 @@
               </svg>
               <span class="font-bold">WhatsApp</span>
             </a>
+          <ContactAccounts />
           </div>
         </div>
       </Card>
@@ -68,6 +69,7 @@
 </template>
 
 <script setup lang="ts">
+import ContactAccounts from '@/components/ContactAccounts.vue'
 import { Check } from 'lucide-vue-next'
 import { Card } from '@/components/ui/card'
 import { useAbout } from '../composables/useAbout'
