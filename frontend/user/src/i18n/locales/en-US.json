@@ -1,4 +1,18 @@
 {
+  "storefrontTheme": {
+    "preview": "Theme {n} preview",
+    "previewNote": "This page only · Purchases use real data",
+    "exitPreview": "Exit preview",
+    "heroTitle": "Connect to your",
+    "heroTitleAccent": "digital world.",
+    "heroSubtitle": "Discover digital essentials. More possibilities for everything you create.",
+    "explore": "Explore products",
+    "browse": "Discover",
+    "browseHint": "Digital essentials, curated",
+    "choose": "Make it yours",
+    "chooseHint": "Find the option that fits",
+    "ordersHint": "Keep track of your orders"
+  },
   "siteContact": {
     "wechat": "WeChat",
     "scanHint": "Scan with {channel}, or save the image and open it in the app.",
@@ -11,6 +25,7 @@
     "close": "Close"
   },
   "common": {
+    "close": "Close",
     "siteName": "Dujiao-Next",
     "loading": "Loading...",
     "error": "Error",

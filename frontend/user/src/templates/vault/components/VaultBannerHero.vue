@@ -77,6 +77,7 @@
       </div>
     </div>
   </section>
+  <slot v-else name="fallback" />
 </template>
 
 <script setup lang="ts">

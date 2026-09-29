@@ -1,7 +1,7 @@
 <template>
   <RouterLink
     :to="`/products/${product.slug}`"
-    class="group flex items-center gap-3 rounded-lg border bg-card p-2.5 transition hover:border-hairline-strong hover:shadow-[var(--shadow-sm)] sm:gap-3.5 sm:p-3"
+    class="storefront-product-row group flex items-center gap-3 rounded-lg border bg-card p-2.5 transition hover:border-hairline-strong hover:shadow-[var(--shadow-sm)] sm:gap-3.5 sm:p-3"
     :class="{ 'opacity-[0.74]': soldOut }"
   >
     <!-- Thumbnail -->

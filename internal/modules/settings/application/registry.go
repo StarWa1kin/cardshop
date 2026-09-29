@@ -26,6 +26,7 @@ const (
 type Definition struct {
 	Key       string
 	Normalize Normalizer
+	Validate  func(jsonmap.JSON) error
 	Effects   []Effect
 }
 
@@ -105,4 +106,13 @@ func (registry Registry) Keys() []string {
 	}
 	sort.Strings(keys)
 	return keys
+}
+
+// Validate applies opt-in validation without changing legacy setting semantics.
+func (registry Registry) Validate(key string, value jsonmap.JSON) error {
+	definition, exists := registry.definitions[key]
+	if exists && definition.Validate != nil {
+		return definition.Validate(value)
+	}
+	return nil
 }

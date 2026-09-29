@@ -1,11 +1,13 @@
 package settingshttp
 
 import (
+	"errors"
 	"strings"
 
 	"github.com/dujiao-next/internal/cache"
 	"github.com/dujiao-next/internal/constants"
 	settingsapp "github.com/dujiao-next/internal/modules/settings/application"
+	settingsstorefront "github.com/dujiao-next/internal/modules/settings/schema/storefront"
 	ginutil "github.com/dujiao-next/internal/platform/http/ginutil"
 	"github.com/dujiao-next/internal/platform/http/response"
 	"github.com/dujiao-next/internal/shared/jsonmap"
@@ -72,6 +74,10 @@ func (h *AdminHandler) Update(c *gin.Context) {
 	}
 
 	result, err := h.settings.UpdateWithEffects(req.Key, req.Value)
+	if errors.Is(err, settingsstorefront.ErrInvalidTheme) {
+		ginutil.RespondErrorWithMsg(c, response.CodeBadRequest, err.Error(), nil)
+		return
+	}
 	if err != nil {
 		ginutil.RespondError(c, response.CodeInternal, "error.settings_save_failed", err)
 		return

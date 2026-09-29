@@ -465,6 +465,8 @@ const (
 // 设置键常量
 const (
 	SettingKeySiteConfig               = "site_config"
+	SettingKeyStorefrontThemeConfig    = "storefront_theme_config"
+	SettingFieldStorefrontTheme        = "storefront_theme"
 	SettingKeyOrderConfig              = "order_config"
 	SettingKeySMTPConfig               = "smtp_config"
 	SettingKeyCaptchaConfig            = "captcha_config"

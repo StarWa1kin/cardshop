@@ -37,7 +37,10 @@
         @click.self="close"
       >
         <div
+          v-modal-focus="close"
           role="dialog"
+          :aria-label="t('quickBuy.title')"
+          tabindex="-1"
           aria-modal="true"
           class="
             w-full max-h-[85vh] flex flex-col
@@ -54,9 +57,9 @@
           </div>
 
           <!-- Desktop header bar -->
-          <div class="hidden md:flex items-center justify-between px-5 pt-4 pb-0 shrink-0">
+          <div class="quick-buy-header hidden md:flex items-center justify-between px-5 pt-4 pb-0 shrink-0">
             <h2 class="text-sm font-semibold text-foreground">{{ t('quickBuy.title') }}</h2>
-            <Button type="button" variant="ghost" size="icon" class="-mr-1 text-muted-foreground" @click="close">
+            <Button type="button" variant="ghost" size="icon" :aria-label="t('common.close')" class="-mr-1 text-muted-foreground" @click="close">
               <X />
             </Button>
           </div>
@@ -159,7 +162,7 @@
               </div>
 
               <!-- Mobile close -->
-              <Button type="button" variant="ghost" size="icon" class="md:hidden self-start -mr-1 text-muted-foreground" @click="close">
+              <Button type="button" variant="ghost" size="icon" class="quick-buy-mobile-close md:hidden self-start -mr-1 text-muted-foreground" :aria-label="t('common.close')" @click="close">
                 <X />
               </Button>
             </div>
@@ -329,6 +332,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
+import { vModalFocus } from '../directives/modalFocus'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAppStore } from '../stores/app'
