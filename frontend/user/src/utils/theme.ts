@@ -1,41 +1,25 @@
 import { ref, watch } from 'vue'
+import { readThemePreview, type ColorMode } from '../../../shared/storefrontTheme'
 
 const TEA_THEME_KEY = 'dujiao_theme'
-
-type Theme = 'light' | 'dark'
-
-const getSystemTheme = (): Theme => {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+const preview = readThemePreview(window.location.search)
+const getSystemTheme = (): ColorMode => window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+const getSavedTheme = (): ColorMode | null => {
+    try {
+        const value = localStorage.getItem(TEA_THEME_KEY)
+        return value === 'dark' || value === 'light' ? value : null
+    } catch { return null }
 }
-
-const getSavedTheme = (): Theme | null => {
-    return localStorage.getItem(TEA_THEME_KEY) as Theme | null
-}
-
-const theme = ref<Theme>(getSavedTheme() || getSystemTheme())
-
-const applyTheme = (newTheme: Theme) => {
-    const root = document.documentElement
-    if (newTheme === 'dark') {
-        root.classList.add('dark')
-    } else {
-        root.classList.remove('dark')
+const theme = ref<ColorMode>(preview?.mode || getSavedTheme() || getSystemTheme())
+watch(theme, (value) => {
+    document.documentElement.classList.toggle('dark', value === 'dark')
+    document.documentElement.style.colorScheme = value
+    if (!preview) {
+        try { localStorage.setItem(TEA_THEME_KEY, value) } catch { /* optional persistence */ }
     }
-    localStorage.setItem(TEA_THEME_KEY, newTheme)
-}
-
-// Watch for changes and apply
-watch(theme, (newVal) => {
-    applyTheme(newVal)
 }, { immediate: true })
 
-export const useTheme = () => {
-    const toggleTheme = () => {
-        theme.value = theme.value === 'dark' ? 'light' : 'dark'
-    }
-
-    return {
-        theme,
-        toggleTheme
-    }
-}
+export const useTheme = () => ({
+    theme,
+    toggleTheme: () => { theme.value = theme.value === 'dark' ? 'light' : 'dark' },
+})

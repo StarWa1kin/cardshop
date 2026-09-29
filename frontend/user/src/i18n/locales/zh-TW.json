@@ -1,4 +1,18 @@
 {
+  "storefrontTheme": {
+    "preview": "主題 {n} 預覽",
+    "previewNote": "僅目前頁面生效 · 交易仍使用真實資料",
+    "exitPreview": "退出預覽",
+    "heroTitle": "即刻連接",
+    "heroTitleAccent": "你的數位世界",
+    "heroSubtitle": "探索精選數位好物，為創作與生活增添更多可能。",
+    "explore": "探索商品",
+    "browse": "發現好物",
+    "browseHint": "精選商品，清晰呈現",
+    "choose": "按需選擇",
+    "chooseHint": "靈活規格，自由選購",
+    "ordersHint": "隨時查看訂單進度"
+  },
   "siteContact": {
     "wechat": "微信",
     "scanHint": "使用{channel}掃描 QR Code，或儲存圖片後在應用程式中辨識。",
@@ -11,6 +25,7 @@
     "close": "關閉"
   },
   "common": {
+    "close": "關閉",
     "siteName": "Dujiao-Next",
     "loading": "載入中...",
     "error": "錯誤",

@@ -11,11 +11,13 @@ import (
 
 	"github.com/dujiao-next/internal/constants"
 	settingsapp "github.com/dujiao-next/internal/modules/settings/application"
+	settingsstorefront "github.com/dujiao-next/internal/modules/settings/schema/storefront"
 	"github.com/dujiao-next/internal/shared/jsonmap"
 )
 
 type adminSettingsStub struct {
 	updateCalls int
+	updateError error
 }
 
 func (s *adminSettingsStub) GetByKey(string) (jsonmap.JSON, error) {
@@ -24,7 +26,26 @@ func (s *adminSettingsStub) GetByKey(string) (jsonmap.JSON, error) {
 
 func (s *adminSettingsStub) UpdateWithEffects(string, map[string]interface{}) (settingsapp.UpdateResult, error) {
 	s.updateCalls++
-	return settingsapp.UpdateResult{}, nil
+	return settingsapp.UpdateResult{}, s.updateError
+}
+
+func TestAdminHandlerReturnsBadRequestForInvalidTheme(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	stub := &adminSettingsStub{updateError: settingsstorefront.ErrInvalidTheme}
+	recorder := httptest.NewRecorder()
+	context, _ := gin.CreateTestContext(recorder)
+	context.Request = httptest.NewRequest(http.MethodPut, "/api/v1/admin/settings", strings.NewReader(`{"key":"storefront_theme_config","value":{"theme_id":"invalid"}}`))
+	context.Request.Header.Set("Content-Type", "application/json")
+	NewAdminHandler(stub).Update(context)
+	var body struct {
+		StatusCode int `json:"status_code"`
+	}
+	if err := json.Unmarshal(recorder.Body.Bytes(), &body); err != nil {
+		t.Fatal(err)
+	}
+	if body.StatusCode != 400 {
+		t.Fatalf("invalid theme response: %s", recorder.Body.String())
+	}
 }
 
 func (s *adminSettingsStub) InvalidateCallbackRoutesCache() {}

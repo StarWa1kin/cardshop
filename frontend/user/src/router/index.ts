@@ -3,7 +3,7 @@ import { useUserAuthStore } from '../stores/userAuth'
 import { useAppStore } from '../stores/app'
 import { useTelegramMiniAppStore } from '../stores/telegramMiniApp'
 import { captureAffiliateFromRoute } from '../utils/affiliate'
-import { templateView } from '../templates/registry'
+import { templateView, themePreview } from '../templates/registry'
 import { GOOGLE_REDIRECT_FRONTEND_CALLBACK_PATH } from '../utils/googleRedirect'
 
 type RouteComponentLoader = () => Promise<unknown>
@@ -327,6 +327,18 @@ const router = createRouter({
 })
 
 // Navigation Guard
+if (themePreview) {
+  const preview = themePreview
+  router.beforeEach((to) => {
+    if (to.query.theme_preview === preview.theme &&
+        (!preview.mode || to.query.theme_preview_mode === preview.mode)) return
+    return { path: to.path, hash: to.hash, query: {
+      ...to.query, theme_preview: preview.theme,
+      ...(preview.mode ? { theme_preview_mode: preview.mode } : {}),
+    }, replace: true }
+  })
+}
+
 router.beforeEach(async (to, _from, next) => {
     const userAuthStore = useUserAuthStore()
     const appStore = useAppStore()

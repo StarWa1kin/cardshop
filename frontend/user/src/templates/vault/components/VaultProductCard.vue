@@ -1,8 +1,8 @@
 <template>
-  <RouterLink :to="`/products/${product.slug}`" class="flex h-full flex-col gap-2.5 rounded-lg border bg-card p-3 text-left transition hover:-translate-y-[3px] hover:border-hairline-strong hover:shadow-[var(--shadow)]" :class="{ 'opacity-[0.74]': soldOut }">
-    <div class="flex flex-col items-stretch gap-[11px]">
+  <RouterLink :to="`/products/${product.slug}`" class="storefront-product-card flex h-full flex-col gap-2.5 rounded-lg border bg-card p-3 text-left transition hover:-translate-y-[3px] hover:border-hairline-strong hover:shadow-[var(--shadow)]" :class="{ 'opacity-[0.74]': soldOut }">
+    <div class="product-card-heading flex flex-col items-stretch gap-[11px]">
       <span
-        class="relative grid h-[152px] w-full flex-none place-items-center overflow-hidden rounded-[13px] will-change-transform after:absolute after:inset-0 after:bg-[radial-gradient(130%_80%_at_78%_14%,rgba(255,255,255,0.26),transparent_56%)]"
+        class="product-card-art relative grid h-[152px] w-full flex-none place-items-center overflow-hidden rounded-[13px] will-change-transform after:absolute after:inset-0 after:bg-[radial-gradient(130%_80%_at_78%_14%,rgba(255,255,255,0.26),transparent_56%)]"
         :class="coverClass"
       >
         <img v-if="coverImage" :src="coverImage" :alt="title" loading="lazy" class="absolute inset-0 h-full w-full object-cover" @error="imageErrored = true" />
@@ -19,7 +19,7 @@
     </div>
 
     <!-- 属性徽章：交付方式 · 购买类型 · 库存 -->
-    <div class="mx-1 flex flex-wrap items-center gap-1.5">
+    <div class="product-card-badges mx-1 flex flex-wrap items-center gap-1.5">
       <span class="inline-flex items-center gap-1 rounded-full bg-[color:var(--teal-soft)] px-2 py-0.5 text-[11px] font-semibold text-[color:var(--teal-strong)]">
         <component :is="product.fulfillment_type === 'auto' ? Zap : Pencil" class="h-3 w-3" />
         {{ getFulfillmentTypeLabel(product.fulfillment_type) }}
@@ -34,7 +34,7 @@
       </span>
     </div>
 
-    <div class="mt-auto flex items-end justify-between gap-2 px-1">
+    <div class="product-card-actions mt-auto flex items-end justify-between gap-2 px-1">
       <div class="flex min-w-0 flex-col gap-1">
         <div class="flex flex-wrap items-baseline gap-x-1.5">
           <template v-if="promo">

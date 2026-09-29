@@ -1,0 +1,134 @@
+[
+  {
+    "layout": "card",
+    "expected": "theme-1",
+    "mode": "light",
+    "client": 365,
+    "dark": false,
+    "main": true,
+    "scroll": 365,
+    "theme": "theme-1",
+    "viewport": 375
+  },
+  {
+    "layout": "card",
+    "expected": "theme-1",
+    "mode": "dark",
+    "client": 365,
+    "dark": true,
+    "main": true,
+    "scroll": 365,
+    "theme": "theme-1",
+    "viewport": 375
+  },
+  {
+    "layout": "card",
+    "expected": "theme-2",
+    "mode": "light",
+    "client": 365,
+    "dark": false,
+    "main": true,
+    "scroll": 365,
+    "theme": "theme-2",
+    "viewport": 375
+  },
+  {
+    "layout": "card",
+    "expected": "theme-2",
+    "mode": "dark",
+    "client": 365,
+    "dark": true,
+    "main": true,
+    "scroll": 365,
+    "theme": "theme-2",
+    "viewport": 375
+  },
+  {
+    "layout": "card",
+    "expected": "theme-3",
+    "mode": "light",
+    "client": 365,
+    "dark": false,
+    "main": true,
+    "scroll": 365,
+    "theme": "theme-3",
+    "viewport": 375
+  },
+  {
+    "layout": "card",
+    "expected": "theme-3",
+    "mode": "dark",
+    "client": 365,
+    "dark": true,
+    "main": true,
+    "scroll": 365,
+    "theme": "theme-3",
+    "viewport": 375
+  },
+  {
+    "layout": "list",
+    "expected": "theme-1",
+    "mode": "light",
+    "client": 365,
+    "dark": false,
+    "main": true,
+    "scroll": 365,
+    "theme": "theme-1",
+    "viewport": 375
+  },
+  {
+    "layout": "list",
+    "expected": "theme-1",
+    "mode": "dark",
+    "client": 365,
+    "dark": true,
+    "main": true,
+    "scroll": 365,
+    "theme": "theme-1",
+    "viewport": 375
+  },
+  {
+    "layout": "list",
+    "expected": "theme-2",
+    "mode": "light",
+    "client": 365,
+    "dark": false,
+    "main": true,
+    "scroll": 365,
+    "theme": "theme-2",
+    "viewport": 375
+  },
+  {
+    "layout": "list",
+    "expected": "theme-2",
+    "mode": "dark",
+    "client": 365,
+    "dark": true,
+    "main": true,
+    "scroll": 365,
+    "theme": "theme-2",
+    "viewport": 375
+  },
+  {
+    "layout": "list",
+    "expected": "theme-3",
+    "mode": "light",
+    "client": 365,
+    "dark": false,
+    "main": true,
+    "scroll": 365,
+    "theme": "theme-3",
+    "viewport": 375
+  },
+  {
+    "layout": "list",
+    "expected": "theme-3",
+    "mode": "dark",
+    "client": 365,
+    "dark": true,
+    "main": true,
+    "scroll": 365,
+    "theme": "theme-3",
+    "viewport": 375
+  }
+]

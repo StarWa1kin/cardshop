@@ -14,6 +14,12 @@ import (
 // 避免 SettingService 再通过全局 switch 了解所有配置类型。
 var defaultSettingRegistry = MustNewRegistry(
 	Definition{
+		Key:       constants.SettingKeyStorefrontThemeConfig,
+		Validate:  settingsstorefront.ValidateThemeSetting,
+		Normalize: settingsstorefront.NormalizeThemeSetting,
+		Effects:   []Effect{EffectInvalidatePublicConfigCache},
+	},
+	Definition{
 		Key:       constants.SettingKeyDashboardConfig,
 		Normalize: settingsstorefront.NormalizeDashboardSettingJSON,
 	},

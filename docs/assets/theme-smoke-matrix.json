@@ -1,0 +1,110 @@
+[
+  {
+    "layout": "card",
+    "expected": "theme-1",
+    "mode": "light",
+    "dark": false,
+    "main": true,
+    "overflow": false,
+    "theme": "theme-1"
+  },
+  {
+    "layout": "card",
+    "expected": "theme-1",
+    "mode": "dark",
+    "dark": true,
+    "main": true,
+    "overflow": false,
+    "theme": "theme-1"
+  },
+  {
+    "layout": "card",
+    "expected": "theme-2",
+    "mode": "light",
+    "dark": false,
+    "main": true,
+    "overflow": false,
+    "theme": "theme-2"
+  },
+  {
+    "layout": "card",
+    "expected": "theme-2",
+    "mode": "dark",
+    "dark": true,
+    "main": true,
+    "overflow": false,
+    "theme": "theme-2"
+  },
+  {
+    "layout": "card",
+    "expected": "theme-3",
+    "mode": "light",
+    "dark": false,
+    "main": true,
+    "overflow": false,
+    "theme": "theme-3"
+  },
+  {
+    "layout": "card",
+    "expected": "theme-3",
+    "mode": "dark",
+    "dark": true,
+    "main": true,
+    "overflow": false,
+    "theme": "theme-3"
+  },
+  {
+    "layout": "list",
+    "expected": "theme-1",
+    "mode": "light",
+    "dark": false,
+    "main": true,
+    "overflow": false,
+    "theme": "theme-1"
+  },
+  {
+    "layout": "list",
+    "expected": "theme-1",
+    "mode": "dark",
+    "dark": true,
+    "main": true,
+    "overflow": false,
+    "theme": "theme-1"
+  },
+  {
+    "layout": "list",
+    "expected": "theme-2",
+    "mode": "light",
+    "dark": false,
+    "main": true,
+    "overflow": false,
+    "theme": "theme-2"
+  },
+  {
+    "layout": "list",
+    "expected": "theme-2",
+    "mode": "dark",
+    "dark": true,
+    "main": true,
+    "overflow": false,
+    "theme": "theme-2"
+  },
+  {
+    "layout": "list",
+    "expected": "theme-3",
+    "mode": "light",
+    "dark": false,
+    "main": true,
+    "overflow": false,
+    "theme": "theme-3"
+  },
+  {
+    "layout": "list",
+    "expected": "theme-3",
+    "mode": "dark",
+    "dark": true,
+    "main": true,
+    "overflow": false,
+    "theme": "theme-3"
+  }
+]

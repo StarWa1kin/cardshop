@@ -1,0 +1,1783 @@
+diff --git a/Dockerfile b/Dockerfile
+index 01d8245..c42e8ac 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -21,6 +21,7 @@ RUN cd user  && pnpm install --frozen-lockfile
+ 
+ COPY frontend/admin ./admin
+ COPY frontend/user  ./user
++COPY frontend/shared ./shared
+ 
+ # admin 走 fullstack 模式：注入 __DJ_ADMIN_BASE__ 占位符，
+ # 后端启动时按 web.admin_path 替换，使同一份产物能挂到任意自定义前缀。
+diff --git a/frontend/admin/src/i18n/index.ts b/frontend/admin/src/i18n/index.ts
+index e0c78be..37bd4dc 100644
+--- a/frontend/admin/src/i18n/index.ts
++++ b/frontend/admin/src/i18n/index.ts
+@@ -2705,7 +2705,7 @@ const messages = {
+         },
+         tabs: {
+           basic: '基础配置 (Basic)',
+-          template: '模板配置 (Template)',
++          template: '商城主题',
+           scripts: '前台脚本 (Scripts)',
+           about: '关于我们 (About)',
+           legal: '法律条款 (Legal/Terms)',
+@@ -2921,6 +2921,30 @@ const messages = {
+           resetConfirm: '确定要重置所有邮件模板为默认值吗？',
+           resetSuccess: '已重置为默认模板',
+         },
++        theme: {
++  "title": "商城主题",
++  "subtitle": "选择商城外观。独立保存主题，不影响商品、订单和支付设置。",
++  "previewMode": "预览配色",
++  "light": "亮色",
++  "dark": "暗黑",
++  "loading": "正在读取主题配置…",
++  "loadError": "主题配置读取失败，请重试后再保存。",
++  "retry": "重试",
++  "name1": "主题 1 · 经典简洁",
++  "name2": "主题 2 · 品牌展示",
++  "name3": "主题 3 · 精密科技",
++  "description1": "清晰留白、经典蓝色，延续熟悉的商城体验。",
++  "description2": "靛蓝配色、品牌横幅，突出商品与内容。",
++  "description3": "石墨黑与冷白、电光青，精密细节与轻盈交互。",
++  "active": "当前使用",
++  "pending": "待应用",
++  "supportsModes": "支持亮色 / 暗黑",
++  "preview": "预览",
++  "saveHint": "应用后，新打开或刷新商城生效。商品展示方式请单独保存。",
++  "apply": "应用主题",
++  "applied": "主题已应用，刷新商城即可查看",
++  "saveLayout": "保存商品展示设置"
++},
+         template: {
+           title: '前台模板配置',
+           subtitle: '选择前台商城的页面展示模板，切换后立即生效',
+@@ -7158,7 +7182,7 @@ const messages = {
+         },
+         tabs: {
+           basic: '基礎配置 (Basic)',
+-          template: '模板配置 (Template)',
++          template: '商城主題',
+           scripts: '前台腳本 (Scripts)',
+           about: '關於我們 (About)',
+           legal: '法律條款 (Legal/Terms)',
+@@ -7374,6 +7398,30 @@ const messages = {
+           resetConfirm: '確定要重置所有郵件模板為預設值嗎？',
+           resetSuccess: '已重置為預設模板',
+         },
++        theme: {
++  "title": "商城主題",
++  "subtitle": "選擇商城外觀。獨立儲存主題，不影響商品、訂單和付款設定。",
++  "previewMode": "預覽配色",
++  "light": "亮色",
++  "dark": "暗黑",
++  "loading": "正在讀取主題設定…",
++  "loadError": "主題設定讀取失敗，請重試後再儲存。",
++  "retry": "重試",
++  "name1": "主題 1 · 經典簡潔",
++  "name2": "主題 2 · 品牌展示",
++  "name3": "主題 3 · 精密科技",
++  "description1": "清晰留白、經典藍色，延續熟悉的商城體驗。",
++  "description2": "靛藍配色、品牌橫幅，突出商品與內容。",
++  "description3": "石墨黑與冷白、電光青，精密細節與輕盈互動。",
++  "active": "目前使用",
++  "pending": "待套用",
++  "supportsModes": "支援亮色 / 暗黑",
++  "preview": "預覽",
++  "saveHint": "套用後，新開啟或重新整理商城生效。商品展示方式請單獨儲存。",
++  "apply": "套用主題",
++  "applied": "主題已套用，重新整理商城即可查看",
++  "saveLayout": "儲存商品展示設定"
++},
+         template: {
+           title: '前台模板配置',
+           subtitle: '選擇前台商城的頁面展示模板，切換後立即生效',
+@@ -11611,7 +11659,7 @@ const messages = {
+         },
+         tabs: {
+           basic: 'Basic',
+-          template: 'Template',
++          template: 'Storefront themes',
+           scripts: 'Scripts',
+           about: 'About',
+           legal: 'Legal/Terms',
+@@ -11827,6 +11875,30 @@ const messages = {
+           resetConfirm: 'Are you sure you want to reset all email templates to default?',
+           resetSuccess: 'Templates have been reset to default',
+         },
++        theme: {
++  "title": "Storefront themes",
++  "subtitle": "Save appearance independently from products, orders and payment settings.",
++  "previewMode": "Preview appearance",
++  "light": "Light",
++  "dark": "Dark",
++  "loading": "Loading theme settings…",
++  "loadError": "Theme settings could not be loaded. Retry before saving.",
++  "retry": "Retry",
++  "name1": "Theme 1 · Classic",
++  "name2": "Theme 2 · Showcase",
++  "name3": "Theme 3 · Precision",
++  "description1": "Familiar blue accents and clean, spacious layouts.",
++  "description2": "Indigo branding and expressive product showcases.",
++  "description3": "Graphite and porcelain, electric cyan and subtle interactions.",
++  "active": "Currently active",
++  "pending": "Not applied",
++  "supportsModes": "Light / dark ready",
++  "preview": "Preview",
++  "saveHint": "Applies on the next visit or refresh. Save product layout separately.",
++  "apply": "Apply theme",
++  "applied": "Theme applied. Refresh the storefront to see it.",
++  "saveLayout": "Save product layout"
++},
+         template: {
+           title: 'Storefront Template',
+           subtitle: 'Choose the storefront display template, changes take effect immediately',
+diff --git a/frontend/admin/src/views/admin/Settings.vue b/frontend/admin/src/views/admin/Settings.vue
+index 7437663..aad26ef 100644
+--- a/frontend/admin/src/views/admin/Settings.vue
++++ b/frontend/admin/src/views/admin/Settings.vue
+@@ -16,6 +16,7 @@ import { applySiteIcon } from '@/utils/favicon'
+ import { getImageUrl } from '@/utils/image'
+ import { orderEmailSceneKeys } from '@/utils/orderEmailTemplates'
+ import MediaPicker from '@/components/admin/MediaPicker.vue'
++import SettingsThemeTab from './components/SettingsThemeTab.vue'
+ import SettingsSMTPTab from './components/SettingsSMTPTab.vue'
+ import SettingsCaptchaTab from './components/SettingsCaptchaTab.vue'
+ import SettingsOrderEmailTemplateTab from './components/SettingsOrderEmailTemplateTab.vue'
+@@ -790,7 +791,9 @@ const saveSettings = async () => {
+   }
+   loading.value = true
+   try {
+-    if (currentTab.value === 'telegram') {
++    if (currentTab.value === 'template') {
++      await saveSiteSettings()
++    } else if (currentTab.value === 'telegram') {
+       await saveTelegramAuthSettings()
+     } else if (currentTab.value === 'google') {
+       await saveGoogleAuthSettings()
+@@ -835,7 +838,7 @@ onMounted(() => {
+         </div>
+         <Button size="sm" class="w-full sm:w-auto" :disabled="loading || smtpTabRef?.submitting || smtpTabRef?.smtpTesting || captchaTabRef?.submitting || orderEmailTemplateTabRef?.submitting || navigationTabRef?.submitting || homeAnnouncementTabRef?.submitting || upstreamSyncTabRef?.submitting" @click="saveSettings">
+           <span v-if="loading" class="h-3 w-3 animate-spin rounded-full border-2 border-primary/30 border-t-primary"></span>
+-          {{ loading ? t('admin.settings.actions.saving') : t('admin.settings.actions.save') }}
++          {{ loading ? t('admin.settings.actions.saving') : currentTab === 'template' ? t('admin.settings.theme.saveLayout') : t('admin.settings.actions.save') }}
+         </Button>
+       </div>
+     </div>
+@@ -1155,69 +1158,7 @@ onMounted(() => {
+ 
+       <!-- Template Mode Tab -->
+       <TabsContent value="template" :forceMount="true" v-show="currentTab === 'template'" class="space-y-6 mt-0">
+-      <!-- Storefront theme: classic / vault -->
+-      <div class="rounded-xl border border-border bg-card">
+-        <div class="flex flex-col gap-3 border-b border-border bg-muted/40 px-6 py-4">
+-          <div>
+-            <h2 class="text-lg font-semibold">{{ t('admin.settings.template.storefrontTitle') }}</h2>
+-            <p class="mt-1 text-xs text-muted-foreground">{{ t('admin.settings.template.storefrontSubtitle') }}</p>
+-          </div>
+-        </div>
+-        <div class="px-6 py-6">
+-          <RadioGroup v-model="form.storefront_template" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+-            <!-- Classic -->
+-            <Label
+-              class="relative flex cursor-pointer flex-col items-center gap-3 rounded-xl border-2 p-6 transition-all"
+-              :class="form.storefront_template === 'classic'
+-                ? 'border-primary bg-primary/5 ring-1 ring-primary/20'
+-                : 'border-border hover:border-muted-foreground/30'"
+-            >
+-              <RadioGroupItem value="classic" class="sr-only" />
+-              <div class="flex h-16 w-16 items-center justify-center rounded-xl" :class="form.storefront_template === 'classic' ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'">
+-                <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+-                  <circle cx="12" cy="12" r="4" />
+-                  <path stroke-linecap="round" d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" />
+-                </svg>
+-              </div>
+-              <div class="text-center">
+-                <div class="font-semibold" :class="form.storefront_template === 'classic' ? 'text-primary' : ''">{{ t('admin.settings.template.classicMode') }}</div>
+-                <div class="mt-1 text-xs text-muted-foreground">{{ t('admin.settings.template.classicModeDesc') }}</div>
+-              </div>
+-              <div v-if="form.storefront_template === 'classic'" class="absolute right-3 top-3">
+-                <svg class="h-5 w-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+-                </svg>
+-              </div>
+-            </Label>
+-
+-            <!-- Vault -->
+-            <Label
+-              class="relative flex cursor-pointer flex-col items-center gap-3 rounded-xl border-2 p-6 transition-all"
+-              :class="form.storefront_template === 'vault'
+-                ? 'border-primary bg-primary/5 ring-1 ring-primary/20'
+-                : 'border-border hover:border-muted-foreground/30'"
+-            >
+-              <RadioGroupItem value="vault" class="sr-only" />
+-              <div class="flex h-16 w-16 items-center justify-center rounded-xl" :class="form.storefront_template === 'vault' ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'">
+-                <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 3v5c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6l7-3z" />
+-                  <circle cx="12" cy="11" r="2.2" />
+-                  <path stroke-linecap="round" d="M12 13.2V16" />
+-                </svg>
+-              </div>
+-              <div class="text-center">
+-                <div class="font-semibold" :class="form.storefront_template === 'vault' ? 'text-primary' : ''">{{ t('admin.settings.template.vaultMode') }}</div>
+-                <div class="mt-1 text-xs text-muted-foreground">{{ t('admin.settings.template.vaultModeDesc') }}</div>
+-              </div>
+-              <div v-if="form.storefront_template === 'vault'" class="absolute right-3 top-3">
+-                <svg class="h-5 w-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+-                </svg>
+-              </div>
+-            </Label>
+-          </RadioGroup>
+-        </div>
+-      </div>
++      <SettingsThemeTab :site-url="form.brand.site_url" />
+ 
+       <!-- Product layout: card / list -->
+       <div class="rounded-xl border border-border bg-card">
+diff --git a/frontend/user/src/App.vue b/frontend/user/src/App.vue
+index 03e8472..e82ef81 100644
+--- a/frontend/user/src/App.vue
++++ b/frontend/user/src/App.vue
+@@ -1,7 +1,8 @@
+ <template>
+   <div id="app" class="min-h-screen bg-background text-foreground flex flex-col">
++    <ThemePreviewBar v-if="themePreview && !isResellerConsole" />
+     <!-- vault 模板：自带顶栏/页脚的外壳包裹页面（控制台仍走下方分支） -->
+-    <VaultLayout v-if="isVault && !isResellerConsole">
++    <component :is="storefrontLayout" v-if="storefrontLayout && !isResellerConsole">
+       <ErrorBoundary>
+         <RouterView v-slot="{ Component }">
+           <Transition name="page-fade" mode="out-in">
+@@ -9,7 +10,7 @@
+           </Transition>
+         </RouterView>
+       </ErrorBoundary>
+-    </VaultLayout>
++    </component>
+ 
+     <!-- classic 模板 / 分销控制台（保持原有结构不变） -->
+     <template v-else>
+@@ -35,10 +36,11 @@
+ </template>
+ 
+ <script setup lang="ts">
+-import { computed, defineAsyncComponent } from 'vue'
++import { computed, defineAsyncComponent, watchEffect } from 'vue'
+ import { useRoute } from 'vue-router'
+ import { useAppStore } from './stores/app'
+-import { getActiveTemplate } from './templates/registry'
++import { getActiveTheme, themePreview } from './templates/registry'
++import ThemePreviewBar from './templates/ThemePreviewBar.vue'
+ import Navbar from './components/Navbar.vue'
+ import Footer from './components/Footer.vue'
+ import Loading from './components/Loading.vue'
+@@ -55,8 +57,14 @@ const VaultLayout = defineAsyncComponent(() => import('./templates/vault/layout/
+ const appStore = useAppStore()
+ const route = useRoute()
+ const isResellerConsole = computed(() => route.meta.resellerConsole === true)
+-// getActiveTemplate 读取 appStore.config（响应式），config 加载后会重新计算
+-const isVault = computed(() => getActiveTemplate() === 'vault')
++// Resolve after public config, then keep the document coherent until a refresh.
++const TechLayout = defineAsyncComponent(() => import('./templates/tech/TechLayout.vue'))
++const activeTheme = computed(() => getActiveTheme())
++const storefrontLayout = computed(() => activeTheme.value === 'theme-3' ? TechLayout : activeTheme.value === 'theme-2' ? VaultLayout : null)
++watchEffect(() => {
++  if (isResellerConsole.value) delete document.documentElement.dataset.storefrontTheme
++  else document.documentElement.dataset.storefrontTheme = activeTheme.value
++})
+ </script>
+ 
+ <style>
+diff --git a/frontend/user/src/components/ProductQuickBuy.vue b/frontend/user/src/components/ProductQuickBuy.vue
+index 38697c9..b593559 100644
+--- a/frontend/user/src/components/ProductQuickBuy.vue
++++ b/frontend/user/src/components/ProductQuickBuy.vue
+@@ -37,7 +37,10 @@
+         @click.self="close"
+       >
+         <div
++          v-modal-focus="close"
+           role="dialog"
++          :aria-label="t('quickBuy.title')"
++          tabindex="-1"
+           aria-modal="true"
+           class="
+             w-full max-h-[85vh] flex flex-col
+@@ -54,9 +57,9 @@
+           </div>
+ 
+           <!-- Desktop header bar -->
+-          <div class="hidden md:flex items-center justify-between px-5 pt-4 pb-0 shrink-0">
++          <div class="quick-buy-header hidden md:flex items-center justify-between px-5 pt-4 pb-0 shrink-0">
+             <h2 class="text-sm font-semibold text-foreground">{{ t('quickBuy.title') }}</h2>
+-            <Button type="button" variant="ghost" size="icon" class="-mr-1 text-muted-foreground" @click="close">
++            <Button type="button" variant="ghost" size="icon" :aria-label="t('common.close')" class="-mr-1 text-muted-foreground" @click="close">
+               <X />
+             </Button>
+           </div>
+@@ -159,7 +162,7 @@
+               </div>
+ 
+               <!-- Mobile close -->
+-              <Button type="button" variant="ghost" size="icon" class="md:hidden self-start -mr-1 text-muted-foreground" @click="close">
++              <Button type="button" variant="ghost" size="icon" class="quick-buy-mobile-close md:hidden self-start -mr-1 text-muted-foreground" :aria-label="t('common.close')" @click="close">
+                 <X />
+               </Button>
+             </div>
+@@ -329,6 +332,7 @@
+ 
+ <script setup lang="ts">
+ import { ref, computed, watch } from 'vue'
++import { vModalFocus } from '../directives/modalFocus'
+ import { useRouter, useRoute } from 'vue-router'
+ import { useI18n } from 'vue-i18n'
+ import { useAppStore } from '../stores/app'
+diff --git a/frontend/user/src/i18n/locales/en-US.json b/frontend/user/src/i18n/locales/en-US.json
+index 69d40a1..7608862 100644
+--- a/frontend/user/src/i18n/locales/en-US.json
++++ b/frontend/user/src/i18n/locales/en-US.json
+@@ -1,4 +1,18 @@
+ {
++  "storefrontTheme": {
++    "preview": "Theme {n} preview",
++    "previewNote": "This page only · Purchases use real data",
++    "exitPreview": "Exit preview",
++    "heroTitle": "Connect to your",
++    "heroTitleAccent": "digital world.",
++    "heroSubtitle": "Discover digital essentials. More possibilities for everything you create.",
++    "explore": "Explore products",
++    "browse": "Discover",
++    "browseHint": "Digital essentials, curated",
++    "choose": "Make it yours",
++    "chooseHint": "Find the option that fits",
++    "ordersHint": "Keep track of your orders"
++  },
+   "siteContact": {
+     "wechat": "WeChat",
+     "scanHint": "Scan with {channel}, or save the image and open it in the app.",
+@@ -11,6 +25,7 @@
+     "close": "Close"
+   },
+   "common": {
++    "close": "Close",
+     "siteName": "Dujiao-Next",
+     "loading": "Loading...",
+     "error": "Error",
+diff --git a/frontend/user/src/i18n/locales/zh-CN.json b/frontend/user/src/i18n/locales/zh-CN.json
+index c8110d4..1e6e1e5 100644
+--- a/frontend/user/src/i18n/locales/zh-CN.json
++++ b/frontend/user/src/i18n/locales/zh-CN.json
+@@ -1,4 +1,18 @@
+ {
++  "storefrontTheme": {
++    "preview": "主题 {n} 预览",
++    "previewNote": "仅当前页面生效 · 交易仍使用真实数据",
++    "exitPreview": "退出预览",
++    "heroTitle": "即刻连接",
++    "heroTitleAccent": "你的数字世界",
++    "heroSubtitle": "探索精选数字好物，为创作与生活增添更多可能。",
++    "explore": "探索商品",
++    "browse": "发现好物",
++    "browseHint": "精选商品，清晰呈现",
++    "choose": "按需选择",
++    "chooseHint": "灵活规格，自由选购",
++    "ordersHint": "随时查看订单进度"
++  },
+   "siteContact": {
+     "wechat": "微信",
+     "scanHint": "使用{channel}扫描二维码，或保存图片后在应用中识别。",
+@@ -11,6 +25,7 @@
+     "close": "关闭"
+   },
+   "common": {
++    "close": "关闭",
+     "siteName": "Dujiao-Next",
+     "loading": "加载中...",
+     "error": "错误",
+diff --git a/frontend/user/src/i18n/locales/zh-TW.json b/frontend/user/src/i18n/locales/zh-TW.json
+index aea79a8..d25b50a 100644
+--- a/frontend/user/src/i18n/locales/zh-TW.json
++++ b/frontend/user/src/i18n/locales/zh-TW.json
+@@ -1,4 +1,18 @@
+ {
++  "storefrontTheme": {
++    "preview": "主題 {n} 預覽",
++    "previewNote": "僅目前頁面生效 · 交易仍使用真實資料",
++    "exitPreview": "退出預覽",
++    "heroTitle": "即刻連接",
++    "heroTitleAccent": "你的數位世界",
++    "heroSubtitle": "探索精選數位好物，為創作與生活增添更多可能。",
++    "explore": "探索商品",
++    "browse": "發現好物",
++    "browseHint": "精選商品，清晰呈現",
++    "choose": "按需選擇",
++    "chooseHint": "靈活規格，自由選購",
++    "ordersHint": "隨時查看訂單進度"
++  },
+   "siteContact": {
+     "wechat": "微信",
+     "scanHint": "使用{channel}掃描 QR Code，或儲存圖片後在應用程式中辨識。",
+@@ -11,6 +25,7 @@
+     "close": "關閉"
+   },
+   "common": {
++    "close": "關閉",
+     "siteName": "Dujiao-Next",
+     "loading": "載入中...",
+     "error": "錯誤",
+diff --git a/frontend/user/src/main.ts b/frontend/user/src/main.ts
+index 5e06b40..c9b23e6 100644
+--- a/frontend/user/src/main.ts
++++ b/frontend/user/src/main.ts
+@@ -6,10 +6,10 @@ import App from './App.vue'
+ import router, { warmupCommonRoutes } from './router'
+ import i18n, { detectLocale, setI18nLocale, warmupLocaleMessages } from './i18n'
+ import { useTelegramMiniAppStore } from './stores/telegramMiniApp'
+-import { initTemplateOverride } from './templates/registry'
++import { initStorefrontTheme } from './templates/registry'
+ 
+-// 预览用：?template=vault 持久化激活模板（站长正式切换走站点配置）
+-initTemplateOverride()
++// Remove the legacy persistent override without touching cart/auth/color preferences.
++initStorefrontTheme()
+ 
+ const brandLog = (globalThis as any).console?.log?.bind(console)
+ brandLog?.(
+@@ -30,6 +30,7 @@ app.use(i18n)
+ 
+ // 非默认语言的语言包为懒加载 chunk，挂载前并行加载，避免首屏文案闪现兜底语言
+ Promise.all([
++  router.isReady(),
+   useTelegramMiniAppStore(pinia).init(),
+   setI18nLocale(detectLocale()),
+ ]).then(() => {
+diff --git a/frontend/user/src/router/index.ts b/frontend/user/src/router/index.ts
+index def9e22..dd9b6f7 100644
+--- a/frontend/user/src/router/index.ts
++++ b/frontend/user/src/router/index.ts
+@@ -3,7 +3,7 @@ import { useUserAuthStore } from '../stores/userAuth'
+ import { useAppStore } from '../stores/app'
+ import { useTelegramMiniAppStore } from '../stores/telegramMiniApp'
+ import { captureAffiliateFromRoute } from '../utils/affiliate'
+-import { templateView } from '../templates/registry'
++import { templateView, themePreview } from '../templates/registry'
+ import { GOOGLE_REDIRECT_FRONTEND_CALLBACK_PATH } from '../utils/googleRedirect'
+ 
+ type RouteComponentLoader = () => Promise<unknown>
+@@ -327,6 +327,18 @@ const router = createRouter({
+ })
+ 
+ // Navigation Guard
++if (themePreview) {
++  const preview = themePreview
++  router.beforeEach((to) => {
++    if (to.query.theme_preview === preview.theme &&
++        (!preview.mode || to.query.theme_preview_mode === preview.mode)) return
++    return { path: to.path, hash: to.hash, query: {
++      ...to.query, theme_preview: preview.theme,
++      ...(preview.mode ? { theme_preview_mode: preview.mode } : {}),
++    }, replace: true }
++  })
++}
++
+ router.beforeEach(async (to, _from, next) => {
+     const userAuthStore = useUserAuthStore()
+     const appStore = useAppStore()
+diff --git a/frontend/user/src/templates/registry.ts b/frontend/user/src/templates/registry.ts
+index a2d0bc7..46eb457 100644
+--- a/frontend/user/src/templates/registry.ts
++++ b/frontend/user/src/templates/registry.ts
+@@ -1,80 +1,37 @@
+ import { useAppStore } from '../stores/app'
++import { readThemePreview, resolveStorefrontTheme, type StorefrontTheme } from '../../../shared/storefrontTheme'
+ 
+-/**
+- * 店面模板系统（站长全局切换 · 渐进并行迁移）
+- *
+- * - 当前激活模板优先级：本地预览覆盖(?template=) > 站点全局配置(storefront_template) > 默认 classic
+- * - classic 沿用现有 ../views/*，vault 落在 ./vault/*；vault 缺页时自动回退 classic，
+- *   因此可以一页一页地把新设计搬进 vault，旧站全程可用。
+- */
++// A preview belongs to this document only. Reload/exit explicitly resolves again.
++export const themePreview = typeof window === 'undefined' ? null : readThemePreview(window.location.search)
++let documentTheme: StorefrontTheme | null = null
+ 
+-export type StorefrontTemplate = 'classic' | 'vault'
+-
+-export const STOREFRONT_TEMPLATES: StorefrontTemplate[] = ['classic', 'vault']
+-export const DEFAULT_TEMPLATE: StorefrontTemplate = 'classic'
+-
+-const OVERRIDE_KEY = 'dj-storefront-template'
+-
+-const isTemplate = (value: unknown): value is StorefrontTemplate =>
+-    typeof value === 'string' && (STOREFRONT_TEMPLATES as string[]).includes(value)
+-
+-const readOverride = (): StorefrontTemplate | null => {
+-    try {
+-        const value = localStorage.getItem(OVERRIDE_KEY)
+-        return isTemplate(value) ? value : null
+-    } catch {
+-        return null
+-    }
++export function initStorefrontTheme(): void {
++  try { localStorage.removeItem('dj-storefront-template') } catch { /* storage may be disabled */ }
+ }
+ 
+-/**
+- * 预览用：URL 带 ?template=vault / ?template=classic 时持久化到 localStorage，
+- * ?template=reset 清除覆盖。站长正式切换走站点配置，不依赖此入口。
+- * 在 app 挂载前调用一次即可。
+- */
+-export const initTemplateOverride = (): void => {
+-    if (typeof window === 'undefined') return
+-    try {
+-        const param = new URLSearchParams(window.location.search).get('template')
+-        if (param === 'reset') {
+-            localStorage.removeItem(OVERRIDE_KEY)
+-        } else if (isTemplate(param)) {
+-            localStorage.setItem(OVERRIDE_KEY, param)
+-        }
+-    } catch {
+-        /* localStorage 不可用时忽略 */
+-    }
++export function getActiveTheme(): StorefrontTheme {
++  if (themePreview) return themePreview.theme
++  if (documentTheme) return documentTheme
++  const config = useAppStore().config
++  if (!config) return (documentTheme = 'theme-1')
++  documentTheme = resolveStorefrontTheme(config.storefront_theme, config.storefront_template)
++  return documentTheme
+ }
+ 
+-/** 当前激活的店面模板。 */
+-export const getActiveTemplate = (): StorefrontTemplate => {
+-    const override = readOverride()
+-    if (override) return override
+-    try {
+-        const appStore = useAppStore()
+-        const fromConfig = appStore.config?.storefront_template
+-        if (isTemplate(fromConfig)) return fromConfig
+-    } catch {
+-        /* pinia 尚未就绪时退回默认 */
+-    }
+-    return DEFAULT_TEMPLATE
+-}
+-
+-// vault 模板页面（按需动态加载）。key 形如 './vault/Home.vue'
+ const vaultViews = import.meta.glob('./vault/**/*.vue')
+-
++const techViews = import.meta.glob('./tech/**/*.vue')
+ type ViewLoader = () => Promise<unknown>
+ 
+-/**
+- * 路由 view 解析器：vault 模板下若存在同名页面则用 vault 版，否则回退传入的 classic loader。
+- * 用法：`component: templateView('Home', () => import('../views/Home.vue'))`
+- */
+-export const templateView = (name: string, classicLoader: ViewLoader): ViewLoader => {
+-    return () => {
+-        if (getActiveTemplate() === 'vault') {
+-            const loader = vaultViews[`./vault/${name}.vue`]
+-            if (loader) return loader()
+-        }
+-        return classicLoader()
+-    }
++// Tech reuses the existing purchasing pages and their exact business handlers.
++export const templateView = (name: string, classicLoader: ViewLoader): ViewLoader => () => {
++  const theme = getActiveTheme()
++  if (theme === 'theme-3') {
++    const ownView = techViews[`./tech/${name}.vue`]
++    if (ownView) return ownView()
++  }
++  if (theme !== 'theme-1') {
++    const sharedView = vaultViews[`./vault/${name}.vue`]
++    if (sharedView) return sharedView()
++  }
++  return classicLoader()
+ }
+diff --git a/frontend/user/src/templates/vault/Home.vue b/frontend/user/src/templates/vault/Home.vue
+index 8596bd0..0896a4d 100644
+--- a/frontend/user/src/templates/vault/Home.vue
++++ b/frontend/user/src/templates/vault/Home.vue
+@@ -1,11 +1,11 @@
+ <template>
+   <div>
+     <!-- 站长配置的横幅轮播（两种模式共用，顶部展示） -->
+-    <VaultBannerHero />
++    <VaultBannerHero><template #fallback><slot name="hero-fallback" /></template></VaultBannerHero>
+ 
+     <!-- ==================== 列表模式 ==================== -->
+     <template v-if="isListMode">
+-      <section class="mx-auto w-full max-w-[1180px] px-4 py-6 sm:px-6">
++      <section id="storefront-products" class="mx-auto w-full max-w-[1180px] px-4 py-6 sm:px-6">
+         <div class="grid items-start gap-5 lg:grid-cols-[248px_1fr] lg:gap-7">
+           <VaultCategorySidebar
+             :category-groups="categoryGroups"
+@@ -80,7 +80,7 @@
+     <!-- ==================== 卡片模式（默认） ==================== -->
+     <template v-else>
+       <!-- 分类块 -->
+-      <section v-if="topCategories.length" class="mx-auto w-full max-w-[1180px] px-4 py-9 sm:px-6">
++      <section v-if="topCategories.length" class="storefront-categories mx-auto w-full max-w-[1180px] px-4 py-9 sm:px-6">
+         <div class="mb-[22px] flex flex-wrap items-end justify-between gap-4">
+           <h2 class="text-[28px] font-extrabold">{{ t('vault.categoriesTitle') }}</h2>
+           <Button as-child variant="ghost" size="sm" class="rounded-full"><RouterLink to="/products">{{ t('vault.allCategories') }} <ChevronRight /></RouterLink></Button>
+@@ -103,16 +103,16 @@
+       </section>
+ 
+       <!-- 热门商品 -->
+-      <section class="mx-auto w-full max-w-[1180px] px-4 py-9 sm:px-6">
++      <section id="storefront-products" class="storefront-featured mx-auto w-full max-w-[1180px] px-4 py-9 sm:px-6">
+         <div class="mb-[22px] flex flex-wrap items-end justify-between gap-4">
+           <h2 class="text-[28px] font-extrabold">{{ t('home.featured.title') }}</h2>
+           <Button as-child variant="outline" size="sm" class="rounded-full"><RouterLink to="/products">{{ t('home.featured.viewAll') }}</RouterLink></Button>
+         </div>
+ 
+-        <div v-if="productsLoading" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(228px,1fr))]">
++        <div v-if="productsLoading" class="storefront-product-grid grid gap-4 grid-cols-[repeat(auto-fill,minmax(228px,1fr))]">
+           <div v-for="i in 10" :key="i" class="h-[280px] rounded-lg border bg-card"></div>
+         </div>
+-        <div v-else-if="products.length" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(228px,1fr))]">
++        <div v-else-if="products.length" class="storefront-product-grid grid gap-4 grid-cols-[repeat(auto-fill,minmax(228px,1fr))]">
+           <VaultProductCard
+             v-for="(product, idx) in products"
+             :key="product.id"
+@@ -132,7 +132,7 @@
+         <div class="mb-[22px] flex flex-wrap items-end justify-between gap-4">
+           <h2 class="text-[28px] font-extrabold">{{ t('home.latest.title') }}</h2>
+         </div>
+-        <div class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(228px,1fr))]">
++        <div class="storefront-product-grid grid gap-4 grid-cols-[repeat(auto-fill,minmax(228px,1fr))]">
+           <RouterLink
+             v-for="post in posts"
+             :key="post.id"
+diff --git a/frontend/user/src/templates/vault/Products.vue b/frontend/user/src/templates/vault/Products.vue
+index 4ad2ae8..80420ce 100644
+--- a/frontend/user/src/templates/vault/Products.vue
++++ b/frontend/user/src/templates/vault/Products.vue
+@@ -34,12 +34,12 @@
+ 
+       <!-- 商品区 -->
+       <section>
+-        <div v-if="loading" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(228px,1fr))]">
++        <div v-if="loading" class="storefront-product-grid grid gap-4 grid-cols-[repeat(auto-fill,minmax(228px,1fr))]">
+           <div v-for="i in 9" :key="i" class="h-[280px] rounded-lg border bg-card"></div>
+         </div>
+ 
+         <template v-else-if="products.length">
+-          <div class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(228px,1fr))]">
++          <div class="storefront-product-grid grid gap-4 grid-cols-[repeat(auto-fill,minmax(228px,1fr))]">
+             <VaultProductCard
+               v-for="(product, idx) in products"
+               :key="product.id"
+diff --git a/frontend/user/src/templates/vault/components/VaultBannerHero.vue b/frontend/user/src/templates/vault/components/VaultBannerHero.vue
+index 62dabb3..423dd65 100644
+--- a/frontend/user/src/templates/vault/components/VaultBannerHero.vue
++++ b/frontend/user/src/templates/vault/components/VaultBannerHero.vue
+@@ -77,6 +77,7 @@
+       </div>
+     </div>
+   </section>
++  <slot v-else name="fallback" />
+ </template>
+ 
+ <script setup lang="ts">
+diff --git a/frontend/user/src/templates/vault/components/VaultProductCard.vue b/frontend/user/src/templates/vault/components/VaultProductCard.vue
+index 27df3b0..1f8faf2 100644
+--- a/frontend/user/src/templates/vault/components/VaultProductCard.vue
++++ b/frontend/user/src/templates/vault/components/VaultProductCard.vue
+@@ -1,8 +1,8 @@
+ <template>
+-  <RouterLink :to="`/products/${product.slug}`" class="flex h-full flex-col gap-2.5 rounded-lg border bg-card p-3 text-left transition hover:-translate-y-[3px] hover:border-hairline-strong hover:shadow-[var(--shadow)]" :class="{ 'opacity-[0.74]': soldOut }">
+-    <div class="flex flex-col items-stretch gap-[11px]">
++  <RouterLink :to="`/products/${product.slug}`" class="storefront-product-card flex h-full flex-col gap-2.5 rounded-lg border bg-card p-3 text-left transition hover:-translate-y-[3px] hover:border-hairline-strong hover:shadow-[var(--shadow)]" :class="{ 'opacity-[0.74]': soldOut }">
++    <div class="product-card-heading flex flex-col items-stretch gap-[11px]">
+       <span
+-        class="relative grid h-[152px] w-full flex-none place-items-center overflow-hidden rounded-[13px] will-change-transform after:absolute after:inset-0 after:bg-[radial-gradient(130%_80%_at_78%_14%,rgba(255,255,255,0.26),transparent_56%)]"
++        class="product-card-art relative grid h-[152px] w-full flex-none place-items-center overflow-hidden rounded-[13px] will-change-transform after:absolute after:inset-0 after:bg-[radial-gradient(130%_80%_at_78%_14%,rgba(255,255,255,0.26),transparent_56%)]"
+         :class="coverClass"
+       >
+         <img v-if="coverImage" :src="coverImage" :alt="title" loading="lazy" class="absolute inset-0 h-full w-full object-cover" @error="imageErrored = true" />
+@@ -19,7 +19,7 @@
+     </div>
+ 
+     <!-- 属性徽章：交付方式 · 购买类型 · 库存 -->
+-    <div class="mx-1 flex flex-wrap items-center gap-1.5">
++    <div class="product-card-badges mx-1 flex flex-wrap items-center gap-1.5">
+       <span class="inline-flex items-center gap-1 rounded-full bg-[color:var(--teal-soft)] px-2 py-0.5 text-[11px] font-semibold text-[color:var(--teal-strong)]">
+         <component :is="product.fulfillment_type === 'auto' ? Zap : Pencil" class="h-3 w-3" />
+         {{ getFulfillmentTypeLabel(product.fulfillment_type) }}
+@@ -34,7 +34,7 @@
+       </span>
+     </div>
+ 
+-    <div class="mt-auto flex items-end justify-between gap-2 px-1">
++    <div class="product-card-actions mt-auto flex items-end justify-between gap-2 px-1">
+       <div class="flex min-w-0 flex-col gap-1">
+         <div class="flex flex-wrap items-baseline gap-x-1.5">
+           <template v-if="promo">
+diff --git a/frontend/user/src/templates/vault/components/VaultProductListItem.vue b/frontend/user/src/templates/vault/components/VaultProductListItem.vue
+index 317abed..fd46eb3 100644
+--- a/frontend/user/src/templates/vault/components/VaultProductListItem.vue
++++ b/frontend/user/src/templates/vault/components/VaultProductListItem.vue
+@@ -1,7 +1,7 @@
+ <template>
+   <RouterLink
+     :to="`/products/${product.slug}`"
+-    class="group flex items-center gap-3 rounded-lg border bg-card p-2.5 transition hover:border-hairline-strong hover:shadow-[var(--shadow-sm)] sm:gap-3.5 sm:p-3"
++    class="storefront-product-row group flex items-center gap-3 rounded-lg border bg-card p-2.5 transition hover:border-hairline-strong hover:shadow-[var(--shadow-sm)] sm:gap-3.5 sm:p-3"
+     :class="{ 'opacity-[0.74]': soldOut }"
+   >
+     <!-- Thumbnail -->
+diff --git a/frontend/user/src/utils/theme.ts b/frontend/user/src/utils/theme.ts
+index 63dfb87..c3fced4 100644
+--- a/frontend/user/src/utils/theme.ts
++++ b/frontend/user/src/utils/theme.ts
+@@ -1,41 +1,25 @@
+ import { ref, watch } from 'vue'
++import { readThemePreview, type ColorMode } from '../../../shared/storefrontTheme'
+ 
+ const TEA_THEME_KEY = 'dujiao_theme'
+-
+-type Theme = 'light' | 'dark'
+-
+-const getSystemTheme = (): Theme => {
+-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+-}
+-
+-const getSavedTheme = (): Theme | null => {
+-    return localStorage.getItem(TEA_THEME_KEY) as Theme | null
++const preview = readThemePreview(window.location.search)
++const getSystemTheme = (): ColorMode => window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
++const getSavedTheme = (): ColorMode | null => {
++    try {
++        const value = localStorage.getItem(TEA_THEME_KEY)
++        return value === 'dark' || value === 'light' ? value : null
++    } catch { return null }
+ }
+-
+-const theme = ref<Theme>(getSavedTheme() || getSystemTheme())
+-
+-const applyTheme = (newTheme: Theme) => {
+-    const root = document.documentElement
+-    if (newTheme === 'dark') {
+-        root.classList.add('dark')
+-    } else {
+-        root.classList.remove('dark')
++const theme = ref<ColorMode>(preview?.mode || getSavedTheme() || getSystemTheme())
++watch(theme, (value) => {
++    document.documentElement.classList.toggle('dark', value === 'dark')
++    document.documentElement.style.colorScheme = value
++    if (!preview) {
++        try { localStorage.setItem(TEA_THEME_KEY, value) } catch { /* optional persistence */ }
+     }
+-    localStorage.setItem(TEA_THEME_KEY, newTheme)
+-}
+-
+-// Watch for changes and apply
+-watch(theme, (newVal) => {
+-    applyTheme(newVal)
+ }, { immediate: true })
+ 
+-export const useTheme = () => {
+-    const toggleTheme = () => {
+-        theme.value = theme.value === 'dark' ? 'light' : 'dark'
+-    }
+-
+-    return {
+-        theme,
+-        toggleTheme
+-    }
+-}
++export const useTheme = () => ({
++    theme,
++    toggleTheme: () => { theme.value = theme.value === 'dark' ? 'light' : 'dark' },
++})
+diff --git a/internal/constants/constants.go b/internal/constants/constants.go
+index 46bbdeb..36a81b5 100644
+--- a/internal/constants/constants.go
++++ b/internal/constants/constants.go
+@@ -465,6 +465,8 @@ const (
+ // 设置键常量
+ const (
+ 	SettingKeySiteConfig               = "site_config"
++	SettingKeyStorefrontThemeConfig    = "storefront_theme_config"
++	SettingFieldStorefrontTheme        = "storefront_theme"
+ 	SettingKeyOrderConfig              = "order_config"
+ 	SettingKeySMTPConfig               = "smtp_config"
+ 	SettingKeyCaptchaConfig            = "captcha_config"
+diff --git a/internal/modules/settings/application/core.go b/internal/modules/settings/application/core.go
+index c9835c6..21c3be5 100644
+--- a/internal/modules/settings/application/core.go
++++ b/internal/modules/settings/application/core.go
+@@ -72,6 +72,9 @@ func (s *Service) UpdateWithEffects(key string, value map[string]interface{}) (U
+ 	if s == nil || s.repo == nil {
+ 		return UpdateResult{}, nil
+ 	}
++	if err := s.registry.Validate(key, jsonmap.JSON(value)); err != nil {
++		return UpdateResult{}, err
++	}
+ 	normalized := s.registry.Normalize(key, jsonmap.JSON(value))
+ 
+ 	stored, err := s.repo.Upsert(key, normalized)
+diff --git a/internal/modules/settings/application/default_registry.go b/internal/modules/settings/application/default_registry.go
+index 1fb00b0..3f85bdb 100644
+--- a/internal/modules/settings/application/default_registry.go
++++ b/internal/modules/settings/application/default_registry.go
+@@ -13,6 +13,12 @@ import (
+ // 每个定义只负责把所属领域的既有解析/默认值/序列化函数接入 Registry，
+ // 避免 SettingService 再通过全局 switch 了解所有配置类型。
+ var defaultSettingRegistry = MustNewRegistry(
++	Definition{
++		Key:       constants.SettingKeyStorefrontThemeConfig,
++		Validate:  settingsstorefront.ValidateThemeSetting,
++		Normalize: settingsstorefront.NormalizeThemeSetting,
++		Effects:   []Effect{EffectInvalidatePublicConfigCache},
++	},
+ 	Definition{
+ 		Key:       constants.SettingKeyDashboardConfig,
+ 		Normalize: settingsstorefront.NormalizeDashboardSettingJSON,
+diff --git a/internal/modules/settings/application/default_registry_test.go b/internal/modules/settings/application/default_registry_test.go
+index b99b206..bd1cd9c 100644
+--- a/internal/modules/settings/application/default_registry_test.go
++++ b/internal/modules/settings/application/default_registry_test.go
+@@ -1,10 +1,12 @@
+ package settingsapp
+ 
+ import (
++	"errors"
+ 	"reflect"
+ 	"testing"
+ 
+ 	"github.com/dujiao-next/internal/constants"
++	settingsstorefront "github.com/dujiao-next/internal/modules/settings/schema/storefront"
+ 	"github.com/dujiao-next/internal/shared/jsonmap"
+ )
+ 
+@@ -22,6 +24,7 @@ func TestDefaultSettingRegistryCoversLegacyNormalizedKeys(t *testing.T) {
+ 		constants.SettingKeyPaymentConfig,
+ 		constants.SettingKeyRegistrationConfig,
+ 		constants.SettingKeySiteConfig,
++		constants.SettingKeyStorefrontThemeConfig,
+ 		constants.SettingKeyTelegramAuthConfig,
+ 		constants.SettingKeyTelegramBotConfig,
+ 		constants.SettingKeyUpstreamSyncConfig,
+@@ -138,3 +141,76 @@ func TestPaymentFeeConfigDefaultsSafeAndNormalizesSwitches(t *testing.T) {
+ 		t.Fatalf("payment fee config mismatch: %#v", got)
+ 	}
+ }
++
++func TestStorefrontThemeRoundtripAndRollback(t *testing.T) {
++	repo := newMockSettingRepo()
++	service := NewService(repo)
++	original := jsonmap.JSON{"storefront_template": "vault", "template_mode": "list", "currency": "USD", "unchanged": "keep"}
++	repo.store[constants.SettingKeySiteConfig] = original
++	read := func(want string) {
++		t.Helper()
++		got, err := service.GetConfig(map[string]interface{}{})
++		if err != nil {
++			t.Fatal(err)
++		}
++		if got[constants.SettingFieldStorefrontTheme] != want {
++			t.Fatalf("config=%v", got)
++		}
++		for k, v := range original {
++			if !reflect.DeepEqual(got[k], v) {
++				t.Fatalf("legacy field changed: %s", k)
++			}
++		}
++	}
++	read("theme-2")
++	saved, err := service.UpdateWithEffects(constants.SettingKeyStorefrontThemeConfig, map[string]interface{}{"theme_id": "theme-3", "extra": "discard"})
++	if err != nil {
++		t.Fatal(err)
++	}
++	if !saved.HasEffect(EffectInvalidatePublicConfigCache) {
++		t.Fatal("missing cache invalidation")
++	}
++	if len(saved.Value) != 1 {
++		t.Fatal("unexpected saved keys")
++	}
++	read("theme-3")
++	if _, err := service.Update(constants.SettingKeyStorefrontThemeConfig, map[string]interface{}{"theme_id": "bad"}); !errors.Is(err, settingsstorefront.ErrInvalidTheme) {
++		t.Fatalf("validation error: %v", err)
++	}
++	read("theme-3")
++	// Independent site writes never erase the new setting.
++	if _, err := service.Update(constants.SettingKeySiteConfig, map[string]interface{}(original)); err != nil {
++		t.Fatal(err)
++	}
++	read("theme-3")
++	// Normal configuration rollback; no business state is touched.
++	if _, err := service.Update(constants.SettingKeyStorefrontThemeConfig, map[string]interface{}{"theme_id": "theme-2"}); err != nil {
++		t.Fatal(err)
++	}
++	read("theme-2")
++	delete(repo.store, constants.SettingKeyStorefrontThemeConfig)
++	read("theme-2")
++}
++
++func TestThemeLoadsWithoutSiteConfig(t *testing.T) {
++	repo := newMockSettingRepo()
++	service := NewService(repo)
++	if _, err := service.Update(constants.SettingKeyStorefrontThemeConfig, map[string]interface{}{"theme_id": "theme-3"}); err != nil {
++		t.Fatal(err)
++	}
++	got, err := service.GetConfig(nil)
++	if err != nil {
++		t.Fatal(err)
++	}
++	if got[constants.SettingFieldStorefrontTheme] != "theme-3" {
++		t.Fatalf("early return lost theme: %v", got)
++	}
++	repo.store[constants.SettingKeyStorefrontThemeConfig] = jsonmap.JSON{"theme_id": "corrupt"}
++	got, err = service.GetConfig(map[string]interface{}{"storefront_template": "vault"})
++	if err != nil {
++		t.Fatal(err)
++	}
++	if got[constants.SettingFieldStorefrontTheme] != "theme-2" {
++		t.Fatalf("invalid stored theme: %v", got)
++	}
++}
+diff --git a/internal/modules/settings/application/general.go b/internal/modules/settings/application/general.go
+index e28b6e9..00534a6 100644
+--- a/internal/modules/settings/application/general.go
++++ b/internal/modules/settings/application/general.go
+@@ -3,12 +3,14 @@ package settingsapp
+ import (
+ 	"encoding/json"
+ 	"errors"
++	"log"
+ 	"net/mail"
+ 	"strings"
+ 	"time"
+ 
+ 	"github.com/dujiao-next/internal/config"
+ 	"github.com/dujiao-next/internal/constants"
++	settingsstorefront "github.com/dujiao-next/internal/modules/settings/schema/storefront"
+ 	"github.com/dujiao-next/internal/shared/jsonmap"
+ )
+ 
+@@ -92,13 +94,17 @@ func (s *Service) GetConfig(defaults map[string]interface{}) (map[string]interfa
+ 	if err != nil {
+ 		return nil, err
+ 	}
+-	if value == nil {
+-		return data, nil
+-	}
+-
+ 	for k, v := range value {
+ 		data[k] = v
+ 	}
++	theme, err := s.GetByKey(constants.SettingKeyStorefrontThemeConfig)
++	if err != nil {
++		return nil, err
++	}
++	if theme != nil && !settingsstorefront.IsThemeID(theme["theme_id"]) {
++		log.Print("settings: invalid stored storefront theme; using legacy fallback")
++	}
++	data[constants.SettingFieldStorefrontTheme] = settingsstorefront.ResolveTheme(theme["theme_id"], data[constants.SettingFieldStorefrontTemplate])
+ 	return data, nil
+ }
+ 
+diff --git a/internal/modules/settings/application/registry.go b/internal/modules/settings/application/registry.go
+index 3260e28..5c42c93 100644
+--- a/internal/modules/settings/application/registry.go
++++ b/internal/modules/settings/application/registry.go
+@@ -26,6 +26,7 @@ const (
+ type Definition struct {
+ 	Key       string
+ 	Normalize Normalizer
++	Validate  func(jsonmap.JSON) error
+ 	Effects   []Effect
+ }
+ 
+@@ -106,3 +107,12 @@ func (registry Registry) Keys() []string {
+ 	sort.Strings(keys)
+ 	return keys
+ }
++
++// Validate applies opt-in validation without changing legacy setting semantics.
++func (registry Registry) Validate(key string, value jsonmap.JSON) error {
++	definition, exists := registry.definitions[key]
++	if exists && definition.Validate != nil {
++		return definition.Validate(value)
++	}
++	return nil
++}
+diff --git a/internal/modules/settings/transport/http/admin_handler.go b/internal/modules/settings/transport/http/admin_handler.go
+index 94452cb..54581cb 100644
+--- a/internal/modules/settings/transport/http/admin_handler.go
++++ b/internal/modules/settings/transport/http/admin_handler.go
+@@ -1,11 +1,13 @@
+ package settingshttp
+ 
+ import (
++	"errors"
+ 	"strings"
+ 
+ 	"github.com/dujiao-next/internal/cache"
+ 	"github.com/dujiao-next/internal/constants"
+ 	settingsapp "github.com/dujiao-next/internal/modules/settings/application"
++	settingsstorefront "github.com/dujiao-next/internal/modules/settings/schema/storefront"
+ 	ginutil "github.com/dujiao-next/internal/platform/http/ginutil"
+ 	"github.com/dujiao-next/internal/platform/http/response"
+ 	"github.com/dujiao-next/internal/shared/jsonmap"
+@@ -72,6 +74,10 @@ func (h *AdminHandler) Update(c *gin.Context) {
+ 	}
+ 
+ 	result, err := h.settings.UpdateWithEffects(req.Key, req.Value)
++	if errors.Is(err, settingsstorefront.ErrInvalidTheme) {
++		ginutil.RespondErrorWithMsg(c, response.CodeBadRequest, err.Error(), nil)
++		return
++	}
+ 	if err != nil {
+ 		ginutil.RespondError(c, response.CodeInternal, "error.settings_save_failed", err)
+ 		return
+diff --git a/internal/modules/settings/transport/http/admin_handler_test.go b/internal/modules/settings/transport/http/admin_handler_test.go
+index f81641f..ba907c7 100644
+--- a/internal/modules/settings/transport/http/admin_handler_test.go
++++ b/internal/modules/settings/transport/http/admin_handler_test.go
+@@ -11,11 +11,13 @@ import (
+ 
+ 	"github.com/dujiao-next/internal/constants"
+ 	settingsapp "github.com/dujiao-next/internal/modules/settings/application"
++	settingsstorefront "github.com/dujiao-next/internal/modules/settings/schema/storefront"
+ 	"github.com/dujiao-next/internal/shared/jsonmap"
+ )
+ 
+ type adminSettingsStub struct {
+ 	updateCalls int
++	updateError error
+ }
+ 
+ func (s *adminSettingsStub) GetByKey(string) (jsonmap.JSON, error) {
+@@ -24,7 +26,26 @@ func (s *adminSettingsStub) GetByKey(string) (jsonmap.JSON, error) {
+ 
+ func (s *adminSettingsStub) UpdateWithEffects(string, map[string]interface{}) (settingsapp.UpdateResult, error) {
+ 	s.updateCalls++
+-	return settingsapp.UpdateResult{}, nil
++	return settingsapp.UpdateResult{}, s.updateError
++}
++
++func TestAdminHandlerReturnsBadRequestForInvalidTheme(t *testing.T) {
++	gin.SetMode(gin.TestMode)
++	stub := &adminSettingsStub{updateError: settingsstorefront.ErrInvalidTheme}
++	recorder := httptest.NewRecorder()
++	context, _ := gin.CreateTestContext(recorder)
++	context.Request = httptest.NewRequest(http.MethodPut, "/api/v1/admin/settings", strings.NewReader(`{"key":"storefront_theme_config","value":{"theme_id":"invalid"}}`))
++	context.Request.Header.Set("Content-Type", "application/json")
++	NewAdminHandler(stub).Update(context)
++	var body struct {
++		StatusCode int `json:"status_code"`
++	}
++	if err := json.Unmarshal(recorder.Body.Bytes(), &body); err != nil {
++		t.Fatal(err)
++	}
++	if body.StatusCode != 400 {
++		t.Fatalf("invalid theme response: %s", recorder.Body.String())
++	}
+ }
+ 
+ func (s *adminSettingsStub) InvalidateCallbackRoutesCache() {}
+diff --git a/frontend/admin/src/views/admin/components/SettingsThemeTab.test.ts b/frontend/admin/src/views/admin/components/SettingsThemeTab.test.ts
+new file mode 100644
+index 0000000..2dae145
+--- /dev/null
++++ b/frontend/admin/src/views/admin/components/SettingsThemeTab.test.ts
+@@ -0,0 +1,70 @@
++import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
++import { createApp, nextTick, type App } from 'vue'
++import SettingsThemeTab from './SettingsThemeTab.vue'
++
++const api = vi.hoisted(() => ({ getSettings: vi.fn(), updateSettings: vi.fn() }))
++const notify = vi.hoisted(() => ({ notifyError: vi.fn(), notifySuccess: vi.fn() }))
++vi.mock('@/api/admin', () => ({ adminAPI: api }))
++vi.mock('@/utils/notify', () => notify)
++vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (key: string) => key }) }))
++let app: App
++let host: HTMLDivElement
++const flush = async () => { for (let i = 0; i < 5; i++) { await Promise.resolve(); await nextTick() } }
++const button = (suffix: string) => Array.from(host.querySelectorAll('button')).find(el => el.textContent?.includes(`theme.${suffix}`))!
++const select = async (value: string) => {
++  const radio = host.querySelector<HTMLInputElement>(`input[value="${value}"]`)!
++  radio.checked = true
++  radio.dispatchEvent(new Event('change', { bubbles: true }))
++  await nextTick()
++}
++beforeEach(() => {
++  vi.clearAllMocks()
++  api.getSettings.mockImplementation(({ key }) => Promise.resolve({ data: { data: key === 'site_config' ? { storefront_template: 'vault' } : {} } }))
++  api.updateSettings.mockImplementation((request) => Promise.resolve({ data: { data: request.value } }))
++  host = document.createElement('div')
++  document.body.appendChild(host)
++  app = createApp(SettingsThemeTab, { siteUrl: 'https://shop.test/' })
++  app.mount(host)
++})
++afterEach(() => { app.unmount(); host.remove() })
++describe('storefront theme independent controls', () => {
++  it('maps legacy vault and does not save merely by selecting or previewing', async () => {
++    await flush()
++    expect(host.querySelector<HTMLInputElement>('input[value="theme-2"]')?.checked).toBe(true)
++    await select('theme-3')
++    expect(api.updateSettings).not.toHaveBeenCalled()
++    const previews = Array.from(host.querySelectorAll('a'))
++    expect(previews.map(a => new URL(a.href).searchParams.get('theme_preview'))).toEqual(['theme-1', 'theme-2', 'theme-3'])
++  })
++  it('applies only the dedicated setting and confirms success', async () => {
++    await flush(); await select('theme-3'); button('apply').click(); await flush()
++    expect(api.updateSettings).toHaveBeenCalledExactlyOnceWith({ key: 'storefront_theme_config', value: { theme_id: 'theme-3' } })
++    expect(notify.notifySuccess).toHaveBeenCalledOnce()
++    expect(button('apply').disabled).toBe(true)
++  })
++  it('keeps the previous active theme and pending selection on save failure', async () => {
++    await flush(); api.updateSettings.mockRejectedValueOnce(new Error('offline'))
++    await select('theme-3'); button('apply').click(); await flush()
++    expect(notify.notifySuccess).not.toHaveBeenCalled()
++    expect(notify.notifyError).toHaveBeenCalledOnce()
++    expect(host.querySelector<HTMLInputElement>('input[value="theme-3"]')?.checked).toBe(true)
++    expect(button('apply').disabled).toBe(false)
++    expect(host.textContent).toContain('theme.pending')
++  })
++  it('failed configuration reads disable saving and offer retry', async () => {
++    await flush()
++    app.unmount()
++    api.getSettings.mockRejectedValue(new Error('offline'))
++    app = createApp(SettingsThemeTab, { siteUrl: 'https://shop.test/' })
++    app.mount(host)
++    await flush()
++    expect(host.querySelector('[role="alert"]')).not.toBeNull()
++    expect(host.querySelector('input[type="radio"]')).toBeNull()
++    expect(api.updateSettings).not.toHaveBeenCalled()
++  })
++  it('preview color is local and never saves configuration', async () => {
++    await flush(); button('dark').click(); await nextTick()
++    expect(Array.from(host.querySelectorAll('a')).every(a => new URL(a.href).searchParams.get('theme_preview_mode') === 'dark')).toBe(true)
++    expect(api.updateSettings).not.toHaveBeenCalled()
++  })
++})
+diff --git a/frontend/admin/src/views/admin/components/SettingsThemeTab.vue b/frontend/admin/src/views/admin/components/SettingsThemeTab.vue
+new file mode 100644
+index 0000000..95a07e3
+--- /dev/null
++++ b/frontend/admin/src/views/admin/components/SettingsThemeTab.vue
+@@ -0,0 +1,107 @@
++<script setup lang="ts">
++import { computed, onMounted, ref } from 'vue'
++import { useI18n } from 'vue-i18n'
++import { Check, ExternalLink, Moon, Sun, LoaderCircle } from 'lucide-vue-next'
++import { adminAPI } from '@/api/admin'
++import { Button } from '@/components/ui/button'
++import { notifyError, notifySuccess } from '@/utils/notify'
++import { STOREFRONT_THEMES, isStorefrontTheme, resolveStorefrontTheme, themePreviewUrl, type StorefrontTheme, type ColorMode } from '../../../../../shared/storefrontTheme'
++const props = defineProps<{ siteUrl?: string }>()
++const { t } = useI18n()
++const selected = ref<StorefrontTheme>('theme-1')
++const current = ref<StorefrontTheme>('theme-1')
++const mode = ref<ColorMode>('light')
++const loading = ref(true)
++const loadError = ref(false)
++const submitting = ref(false)
++const dirty = computed(() => current.value !== selected.value)
++const load = async () => {
++  loading.value = true
++  loadError.value = false
++  try {
++    const [theme, site] = await Promise.all([
++      adminAPI.getSettings({ key: 'storefront_theme_config' }),
++      adminAPI.getSettings({ key: 'site_config' }),
++    ])
++    current.value = resolveStorefrontTheme(theme.data.data?.theme_id, site.data.data?.storefront_template)
++    selected.value = current.value
++  } catch {
++    loadError.value = true
++  } finally { loading.value = false }
++}
++const previewUrl = (theme: StorefrontTheme) => {
++  const fallback = new URL('/', window.location.origin)
++  if (import.meta.env.DEV && fallback.port === '5174') fallback.port = '5173'
++  return themePreviewUrl(props.siteUrl?.trim() || fallback.href, theme, mode.value)
++}
++const apply = async () => {
++  if (!dirty.value || submitting.value || loading.value || loadError.value) return
++  submitting.value = true
++  const submitted = selected.value
++  try {
++    const response = await adminAPI.updateSettings({ key: 'storefront_theme_config', value: { theme_id: submitted } })
++    const saved = response.data.data?.theme_id
++    if (!isStorefrontTheme(saved)) throw new Error('Invalid saved theme')
++    current.value = saved
++    notifySuccess(t('admin.settings.theme.applied'))
++  } catch { notifyError(t('admin.settings.alerts.saveFailed')) }
++  finally { submitting.value = false }
++}
++onMounted(load)
++</script>
++<template>
++  <section class="rounded-xl border border-border bg-card" :aria-busy="loading || submitting">
++    <div class="flex flex-wrap items-center justify-between gap-4 border-b px-6 py-5">
++      <div><h2 class="text-lg font-semibold">{{ t('admin.settings.theme.title') }}</h2><p class="mt-1 text-xs text-muted-foreground">{{ t('admin.settings.theme.subtitle') }}</p></div>
++      <div class="flex gap-1 rounded-lg border p-1" :aria-label="t('admin.settings.theme.previewMode')">
++        <Button v-for="color in (['light', 'dark'] as const)" :key="color" size="sm" :variant="mode === color ? 'secondary' : 'ghost'" :aria-pressed="mode === color" @click="mode = color">
++          <component :is="color === 'dark' ? Moon : Sun" :size="14" />{{ t(`admin.settings.theme.${color}`) }}
++        </Button>
++      </div>
++    </div>
++    <div v-if="loading" class="flex items-center gap-2 p-8 text-sm text-muted-foreground"><LoaderCircle class="h-4 w-4 animate-spin" />{{ t('admin.settings.theme.loading') }}</div>
++    <div v-else-if="loadError" class="flex items-center gap-4 p-6" role="alert"><p>{{ t('admin.settings.theme.loadError') }}</p><Button variant="outline" @click="load">{{ t('admin.settings.theme.retry') }}</Button></div>
++    <template v-else>
++      <fieldset class="grid gap-4 p-6 lg:grid-cols-3" :disabled="submitting">
++        <legend class="sr-only">{{ t('admin.settings.theme.title') }}</legend>
++        <div v-for="(id, index) in STOREFRONT_THEMES" :key="id" class="theme-choice" :class="{ selected: selected === id }">
++          <label class="theme-choice-label">
++            <input v-model="selected" type="radio" name="storefront-theme" :value="id" class="sr-only" />
++            <div class="theme-miniature" :class="[id, mode]" aria-hidden="true">
++              <div class="mini-nav"><b /><span /><span /><i /></div>
++              <div class="mini-hero"><div><small>DIGITAL / STORE</small><strong>{{ t(`admin.settings.theme.name${index + 1}`) }}</strong><em /><span class="mini-cta" /></div><div class="mini-art"><i /><i /><i /></div></div>
++              <div class="mini-tabs"><i /><i /><i /><i /></div>
++              <div class="mini-products"><div v-for="n in 3" :key="n"><i /><span /><small /></div></div>
++            </div>
++            <div class="flex items-center justify-between gap-2"><h3 class="font-semibold">{{ t(`admin.settings.theme.name${index + 1}`) }}</h3><Check v-if="selected === id" class="h-4 w-4 text-primary" /></div>
++            <p class="min-h-10 text-xs leading-relaxed text-muted-foreground">{{ t(`admin.settings.theme.description${index + 1}`) }}</p>
++          </label>
++          <div class="flex flex-wrap items-center justify-between gap-2 px-4 pb-4 text-xs">
++            <span :class="current === id ? 'text-primary' : 'text-muted-foreground'">{{ current === id ? t('admin.settings.theme.active') : selected === id ? t('admin.settings.theme.pending') : t('admin.settings.theme.supportsModes') }}</span>
++            <a v-if="previewUrl(id)" :href="previewUrl(id)!" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 rounded px-2 py-1 text-primary hover:bg-primary/10">{{ t('admin.settings.theme.preview') }}<ExternalLink :size="12" /></a>
++          </div>
++        </div>
++      </fieldset>
++      <div class="flex flex-wrap items-center justify-between gap-4 border-t px-6 py-4">
++        <p class="text-xs text-muted-foreground">{{ t('admin.settings.theme.saveHint') }}</p>
++        <Button :disabled="!dirty || submitting" @click="apply"><LoaderCircle v-if="submitting" class="h-4 w-4 animate-spin" />{{ submitting ? t('admin.settings.actions.saving') : t('admin.settings.theme.apply') }}</Button>
++      </div>
++    </template>
++  </section>
++</template>
++<style scoped>
++.theme-choice{min-width:0;border:1px solid var(--border);border-radius:12px;transition:border-color 180ms,box-shadow 180ms;overflow:hidden}
++.theme-choice.selected{border-color:var(--primary);box-shadow:0 0 0 1px var(--primary)}
++.theme-choice:focus-within{outline:2px solid var(--primary);outline-offset:3px}
++.theme-choice-label{display:flex;flex-direction:column;gap:10px;padding:12px 16px;cursor:pointer}
++.theme-miniature{--m-bg:#f4f7fa;--m-card:#fff;--m-ink:#172632;--m-line:#dce5eb;--m-accent:#0071e3;background:var(--m-bg);color:var(--m-ink);border:1px solid var(--m-line);border-radius:7px;overflow:hidden;margin:0 -4px 4px;aspect-ratio:1.55;display:flex;flex-direction:column}
++.theme-miniature.dark{--m-bg:#121820;--m-card:#202d37;--m-ink:#e3edf5;--m-line:#354450}
++.theme-2{--m-accent:#6366f1}.theme-3{--m-accent:#12cbd8}
++.mini-nav{display:flex;align-items:center;gap:8px;height:25px;padding:7px 10px;border-bottom:1px solid var(--m-line)}
++.mini-nav b{width:9px;height:9px;background:var(--m-accent);border-radius:2px}.mini-nav span{height:2px;width:20px;background:var(--m-line)}.mini-nav i{margin-left:auto;width:7px;height:7px;border:1px solid var(--m-line);border-radius:50%}
++.mini-hero{display:flex;padding:14px 12px 8px;gap:8px;flex:1;min-height:0}.mini-hero>div:first-child{display:flex;flex-direction:column;gap:6px;flex:1}.mini-hero small{font-size:5px;letter-spacing:.08em;color:var(--m-accent)}.mini-hero strong{font-size:13px}.mini-hero em{height:3px;width:70%;background:var(--m-line)}.mini-hero .mini-cta{height:12px;width:37px;background:var(--m-accent);border-radius:3px;margin-top:2px}
++.mini-art{position:relative;flex:1;min-height:45px}.mini-art i{position:absolute;width:40px;height:49px;border:1px solid var(--m-accent);border-radius:5px;left:12%;top:0;background:color-mix(in srgb,var(--m-accent) 15%,var(--m-card));transform:rotate(15deg) skewY(-10deg);z-index:3}.mini-art i:nth-child(2){left:29%;top:5px;opacity:.5;z-index:2}.mini-art i:nth-child(3){left:45%;top:10px;opacity:.25;z-index:1}
++.theme-1 .mini-art i{transform:rotate(-10deg);border-radius:12px}.theme-2 .mini-hero{margin:6px;border-radius:6px;background:color-mix(in srgb,var(--m-accent) 15%,var(--m-card))}
++.mini-tabs{display:flex;gap:5px;padding:6px 12px}.mini-tabs i{width:25px;height:7px;border-radius:2px;background:var(--m-line)}.mini-tabs i:first-child{background:var(--m-accent)}
++.mini-products{display:flex;gap:6px;padding:0 12px 12px}.mini-products>div{flex:1;display:flex;flex-direction:column;gap:4px;padding:5px;background:var(--m-card);border:1px solid var(--m-line);border-radius:4px}.mini-products i{height:17px;background:color-mix(in srgb,var(--m-accent) 10%,var(--m-bg));border-radius:3px}.mini-products span{height:3px;width:70%;background:var(--m-line)}.mini-products small{height:3px;width:40%;background:var(--m-accent)}
++</style>
+diff --git a/frontend/shared/storefrontTheme.ts b/frontend/shared/storefrontTheme.ts
+new file mode 100644
+index 0000000..9a124b3
+--- /dev/null
++++ b/frontend/shared/storefrontTheme.ts
+@@ -0,0 +1,37 @@
++/** Presentation-only policy shared by the two frontends. No business state. */
++export const STOREFRONT_THEMES = ['theme-1', 'theme-2', 'theme-3'] as const
++export type StorefrontTheme = typeof STOREFRONT_THEMES[number]
++export type ColorMode = 'light' | 'dark'
++
++export const isStorefrontTheme = (value: unknown): value is StorefrontTheme =>
++  typeof value === 'string' && (STOREFRONT_THEMES as readonly string[]).includes(value)
++
++export function resolveStorefrontTheme(value: unknown, legacy?: unknown): StorefrontTheme {
++  return isStorefrontTheme(value) ? value : legacy === 'vault' ? 'theme-2' : 'theme-1'
++}
++
++export function readThemePreview(search: string) {
++  const params = new URLSearchParams(search)
++  const theme = params.get('theme_preview')
++  const mode = params.get('theme_preview_mode')
++  return isStorefrontTheme(theme)
++    ? { theme, mode: mode === 'light' || mode === 'dark' ? mode as ColorMode : null }
++    : null
++}
++
++export function exitThemePreviewUrl(href: string) {
++  const url = new URL(href)
++  url.searchParams.delete('theme_preview')
++  url.searchParams.delete('theme_preview_mode')
++  return url.href
++}
++
++export function themePreviewUrl(base: string, theme: StorefrontTheme, mode: ColorMode): string | null {
++  try {
++    const url = new URL(base)
++    if (!['http:', 'https:'].includes(url.protocol)) return null
++    url.searchParams.set('theme_preview', theme)
++    url.searchParams.set('theme_preview_mode', mode)
++    return url.href
++  } catch { return null }
++}
+diff --git a/frontend/user/src/directives/modalFocus.ts b/frontend/user/src/directives/modalFocus.ts
+new file mode 100644
+index 0000000..aab8fe8
+--- /dev/null
++++ b/frontend/user/src/directives/modalFocus.ts
+@@ -0,0 +1,42 @@
++import type { ObjectDirective } from 'vue'
++
++const cleanups = new WeakMap<HTMLElement, () => void>()
++
++/** Keyboard-only presentation behavior. The component owns its existing close action. */
++export const vModalFocus: ObjectDirective<HTMLElement, () => void> = {
++  mounted(element, binding) {
++    const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null
++    const focusable = () => Array.from(element.querySelectorAll<HTMLElement>(
++      'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
++    )).filter(item => item.getClientRects().length > 0 && item.getAttribute('aria-hidden') !== 'true')
++    const keydown = (event: KeyboardEvent) => {
++      if (event.key === 'Escape' && !event.isComposing) {
++        event.preventDefault()
++        event.stopPropagation()
++        binding.value()
++      } else if (event.key === 'Tab') {
++        const nodes = focusable()
++        const first = nodes[0]
++        const last = nodes[nodes.length - 1]
++        if (!first || !last) { event.preventDefault(); element.focus(); return }
++        if (event.shiftKey && (document.activeElement === first || document.activeElement === element)) {
++          event.preventDefault(); last.focus()
++        } else if (!event.shiftKey && document.activeElement === last) {
++          event.preventDefault(); first.focus()
++        }
++      }
++    }
++    element.addEventListener('keydown', keydown)
++    // Wait for the Teleport/transition to attach, without changing component state.
++    const frame = requestAnimationFrame(() => { (focusable()[0] || element).focus({ preventScroll: true }) })
++    cleanups.set(element, () => {
++      cancelAnimationFrame(frame)
++      element.removeEventListener('keydown', keydown)
++      if (previous?.isConnected) previous.focus({ preventScroll: true })
++    })
++  },
++  beforeUnmount(element) {
++    cleanups.get(element)?.()
++    cleanups.delete(element)
++  },
++}
+diff --git a/frontend/user/src/templates/ThemePreviewBar.vue b/frontend/user/src/templates/ThemePreviewBar.vue
+new file mode 100644
+index 0000000..bd5f18f
+--- /dev/null
++++ b/frontend/user/src/templates/ThemePreviewBar.vue
+@@ -0,0 +1,21 @@
++<script setup lang="ts">
++import { useI18n } from 'vue-i18n'
++import { Eye, X } from 'lucide-vue-next'
++import { themePreview } from './registry'
++import { exitThemePreviewUrl } from '../../../shared/storefrontTheme'
++const { t } = useI18n()
++const exit = () => window.location.assign(exitThemePreviewUrl(window.location.href))
++</script>
++<template>
++  <aside class="theme-preview-bar" role="status">
++    <Eye :size="15" />
++    <span>{{ t('storefrontTheme.preview', { n: themePreview?.theme.slice(-1) }) }}</span>
++    <span class="preview-note">{{ t('storefrontTheme.previewNote') }}</span>
++    <button type="button" @click="exit">{{ t('storefrontTheme.exitPreview') }} <X :size="14" /></button>
++  </aside>
++</template>
++<style scoped>
++.theme-preview-bar { display:flex; align-items:center; justify-content:center; gap:10px; padding:9px 16px; background:var(--ui-bg-elevated); color:var(--ui-text-primary); border-bottom:1px solid var(--ui-border); font-size:12px; }
++button { display:inline-flex; align-items:center; gap:6px; padding:3px 9px; border:1px solid var(--ui-border); border-radius:6px; cursor:pointer; }
++@media(max-width:640px){ .preview-note{display:none} }
++</style>
+diff --git a/frontend/user/src/templates/tech/Home.vue b/frontend/user/src/templates/tech/Home.vue
+new file mode 100644
+index 0000000..0550eb7
+--- /dev/null
++++ b/frontend/user/src/templates/tech/Home.vue
+@@ -0,0 +1,5 @@
++<script setup lang="ts">
++import Home from '../vault/Home.vue'
++import TechHero from './TechHero.vue'
++</script>
++<template><Home class="tech-home"><template #hero-fallback><TechHero /></template></Home></template>
+diff --git a/frontend/user/src/templates/tech/TechHero.vue b/frontend/user/src/templates/tech/TechHero.vue
+new file mode 100644
+index 0000000..cf416e9
+--- /dev/null
++++ b/frontend/user/src/templates/tech/TechHero.vue
+@@ -0,0 +1,42 @@
++<script setup lang="ts">
++import { computed } from 'vue'
++import { useI18n } from 'vue-i18n'
++import { ArrowUpRight, ArrowRight, Layers3, Search, SlidersHorizontal, ShoppingBag } from 'lucide-vue-next'
++import { useAppStore } from '../../stores/app'
++import { getLocalizedText } from '../../utils/resellerSiteConfig'
++const { t } = useI18n()
++const app = useAppStore()
++const description = computed(() => getLocalizedText(app.config?.brand?.site_description, app.locale) || t('storefrontTheme.heroSubtitle'))
++</script>
++<template>
++  <section class="tech-hero" aria-labelledby="tech-hero-title">
++    <div class="tech-hero-copy">
++      <span class="tech-eyebrow"><span class="tech-signal" /> DIGITAL GOODS, REIMAGINED.</span>
++      <h1 id="tech-hero-title">{{ t('storefrontTheme.heroTitle') }}<br /><span>{{ t('storefrontTheme.heroTitleAccent') }}</span></h1>
++      <p>{{ description }}</p>
++      <div class="tech-hero-actions">
++        <a href="#storefront-products" class="tech-primary-button">{{ t('storefrontTheme.explore') }} <ArrowUpRight :size="18" /></a>
++        <RouterLink to="/guest/orders" class="tech-text-button">{{ t('navbar.guestOrders') }} <ArrowRight :size="16" /></RouterLink>
++      </div>
++    </div>
++    <div class="tech-sculpture" aria-hidden="true">
++      <div class="tech-orbit" /><div class="tech-grid" />
++      <span class="tech-art-coordinate">01 / DIGITAL ACCESS</span>
++      <div class="tech-glass-card glass-back" />
++      <div class="tech-glass-card glass-middle" />
++      <div class="tech-glass-card glass-front">
++        <Layers3 :size="45" :stroke-width="1.2" />
++        <div class="tech-chip"><i /><i /><i /></div>
++        <span>YOUR NEXT<br />DIGITAL EXPERIENCE.</span>
++        <div class="tech-card-line" /><small>C / S <ArrowUpRight :size="14" /></small>
++      </div>
++      <span class="tech-art-caption">LESS FRICTION.<br />MORE POSSIBILITIES.</span>
++      <span class="tech-cross cross-one">+</span><span class="tech-cross cross-two">+</span>
++    </div>
++  </section>
++  <div class="tech-benefits">
++    <span><Search :size="20" /><span>{{ t('storefrontTheme.browse') }}<small>{{ t('storefrontTheme.browseHint') }}</small></span></span>
++    <span><SlidersHorizontal :size="20" /><span>{{ t('storefrontTheme.choose') }}<small>{{ t('storefrontTheme.chooseHint') }}</small></span></span>
++    <RouterLink to="/guest/orders"><ShoppingBag :size="20" /><span>{{ t('navbar.guestOrders') }}<small>{{ t('storefrontTheme.ordersHint') }}</small></span><ArrowUpRight :size="14" /></RouterLink>
++  </div>
++</template>
+diff --git a/frontend/user/src/templates/tech/TechLayout.vue b/frontend/user/src/templates/tech/TechLayout.vue
+new file mode 100644
+index 0000000..f82595c
+--- /dev/null
++++ b/frontend/user/src/templates/tech/TechLayout.vue
+@@ -0,0 +1,6 @@
++<script setup lang="ts">
++// Reuse all existing account, cart, navigation, language and footer behavior.
++import VaultLayout from '../vault/layout/VaultLayout.vue'
++import './tech.css'
++</script>
++<template><VaultLayout class="tech-layout"><slot /></VaultLayout></template>
+diff --git a/frontend/user/src/templates/tech/tech.css b/frontend/user/src/templates/tech/tech.css
+new file mode 100644
+index 0000000..1c1c12c
+--- /dev/null
++++ b/frontend/user/src/templates/tech/tech.css
+@@ -0,0 +1,170 @@
++/* Theme 3 is presentation only. Scope also includes body-teleported overlays. */
++html[data-storefront-theme="theme-3"],
++html[data-storefront-theme="theme-3"] body,
++html[data-storefront-theme="theme-3"] .vault-scope {
++  --bg:#f6f9fb; --bg-warm:#edf3f6; --surface:#fff; --surface-2:#edf3f7;
++  --ink:#13222e; --ink-2:#42576a; --ink-3:#607487;
++  --border:#dce6ec; --border-strong:#a8bdc8;
++  --red:#15d3df; --red-strong:#06b9c6; --red-soft:#dff7f8; --on-red:#042b33;
++  --teal:#087d72; --teal-strong:#086e65; --teal-soft:#e0f5ee; --on-teal:#fff;
++  --gold:#a66b0a; --gold-strong:#875900; --gold-soft:#fff1d7; --on-gold:#302205;
++  --plum:#3d6f9d; --plum-soft:#e6effb;
++  --success:#147d62; --warning:#956407; --danger:#bd3543;
++  --tech-link:#007b87; --tech-grid:rgba(34,100,125,.065); --tech-glass:rgba(211,237,244,.6);
++  --font-head:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;
++  --font-body:var(--font-head);
++  --r-sm:8px; --r:12px; --r-lg:16px; --r-xl:20px;
++  --gap-block:48px;
++  --shadow-sm:0 3px 10px -5px #1837471a;
++  --shadow:0 14px 30px -22px #23495940;
++  --shadow-lg:0 24px 55px -26px #17374650;
++  --ring:0 0 0 3px #0cc6d333;
++  --ui-bg-page:var(--bg); --ui-bg-elevated:var(--surface); --ui-bg-soft:var(--surface-2); --ui-bg-muted:var(--bg-warm);
++  --ui-bg-overlay:color-mix(in srgb,var(--surface) 85%,transparent);
++  --ui-bg-overlay-strong:color-mix(in srgb,var(--surface) 95%,transparent);
++  --ui-text-primary:var(--ink); --ui-text-secondary:var(--ink-2); --ui-text-muted:var(--ink-3); --ui-text-on-accent:var(--on-red);
++  --ui-border:var(--border); --ui-border-strong:var(--border-strong);
++  --ui-accent:var(--red); --ui-accent-hover:var(--red-strong); --ui-accent-soft:var(--red-soft);
++  --ui-accent-warm:var(--gold); --ui-accent-warm-hover:var(--gold-strong); --ui-accent-warm-soft:var(--gold-soft);
++  --ui-success:var(--success); --ui-success-soft:var(--teal-soft);
++  --ui-warning:var(--warning); --ui-warning-soft:var(--gold-soft);
++  --ui-danger:var(--danger); --ui-danger-soft:#fde8eb;
++  --ui-info:var(--tech-link); --ui-info-soft:var(--red-soft);
++  --ui-price-primary:var(--ink); --ui-price-promotion:var(--danger); --ui-price-original:var(--ink-3);
++  --ui-focus-ring:#0aafc24d;
++  --ui-radius-sm:var(--r-sm); --ui-radius-md:var(--r); --ui-radius-lg:var(--r-lg); --ui-radius-xl:var(--r-xl);
++  --ui-shadow-soft:var(--shadow); --ui-shadow-card:var(--shadow-lg);
++}
++html.dark[data-storefront-theme="theme-3"],
++html.dark[data-storefront-theme="theme-3"] body,
++html.dark[data-storefront-theme="theme-3"] .vault-scope {
++  --bg:#10171c; --bg-warm:#131e25; --surface:#19232b; --surface-2:#202e38;
++  --ink:#edf5fa; --ink-2:#bed0dc; --ink-3:#93a9b8;
++  --border:#2c3b45; --border-strong:#48616f;
++  --red:#25dce5; --red-strong:#5ae7ed; --red-soft:#13333b; --on-red:#05292f;
++  --teal:#57d7b2; --teal-strong:#74dfc0; --teal-soft:#193c35;
++  --gold:#edc16c; --gold-strong:#edc16c; --gold-soft:#3b311b;
++  --plum:#89b8ed; --plum-soft:#203249;
++  --success:#57d7b2; --warning:#edc16c; --danger:#ff8592;
++  --tech-link:#61e4eb; --tech-grid:rgba(87,184,202,.07); --tech-glass:rgba(44,77,93,.3);
++  --shadow-sm:0 4px 14px -6px #0006; --shadow:0 16px 32px -18px #0008;
++  --shadow-lg:0 24px 54px -22px #000a; --ui-danger-soft:#3b242a;
++}
++html[data-storefront-theme="theme-3"] .text-primary { color:var(--tech-link); }
++html[data-storefront-theme="theme-3"] .bg-primary.text-white,
++html[data-storefront-theme="theme-3"] .bg-primary.text-primary-foreground { color:var(--on-red); }
++html[data-storefront-theme="theme-3"] .tech-layout { font-family:var(--font-body); }
++.tech-layout > header { background:color-mix(in srgb,var(--bg) 94%,transparent); backdrop-filter:blur(14px); }
++.tech-layout > header > div { max-width:1320px; height:76px; }
++.tech-layout > header nav a { border-radius:6px; font-size:14px; }
++.tech-layout > header button,.tech-layout > header a { transition:background 180ms,color 180ms,transform 180ms; }
++.tech-layout > header a:has(> img) { letter-spacing:-.035em; }
++.tech-layout > footer { margin-top:48px; background:var(--bg); }
++.tech-layout > footer > div { max-width:1320px; }
++.tech-layout > main > div { max-width:1320px; margin-inline:auto; }
++.tech-home > section { max-width:1320px; }
++.tech-home .storefront-categories { padding-top:28px; padding-bottom:12px; }
++.tech-home .storefront-categories > div:first-child { margin-bottom:16px; }
++.tech-home .storefront-categories h2,.tech-home .storefront-featured h2 { font-size:24px; letter-spacing:-.03em; }
++.tech-home .storefront-categories > div:last-child { display:flex; flex-wrap:wrap; gap:8px; }
++.tech-home .storefront-categories > div:last-child > a {
++  min-height:0; min-width:0; max-width:240px; flex-direction:row; align-items:center;
++  padding:9px 14px; gap:8px; border:1px solid var(--border); border-radius:8px;
++  background:var(--surface); color:var(--ink-2); font-size:13px;
++}
++.tech-home .storefront-categories > div:last-child > a:hover { background:var(--red-soft); border-color:var(--red); color:var(--ink); transform:translateY(-2px); }
++.tech-home .storefront-categories > div:last-child > a > span { height:20px; width:20px; background:transparent; }
++.tech-home .storefront-categories > div:last-child > a > span svg { width:16px; height:16px; color:var(--tech-link); }
++.tech-home .storefront-featured { padding-block:24px; }
++.tech-layout .storefront-product-grid { grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr)); gap:16px; }
++.tech-layout .storefront-product-card {
++  position:relative; padding:16px; gap:12px; border-radius:14px;
++  background:linear-gradient(130deg,color-mix(in srgb,var(--surface) 96%,var(--red)),var(--surface));
++  transition:transform 180ms ease,border-color 180ms ease,box-shadow 180ms ease;
++}
++.tech-layout .storefront-product-card:hover,.tech-layout .storefront-product-card:focus-within {
++  transform:translateY(-3px); border-color:var(--red);
++  box-shadow:0 0 0 1px color-mix(in srgb,var(--red) 15%,transparent),var(--shadow);
++}
++.tech-layout .product-card-heading { flex-direction:row; align-items:center; gap:14px; }
++.tech-layout .product-card-art {
++  height:104px; width:94px; border:1px solid color-mix(in srgb,var(--border) 60%,var(--red)); border-radius:10px;
++  background:radial-gradient(ellipse at 80% 0%,color-mix(in srgb,var(--red) 24%,transparent),transparent 75%),linear-gradient(145deg,var(--surface-2),var(--bg));
++}
++.tech-layout .product-card-art > svg { color:var(--tech-link); filter:drop-shadow(0 4px 14px color-mix(in srgb,var(--red) 35%,transparent)); stroke-width:1.1; }
++.tech-layout .product-card-heading h3 { font-size:16px; line-height:1.5; overflow-wrap:anywhere; }
++.tech-layout .product-card-heading > div > span { color:var(--tech-link); font-size:11px; letter-spacing:.04em; margin-bottom:4px; }
++.tech-layout .product-card-badges { gap:5px; margin-inline:0; }
++.tech-layout .product-card-badges > span { border-radius:5px; font-size:10px; }
++.tech-layout .product-card-actions { border-top:1px solid var(--border); padding-top:12px; padding-inline:0; align-items:center; flex-wrap:wrap; }
++.tech-layout .product-card-actions button { border-radius:7px; color:var(--on-red); padding:8px 11px; font-size:12px; }
++.tech-layout .product-card-actions .text-xl { font-size:19px; letter-spacing:-.04em; }
++.tech-layout .storefront-product-row { border-radius:12px; transition:transform 180ms,border-color 180ms; }
++.tech-layout .storefront-product-row:hover { border-color:var(--red); transform:translateX(2px); }
++.tech-layout :focus-visible { outline:2px solid var(--tech-link); outline-offset:4px; }
++.tech-layout input:focus-visible,.tech-layout textarea:focus-visible { outline-offset:2px; }
++.tech-hero { position:relative; display:grid; grid-template-columns:1fr 1fr; min-height:410px; overflow:hidden; border-bottom:1px solid var(--border); }
++.tech-hero-copy { position:relative; z-index:2; padding:64px 24px 54px; }
++.tech-eyebrow { display:flex; align-items:center; gap:9px; font:10px ui-monospace,monospace; letter-spacing:.18em; color:var(--tech-link); }
++.tech-signal { width:5px; height:5px; background:var(--red); box-shadow:0 0 12px #10d4dd77; }
++.tech-hero .tech-hero-copy h1 { font-size:clamp(32px,4vw,54px); font-weight:750; line-height:1.23; letter-spacing:-.045em; margin:24px 0 18px; }
++.tech-hero h1 span { color:var(--ink); }
++.tech-hero .tech-hero-copy p { color:var(--ink-3); font-size:14px; max-width:42ch; line-height:1.8; }
++.tech-hero-actions { display:flex; align-items:center; flex-wrap:wrap; gap:22px; margin-top:28px; }
++.tech-primary-button { display:inline-flex; justify-content:center; align-items:center; gap:24px; min-height:44px; padding:10px 19px; border-radius:8px; background:var(--red); color:var(--on-red); font-size:14px; font-weight:650; transition:background 180ms,transform 180ms; }
++.tech-primary-button:hover { background:var(--red-strong); transform:translateY(-2px); }
++.tech-text-button { display:inline-flex; align-items:center; gap:10px; font-size:13px; color:var(--ink-2); }
++.tech-sculpture { position:relative; perspective:1000px; min-height:380px; isolation:isolate; }
++.tech-grid { position:absolute; inset:0; background-image:linear-gradient(var(--tech-grid) 1px,transparent 1px),linear-gradient(90deg,var(--tech-grid) 1px,transparent 1px); background-size:32px 32px; mask-image:radial-gradient(ellipse at center,#000 20%,transparent 72%); }
++.tech-orbit { position:absolute; inset:14% 8%; border-radius:50%; background:radial-gradient(ellipse,color-mix(in srgb,var(--red) 11%,transparent),transparent 65%); }
++.tech-glass-card { position:absolute; top:65px; left:24%; width:190px; height:253px; border-radius:17px; transform:rotateY(-25deg) rotateZ(13deg) skewY(-13deg); border:1px solid #9bd9e69c; background:linear-gradient(125deg,var(--tech-glass),color-mix(in srgb,var(--surface) 92%,transparent)); box-shadow:12px 28px 32px -18px #00172066,inset 1px 1px 1px #c1f2ff99; }
++.glass-back { left:44%; top:97px; opacity:.35; }
++.glass-middle { left:34%; top:81px; opacity:.6; }
++.glass-front { display:flex; flex-direction:column; justify-content:space-between; padding:26px; color:var(--tech-link); border-right:2px solid var(--red); box-shadow:5px 2px 12px -7px var(--red),20px 35px 40px -18px #04182377,inset 1px 1px 1px #c1f2ff99; }
++.glass-front > span { font:11px/1.8 ui-monospace,monospace; letter-spacing:.09em; color:var(--ink-2); margin-top:16px; }
++.glass-front > small { display:flex; justify-content:space-between; align-items:center; font:9px ui-monospace,monospace; letter-spacing:.15em; color:var(--ink-3); }
++.tech-card-line { width:100%; height:1px; background:var(--border-strong); }
++.tech-chip { position:absolute; right:24px; top:29px; display:flex; gap:3px; transform:rotate(90deg); opacity:.65; }
++.tech-chip i { width:2px; height:12px; background:var(--tech-link); }
++.tech-art-coordinate,.tech-art-caption { position:absolute; font:8px/1.8 ui-monospace,monospace; letter-spacing:.15em; color:var(--ink-3); }
++.tech-art-coordinate { right:26px; top:42px; writing-mode:vertical-rl; }
++.tech-art-caption { bottom:46px; left:12%; }
++.tech-cross { position:absolute; color:var(--tech-link); font:18px ui-monospace,monospace; opacity:.6; }
++.cross-one { top:70px; left:12%; }.cross-two { right:14%; bottom:58px; }
++.tech-benefits { margin:0 24px; display:grid; grid-template-columns:repeat(3,1fr); border-bottom:1px solid var(--border); padding:22px 0; }
++.tech-benefits > span,.tech-benefits > a { display:flex; align-items:center; justify-content:center; gap:14px; font-size:13px; font-weight:600; }
++.tech-benefits > :not(:last-child) { border-right:1px solid var(--border); }
++.tech-benefits svg { color:var(--tech-link); flex-shrink:0; stroke-width:1.5; }
++.tech-benefits small { display:block; font-size:11px; font-weight:400; color:var(--ink-3); margin-top:3px; }
++@media(min-width:1280px){ .tech-hero-copy{padding-left:40px} }
++@media(max-width:767px){
++  .tech-hero{grid-template-columns:1fr;min-height:0}
++  .tech-hero-copy{padding:36px 24px 0}.tech-hero .tech-hero-copy h1{font-size:36px}
++  .tech-sculpture{min-height:300px; margin-top:-5px}
++  .tech-glass-card{top:40px; width:145px;height:200px;left:30%;padding:20px}
++  .glass-middle{left:39%;top:50px}.glass-back{left:48%;top:60px}
++  .tech-art-coordinate{top:40px}.tech-art-caption{bottom:28px;left:8%}
++  .tech-benefits{margin-inline:16px;padding:18px 0;gap:8px}
++  .tech-benefits > span,.tech-benefits > a{gap:8px;font-size:11px;flex-direction:column;text-align:center}
++  .tech-benefits small{display:none}.tech-benefits > a > svg:last-child{display:none}
++  .tech-layout > header > div{height:64px;gap:8px}
++  .tech-layout .storefront-product-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}
++  .tech-home .storefront-categories h2,.tech-home .storefront-featured h2{font-size:21px}
++}
++@media(prefers-reduced-motion:reduce){
++ html[data-storefront-theme="theme-3"] *,html[data-storefront-theme="theme-3"] *::before,html[data-storefront-theme="theme-3"] *::after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
++}
++/* The existing list view keeps its exact content and handlers, with tech materials. */
++.tech-layout .storefront-product-row > span:first-child {
++  background:radial-gradient(ellipse at top right,color-mix(in srgb,var(--red) 20%,transparent),transparent 80%),var(--surface-2);
++  border:1px solid var(--border-strong);
++}
++.tech-layout .storefront-product-row > span:first-child > svg { color:var(--tech-link); stroke-width:1.3; }
++@media(min-width:1024px){
++  html[data-storefront-theme="theme-3"] .tech-layout aside .bg-primary.text-white { color:var(--tech-link); }
++}
++
++html[data-storefront-theme="theme-3"] #storefront-products { scroll-margin-top:88px; }
++html[data-storefront-theme="theme-3"] .quick-buy-header { display:flex; }
++
++html[data-storefront-theme="theme-3"] .quick-buy-mobile-close { display:none; }
+diff --git a/frontend/user/tests/storefrontTheme.test.ts b/frontend/user/tests/storefrontTheme.test.ts
+new file mode 100644
+index 0000000..1310ad5
+--- /dev/null
++++ b/frontend/user/tests/storefrontTheme.test.ts
+@@ -0,0 +1,56 @@
++import test from 'node:test'
++import assert from 'node:assert/strict'
++import { readFileSync } from 'node:fs'
++import { createHash } from 'node:crypto'
++import { resolveStorefrontTheme, readThemePreview, exitThemePreviewUrl, themePreviewUrl, STOREFRONT_THEMES } from '../../shared/storefrontTheme.ts'
++
++test('theme resolves new IDs before legacy template, with safe fallback', () => {
++  assert.equal(resolveStorefrontTheme(undefined, 'vault'), 'theme-2')
++  assert.equal(resolveStorefrontTheme(undefined, 'classic'), 'theme-1')
++  assert.equal(resolveStorefrontTheme('broken', 'vault'), 'theme-2')
++  assert.equal(resolveStorefrontTheme({}, null), 'theme-1')
++  for (const id of STOREFRONT_THEMES) assert.equal(resolveStorefrontTheme(id, 'vault'), id)
++})
++test('only explicit valid URL previews are honored', () => {
++  assert.equal(readThemePreview('?template=vault'), null)
++  assert.equal(readThemePreview('?theme_preview=unknown&theme_preview_mode=dark'), null)
++  assert.deepEqual(readThemePreview('?theme_preview=theme-3&theme_preview_mode=dark'), { theme: 'theme-3', mode: 'dark' })
++  assert.deepEqual(readThemePreview('?theme_preview=theme-2&theme_preview_mode=unknown'), { theme: 'theme-2', mode: null })
++})
++test('preview exit preserves all business query and hash values', () => {
++  const result = new URL(exitThemePreviewUrl('https://shop.test/products/item?sku_id=42&redirect=%2Fme&theme_preview=theme-3&theme_preview_mode=dark#options'))
++  assert.equal(result.searchParams.get('sku_id'), '42')
++  assert.equal(result.searchParams.get('redirect'), '/me')
++  assert.equal(result.hash, '#options')
++  assert.equal(result.searchParams.has('theme_preview'), false)
++  assert.equal(result.searchParams.has('theme_preview_mode'), false)
++})
++test('preview links accept only web origins and retain existing URL data', () => {
++  assert.equal(themePreviewUrl('javascript:alert(1)', 'theme-3', 'dark'), null)
++  assert.equal(themePreviewUrl('not a URL', 'theme-3', 'dark'), null)
++  const url = new URL(themePreviewUrl('https://shop.test/?ref=keep', 'theme-3', 'light')!)
++  assert.equal(url.searchParams.get('ref'), 'keep')
++  assert.equal(url.searchParams.get('theme_preview'), 'theme-3')
++})
++
++test('shared storefront pages keep business scripts unchanged from pre-theme baseline', () => {
++  // Presentation hooks may change; the original shared business scripts stay identical.
++  const hashes: Record<string, string> = {
++    "Home.vue": "f46eac783f1c2bbf194f92dfa189d9245bab78c3c6c771086459715f47410b66",
++    "Products.vue": "d67f3179f66d954c42330ee341c77d83999778c27212cd591e233a4641b8dcb3",
++    "components/VaultBannerHero.vue": "3ca4cb560584d2eecd4cb68a466ebf5086fefaea6d0b56d90d06a538239fd952",
++    "components/VaultProductCard.vue": "1eca96f74f640927a31ddf4a949755135b87160e658f3864db9dc42f929859c9",
++    "components/VaultProductListItem.vue": "0c7aeaeb0213b86ff9d78eff8544c6e1ee6e900edafcd563f0dc4b1cbe151479"
++}
++  for (const [file, hash] of Object.entries(hashes)) {
++    const source = readFileSync(new URL(`../src/templates/vault/${file}`, import.meta.url), 'utf8')
++    const script = source.match(/<script[\s\S]*?<\/script>/)?.[0] || ''
++    assert.equal(createHash('sha256').update(script).digest('hex'), hash, `${file}: business script changed`)
++  }
++})
++
++test('quick-buy change is limited to an accessibility directive import', () => {
++  const source = readFileSync(new URL('../src/components/ProductQuickBuy.vue', import.meta.url), 'utf8')
++  const script = (source.match(/<script[\s\S]*?<\/script>/)?.[0] || '').replace("import { vModalFocus } from '../directives/modalFocus'\n", '')
++  assert.equal(createHash('sha256').update(script).digest('hex'), '8655d14a9eb0499c31eba658b7b1098cfd276457655d291f5ec64358c2c9b6d9')
++})
+diff --git a/internal/modules/settings/schema/storefront/theme.go b/internal/modules/settings/schema/storefront/theme.go
+new file mode 100644
+index 0000000..d297b7c
+--- /dev/null
++++ b/internal/modules/settings/schema/storefront/theme.go
+@@ -0,0 +1,36 @@
++package settingsstorefront
++
++import (
++	"errors"
++
++	"github.com/dujiao-next/internal/shared/jsonmap"
++)
++
++var ErrInvalidTheme = errors.New("theme_id must be theme-1, theme-2 or theme-3")
++
++func IsThemeID(raw interface{}) bool {
++	value, ok := raw.(string)
++	return ok && (value == "theme-1" || value == "theme-2" || value == "theme-3")
++}
++
++func ValidateThemeSetting(value jsonmap.JSON) error {
++	if !IsThemeID(value["theme_id"]) {
++		return ErrInvalidTheme
++	}
++	return nil
++}
++
++func NormalizeThemeSetting(value jsonmap.JSON) jsonmap.JSON {
++	return jsonmap.JSON{"theme_id": value["theme_id"]}
++}
++
++// ResolveTheme preserves the legacy storefront until an explicit theme is saved.
++func ResolveTheme(theme interface{}, legacy interface{}) string {
++	if IsThemeID(theme) {
++		return theme.(string)
++	}
++	if legacy == "vault" {
++		return "theme-2"
++	}
++	return "theme-1"
++}
+diff --git a/internal/modules/settings/schema/storefront/theme_test.go b/internal/modules/settings/schema/storefront/theme_test.go
+new file mode 100644
+index 0000000..ad4ab24
+--- /dev/null
++++ b/internal/modules/settings/schema/storefront/theme_test.go
+@@ -0,0 +1,35 @@
++package settingsstorefront
++
++import (
++	"errors"
++	"testing"
++
++	"github.com/dujiao-next/internal/shared/jsonmap"
++)
++
++func TestThemeCompatibility(t *testing.T) {
++	for _, test := range []struct {
++		theme, legacy interface{}
++		want          string
++	}{
++		{nil, nil, "theme-1"}, {nil, "classic", "theme-1"}, {nil, "vault", "theme-2"},
++		{"theme-1", "vault", "theme-1"}, {"theme-2", "classic", "theme-2"}, {"theme-3", "vault", "theme-3"},
++		{"bad", "vault", "theme-2"}, {123, "unknown", "theme-1"}, {[]string{}, "vault", "theme-2"},
++	} {
++		if got := ResolveTheme(test.theme, test.legacy); got != test.want {
++			t.Fatalf("resolve(%v,%v)=%s want %s", test.theme, test.legacy, got, test.want)
++		}
++	}
++}
++func TestThemeValidation(t *testing.T) {
++	for _, value := range []interface{}{nil, "", "theme-4", " theme-3 ", 123, true, []string{"theme-3"}} {
++		if !errors.Is(ValidateThemeSetting(jsonmap.JSON{"theme_id": value}), ErrInvalidTheme) {
++			t.Fatalf("accepted %v", value)
++		}
++	}
++	for _, value := range []string{"theme-1", "theme-2", "theme-3"} {
++		if err := ValidateThemeSetting(jsonmap.JSON{"theme_id": value}); err != nil {
++			t.Fatal(err)
++		}
++	}
++}

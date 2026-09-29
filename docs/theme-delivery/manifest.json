@@ -1,0 +1,192 @@
+{
+  "base_commit": "06f847d0ef6b6e8d37c6f539ca072a1826163362",
+  "baseline_archive_sha256": "73b8117ebc7b794d509aea00ed8b8b85facf2b39f1ddfe1de2c1c3f8bf8de1d4",
+  "modified_archive_sha256": "9775d05bf50cafa0ade0c7b82bd4e172fcef033601dafc9291118a984c038ff1",
+  "files": [
+    {
+      "path": "Dockerfile",
+      "baseline_sha256": "89118a4de8c8bf37ec82bd271db9a787cb593dcde34dc284403021d62c9efbf1",
+      "modified_sha256": "53f73558ad4e21bd379d350868cc2739c2077118565fc041cfb3ac74b1d2197c"
+    },
+    {
+      "path": "frontend/admin/src/i18n/index.ts",
+      "baseline_sha256": "80e8ba37c36911d3ffcf43612a80ac88f4c7778ec60427e86b57a4a40a1acc3c",
+      "modified_sha256": "2d3ee774213e6901d39d3da460f1705793bad1f4a0772edaa4d5bca8cc40643e"
+    },
+    {
+      "path": "frontend/admin/src/views/admin/Settings.vue",
+      "baseline_sha256": "f19ab602936d0a29e48e06cef72dd4ae82a880b867dc7eec8fb69f00cee99faf",
+      "modified_sha256": "a56c6d74869f5cee7447dbcf9ed6006099850b616c1780c2f9f62fdd086dfba9"
+    },
+    {
+      "path": "frontend/admin/src/views/admin/components/SettingsThemeTab.test.ts",
+      "baseline_sha256": null,
+      "modified_sha256": "85b95b6bd560df1458b17759a09b2827c6ab5b7c6190d8ca3ba202b86d674629"
+    },
+    {
+      "path": "frontend/admin/src/views/admin/components/SettingsThemeTab.vue",
+      "baseline_sha256": null,
+      "modified_sha256": "426bc59f8b0e96a6f70862a156c963759e908bce05000476327ab21e6837ee7f"
+    },
+    {
+      "path": "frontend/shared/storefrontTheme.ts",
+      "baseline_sha256": null,
+      "modified_sha256": "e21ea818f2a68213b8cb2decf0e8fcd1ce036fdedabfad7dd6fa4f7094dfbe80"
+    },
+    {
+      "path": "frontend/user/src/App.vue",
+      "baseline_sha256": "dd4d5fb09849b023f6cda7cd97bf3ae074ccdc49e0039f9079a1f09d0c1a792b",
+      "modified_sha256": "588b5977ce2d5c3d270837af09bf16b3af3bcd60aae4a3d3c90995e626df1d55"
+    },
+    {
+      "path": "frontend/user/src/components/ProductQuickBuy.vue",
+      "baseline_sha256": "bd40227e5279b086c758599393dec0efb66242d05948514cfa91ee455e0ab339",
+      "modified_sha256": "3d1b2c39970ad374c2580751d20c4c7b87ea712060fea879a9546d72edd54e3f"
+    },
+    {
+      "path": "frontend/user/src/directives/modalFocus.ts",
+      "baseline_sha256": null,
+      "modified_sha256": "266659db0b1336cc48b2676fd3ace86e78e79c37270dd9015e68d522b9ee577e"
+    },
+    {
+      "path": "frontend/user/src/i18n/locales/en-US.json",
+      "baseline_sha256": "b3fe7054d689962b8331119bacbc5e08e97cad45063efb124a5598882fd506d5",
+      "modified_sha256": "0409634b097cff9a6487b6143cf52b1fc94b5533579c8a334af2b33121aaa146"
+    },
+    {
+      "path": "frontend/user/src/i18n/locales/zh-CN.json",
+      "baseline_sha256": "5a79fb2c4daf402a18db413d47e25742845cc5cd9b4b77589ecdbf7657de7db5",
+      "modified_sha256": "3168003b0bc2f7ff6511938c6973a0590d3d5d56c2ee9106573e156e7981740e"
+    },
+    {
+      "path": "frontend/user/src/i18n/locales/zh-TW.json",
+      "baseline_sha256": "49d29ab8964ee2a55c0b7818ab3d0bac78e2dd9a6980a9d92030e6ffc2981f57",
+      "modified_sha256": "7c8ea0437b0b6a3ab24da6b277d0fcf642b7d891c86bec0ee5d7250b6e9a6b6b"
+    },
+    {
+      "path": "frontend/user/src/main.ts",
+      "baseline_sha256": "ce3f95b51021a9cb079a5fd88d704df78bd8623aa6437094b371894da0c5f5d0",
+      "modified_sha256": "b1073b7fd8c183546eab19a8b48f17bafa50ad2d5fac750f1301e9959f029338"
+    },
+    {
+      "path": "frontend/user/src/router/index.ts",
+      "baseline_sha256": "a061d6b2cd5f96b921c5441c4925ec9e428d734226b3cd11ba629619a46bee86",
+      "modified_sha256": "dabd157007cc855d0c1ca6dd39c686d0fc843d2ed7b6fcbcd076bacfbb1fe925"
+    },
+    {
+      "path": "frontend/user/src/templates/ThemePreviewBar.vue",
+      "baseline_sha256": null,
+      "modified_sha256": "9bf404a486c87fbb9b8f2a8118b746035fe6dcbf14e69e0af536533c74bc6ac4"
+    },
+    {
+      "path": "frontend/user/src/templates/registry.ts",
+      "baseline_sha256": "43f10d524d5555b7e95fee8a428cf3d35938c8ba29be2669c3ad3c8e557949e1",
+      "modified_sha256": "aea0d830703a08f1a10004c7011e677e13eeae5be57039f5302c7b158e07a0f5"
+    },
+    {
+      "path": "frontend/user/src/templates/tech/Home.vue",
+      "baseline_sha256": null,
+      "modified_sha256": "42b117fb134692a15bd8b61aaaa28452879815d2e08cfe57eda0a26b5357a7b5"
+    },
+    {
+      "path": "frontend/user/src/templates/tech/TechHero.vue",
+      "baseline_sha256": null,
+      "modified_sha256": "447a33a216b76184bacdcd98a4ac552360d9148e2a1703056d2a8e2acd033eb0"
+    },
+    {
+      "path": "frontend/user/src/templates/tech/TechLayout.vue",
+      "baseline_sha256": null,
+      "modified_sha256": "9163213951317647ab0509eac187411b5ee387800b7b1a62a06070ab51c77dd2"
+    },
+    {
+      "path": "frontend/user/src/templates/tech/tech.css",
+      "baseline_sha256": null,
+      "modified_sha256": "c7001afe0b062bc7c8ab33a61741f22a858cf3d233a3a4fe145c41aff09ea61b"
+    },
+    {
+      "path": "frontend/user/src/templates/vault/Home.vue",
+      "baseline_sha256": "77a8bbd784414fb657bfb627462d4975ad7467ec39f6bbe1c53319aee1ddd709",
+      "modified_sha256": "418f956727ca60d7679c4dafa36a279e73ffd35f95ce2218b2f46f4112393913"
+    },
+    {
+      "path": "frontend/user/src/templates/vault/Products.vue",
+      "baseline_sha256": "685e16d3c0f62c0e9b26b65836dee06b0445eec4aa22ff9a68ab84e50e903972",
+      "modified_sha256": "ee4cde6f2adc5f6b21e6f93bbb408bf01d115fc96c72c189f538da4a77864ef0"
+    },
+    {
+      "path": "frontend/user/src/templates/vault/components/VaultBannerHero.vue",
+      "baseline_sha256": "3a4e513460c3c30b690d093f7c4311bf07af9f5753f8a89831e74a6d6fcc009b",
+      "modified_sha256": "2279bbb56e11a5d6c5f93c0c92873c168bb7d183cb9d125e23bd638125446cc6"
+    },
+    {
+      "path": "frontend/user/src/templates/vault/components/VaultProductCard.vue",
+      "baseline_sha256": "22afd3c311c4053bf5de6557dacb82bbac92ddecd3abbd321534e11d0c29698b",
+      "modified_sha256": "8bb74548e422f0af8ad43a2fc89a0cd9140cc10e3d0e6791b1f95cc7770742f1"
+    },
+    {
+      "path": "frontend/user/src/templates/vault/components/VaultProductListItem.vue",
+      "baseline_sha256": "e831f50162424159d75b13fa5b2e547615d4d5ce25cd16daa19be5ffbb4eb801",
+      "modified_sha256": "624375e4a9d9a82c1b310df7491d3a9e8bf8a63de36cb3ddf7e3f076b038dcde"
+    },
+    {
+      "path": "frontend/user/src/utils/theme.ts",
+      "baseline_sha256": "ed136e3569006af59d424894251f0167868554cc430c2a63c71b00f5fe8f5b00",
+      "modified_sha256": "ee2c35f868af8045980b293e09f06ac0a5bb9050e8741fd33ecbd9221cbb8857"
+    },
+    {
+      "path": "frontend/user/tests/storefrontTheme.test.ts",
+      "baseline_sha256": null,
+      "modified_sha256": "0605c489857bd8ee5b475aad55533af83de942bc2826714f68a873b484f137d4"
+    },
+    {
+      "path": "internal/constants/constants.go",
+      "baseline_sha256": "f8eb9f9638058e44f4cf6b1c4014d3d4a59dc951bc1415f8f2f493b3d3f441cd",
+      "modified_sha256": "bf6e809e18d344c44da120a5b2a0e0602592c96fbd4355432fc70b6c28bdaf40"
+    },
+    {
+      "path": "internal/modules/settings/application/core.go",
+      "baseline_sha256": "5071fcff350b6cc38eb3dc997884b61c8802f50f67f519b2997935d621fa71cf",
+      "modified_sha256": "346ec8f8dc380c141aaa8cfbc83fcf958a99d9f0e46f7054c1e154cb17b79f58"
+    },
+    {
+      "path": "internal/modules/settings/application/default_registry.go",
+      "baseline_sha256": "78b20ad3d85be0413a47a718e40ffa8105a965e7c05b3526b07613097ce5a928",
+      "modified_sha256": "019f21a4f872981cc800340a0f703ab8645761d5479ca874ea4f82644806536c"
+    },
+    {
+      "path": "internal/modules/settings/application/default_registry_test.go",
+      "baseline_sha256": "7a52bdd964e05bc08105a57520cfcf172b90ae1c5cc95035db8cb74721d54c5d",
+      "modified_sha256": "8e64d9a811e6b17d13dcc058503e4b50a5eb0b93ff74101c39916e7a3de70507"
+    },
+    {
+      "path": "internal/modules/settings/application/general.go",
+      "baseline_sha256": "57cf80d84f10b0c7734991e4a98da38f1dc4584c47dae54ae7176ae64467e1f1",
+      "modified_sha256": "3c9e80c31103fddf4a33dfcb72828dfd22cc85ac6034a8283fa6f55ba797c427"
+    },
+    {
+      "path": "internal/modules/settings/application/registry.go",
+      "baseline_sha256": "158930c86ce303dfb217b57af4359cb1763e345f1b81f5d3e3423c6d430a0738",
+      "modified_sha256": "9328e47f0ee396f78266057bbd075b2c0f0420a8734e72596af09ce83f7dc743"
+    },
+    {
+      "path": "internal/modules/settings/schema/storefront/theme.go",
+      "baseline_sha256": null,
+      "modified_sha256": "26d6f67d4b1ed65ec7ea49c13293b458716ba8dc26417973fb686e7d6a656858"
+    },
+    {
+      "path": "internal/modules/settings/schema/storefront/theme_test.go",
+      "baseline_sha256": null,
+      "modified_sha256": "a01a9bc3671a3d242c5dd5ede5653767fb3f6b3277cb5e16b5b8e9eb0cfd94f0"
+    },
+    {
+      "path": "internal/modules/settings/transport/http/admin_handler.go",
+      "baseline_sha256": "b47a4560f2fc36cca8067b3d35d8a8b47225ead9dfb68b74f80d687ac68ef55c",
+      "modified_sha256": "0870b17f614c5e7952e78e662a1efd67a95a51f31feb6bad742ff75444321700"
+    },
+    {
+      "path": "internal/modules/settings/transport/http/admin_handler_test.go",
+      "baseline_sha256": "a5cffb1a498803190f1689272448a0101c54a6ea2c960fc096d26001c0053274",
+      "modified_sha256": "cd2249e66f772eec6982ad8ea587c15c760c7ca180c6f7e2efce6ea49ceab283"
+    }
+  ]
+}

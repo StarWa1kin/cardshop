@@ -1,11 +1,11 @@
 <template>
   <div>
     <!-- 站长配置的横幅轮播（两种模式共用，顶部展示） -->
-    <VaultBannerHero />
+    <VaultBannerHero><template #fallback><slot name="hero-fallback" /></template></VaultBannerHero>
 
     <!-- ==================== 列表模式 ==================== -->
     <template v-if="isListMode">
-      <section class="mx-auto w-full max-w-[1180px] px-4 py-6 sm:px-6">
+      <section id="storefront-products" class="mx-auto w-full max-w-[1180px] px-4 py-6 sm:px-6">
         <div class="grid items-start gap-5 lg:grid-cols-[248px_1fr] lg:gap-7">
           <VaultCategorySidebar
             :category-groups="categoryGroups"
@@ -80,7 +80,7 @@
     <!-- ==================== 卡片模式（默认） ==================== -->
     <template v-else>
       <!-- 分类块 -->
-      <section v-if="topCategories.length" class="mx-auto w-full max-w-[1180px] px-4 py-9 sm:px-6">
+      <section v-if="topCategories.length" class="storefront-categories mx-auto w-full max-w-[1180px] px-4 py-9 sm:px-6">
         <div class="mb-[22px] flex flex-wrap items-end justify-between gap-4">
           <h2 class="text-[28px] font-extrabold">{{ t('vault.categoriesTitle') }}</h2>
           <Button as-child variant="ghost" size="sm" class="rounded-full"><RouterLink to="/products">{{ t('vault.allCategories') }} <ChevronRight /></RouterLink></Button>
@@ -103,16 +103,16 @@
       </section>
 
       <!-- 热门商品 -->
-      <section class="mx-auto w-full max-w-[1180px] px-4 py-9 sm:px-6">
+      <section id="storefront-products" class="storefront-featured mx-auto w-full max-w-[1180px] px-4 py-9 sm:px-6">
         <div class="mb-[22px] flex flex-wrap items-end justify-between gap-4">
           <h2 class="text-[28px] font-extrabold">{{ t('home.featured.title') }}</h2>
           <Button as-child variant="outline" size="sm" class="rounded-full"><RouterLink to="/products">{{ t('home.featured.viewAll') }}</RouterLink></Button>
         </div>
 
-        <div v-if="productsLoading" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(228px,1fr))]">
+        <div v-if="productsLoading" class="storefront-product-grid grid gap-4 grid-cols-[repeat(auto-fill,minmax(228px,1fr))]">
           <div v-for="i in 10" :key="i" class="h-[280px] rounded-lg border bg-card"></div>
         </div>
-        <div v-else-if="products.length" class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(228px,1fr))]">
+        <div v-else-if="products.length" class="storefront-product-grid grid gap-4 grid-cols-[repeat(auto-fill,minmax(228px,1fr))]">
           <VaultProductCard
             v-for="(product, idx) in products"
             :key="product.id"
@@ -132,7 +132,7 @@
         <div class="mb-[22px] flex flex-wrap items-end justify-between gap-4">
           <h2 class="text-[28px] font-extrabold">{{ t('home.latest.title') }}</h2>
         </div>
-        <div class="grid gap-4 grid-cols-[repeat(auto-fill,minmax(228px,1fr))]">
+        <div class="storefront-product-grid grid gap-4 grid-cols-[repeat(auto-fill,minmax(228px,1fr))]">
           <RouterLink
             v-for="post in posts"
             :key="post.id"

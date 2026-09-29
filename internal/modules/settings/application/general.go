@@ -3,12 +3,14 @@ package settingsapp
 import (
 	"encoding/json"
 	"errors"
+	"log"
 	"net/mail"
 	"strings"
 	"time"
 
 	"github.com/dujiao-next/internal/config"
 	"github.com/dujiao-next/internal/constants"
+	settingsstorefront "github.com/dujiao-next/internal/modules/settings/schema/storefront"
 	"github.com/dujiao-next/internal/shared/jsonmap"
 )
 
@@ -92,13 +94,17 @@ func (s *Service) GetConfig(defaults map[string]interface{}) (map[string]interfa
 	if err != nil {
 		return nil, err
 	}
-	if value == nil {
-		return data, nil
-	}
-
 	for k, v := range value {
 		data[k] = v
 	}
+	theme, err := s.GetByKey(constants.SettingKeyStorefrontThemeConfig)
+	if err != nil {
+		return nil, err
+	}
+	if theme != nil && !settingsstorefront.IsThemeID(theme["theme_id"]) {
+		log.Print("settings: invalid stored storefront theme; using legacy fallback")
+	}
+	data[constants.SettingFieldStorefrontTheme] = settingsstorefront.ResolveTheme(theme["theme_id"], data[constants.SettingFieldStorefrontTemplate])
 	return data, nil
 }
 

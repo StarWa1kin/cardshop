@@ -16,6 +16,7 @@ import { applySiteIcon } from '@/utils/favicon'
 import { getImageUrl } from '@/utils/image'
 import { orderEmailSceneKeys } from '@/utils/orderEmailTemplates'
 import MediaPicker from '@/components/admin/MediaPicker.vue'
+import SettingsThemeTab from './components/SettingsThemeTab.vue'
 import SettingsSMTPTab from './components/SettingsSMTPTab.vue'
 import SettingsCaptchaTab from './components/SettingsCaptchaTab.vue'
 import SettingsOrderEmailTemplateTab from './components/SettingsOrderEmailTemplateTab.vue'
@@ -790,7 +791,9 @@ const saveSettings = async () => {
   }
   loading.value = true
   try {
-    if (currentTab.value === 'telegram') {
+    if (currentTab.value === 'template') {
+      await saveSiteSettings()
+    } else if (currentTab.value === 'telegram') {
       await saveTelegramAuthSettings()
     } else if (currentTab.value === 'google') {
       await saveGoogleAuthSettings()
@@ -835,7 +838,7 @@ onMounted(() => {
         </div>
         <Button size="sm" class="w-full sm:w-auto" :disabled="loading || smtpTabRef?.submitting || smtpTabRef?.smtpTesting || captchaTabRef?.submitting || orderEmailTemplateTabRef?.submitting || navigationTabRef?.submitting || homeAnnouncementTabRef?.submitting || upstreamSyncTabRef?.submitting" @click="saveSettings">
           <span v-if="loading" class="h-3 w-3 animate-spin rounded-full border-2 border-primary/30 border-t-primary"></span>
-          {{ loading ? t('admin.settings.actions.saving') : t('admin.settings.actions.save') }}
+          {{ loading ? t('admin.settings.actions.saving') : currentTab === 'template' ? t('admin.settings.theme.saveLayout') : t('admin.settings.actions.save') }}
         </Button>
       </div>
     </div>
@@ -1155,69 +1158,7 @@ onMounted(() => {
 
       <!-- Template Mode Tab -->
       <TabsContent value="template" :forceMount="true" v-show="currentTab === 'template'" class="space-y-6 mt-0">
-      <!-- Storefront theme: classic / vault -->
-      <div class="rounded-xl border border-border bg-card">
-        <div class="flex flex-col gap-3 border-b border-border bg-muted/40 px-6 py-4">
-          <div>
-            <h2 class="text-lg font-semibold">{{ t('admin.settings.template.storefrontTitle') }}</h2>
-            <p class="mt-1 text-xs text-muted-foreground">{{ t('admin.settings.template.storefrontSubtitle') }}</p>
-          </div>
-        </div>
-        <div class="px-6 py-6">
-          <RadioGroup v-model="form.storefront_template" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <!-- Classic -->
-            <Label
-              class="relative flex cursor-pointer flex-col items-center gap-3 rounded-xl border-2 p-6 transition-all"
-              :class="form.storefront_template === 'classic'
-                ? 'border-primary bg-primary/5 ring-1 ring-primary/20'
-                : 'border-border hover:border-muted-foreground/30'"
-            >
-              <RadioGroupItem value="classic" class="sr-only" />
-              <div class="flex h-16 w-16 items-center justify-center rounded-xl" :class="form.storefront_template === 'classic' ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'">
-                <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-                  <circle cx="12" cy="12" r="4" />
-                  <path stroke-linecap="round" d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" />
-                </svg>
-              </div>
-              <div class="text-center">
-                <div class="font-semibold" :class="form.storefront_template === 'classic' ? 'text-primary' : ''">{{ t('admin.settings.template.classicMode') }}</div>
-                <div class="mt-1 text-xs text-muted-foreground">{{ t('admin.settings.template.classicModeDesc') }}</div>
-              </div>
-              <div v-if="form.storefront_template === 'classic'" class="absolute right-3 top-3">
-                <svg class="h-5 w-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                </svg>
-              </div>
-            </Label>
-
-            <!-- Vault -->
-            <Label
-              class="relative flex cursor-pointer flex-col items-center gap-3 rounded-xl border-2 p-6 transition-all"
-              :class="form.storefront_template === 'vault'
-                ? 'border-primary bg-primary/5 ring-1 ring-primary/20'
-                : 'border-border hover:border-muted-foreground/30'"
-            >
-              <RadioGroupItem value="vault" class="sr-only" />
-              <div class="flex h-16 w-16 items-center justify-center rounded-xl" :class="form.storefront_template === 'vault' ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'">
-                <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 3v5c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6l7-3z" />
-                  <circle cx="12" cy="11" r="2.2" />
-                  <path stroke-linecap="round" d="M12 13.2V16" />
-                </svg>
-              </div>
-              <div class="text-center">
-                <div class="font-semibold" :class="form.storefront_template === 'vault' ? 'text-primary' : ''">{{ t('admin.settings.template.vaultMode') }}</div>
-                <div class="mt-1 text-xs text-muted-foreground">{{ t('admin.settings.template.vaultModeDesc') }}</div>
-              </div>
-              <div v-if="form.storefront_template === 'vault'" class="absolute right-3 top-3">
-                <svg class="h-5 w-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                </svg>
-              </div>
-            </Label>
-          </RadioGroup>
-        </div>
-      </div>
+      <SettingsThemeTab :site-url="form.brand.site_url" />
 
       <!-- Product layout: card / list -->
       <div class="rounded-xl border border-border bg-card">

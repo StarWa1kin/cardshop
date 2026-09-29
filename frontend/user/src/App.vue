@@ -1,7 +1,8 @@
 <template>
   <div id="app" class="min-h-screen bg-background text-foreground flex flex-col">
+    <ThemePreviewBar v-if="themePreview && !isResellerConsole" />
     <!-- vault 模板：自带顶栏/页脚的外壳包裹页面（控制台仍走下方分支） -->
-    <VaultLayout v-if="isVault && !isResellerConsole">
+    <component :is="storefrontLayout" v-if="storefrontLayout && !isResellerConsole">
       <ErrorBoundary>
         <RouterView v-slot="{ Component }">
           <Transition name="page-fade" mode="out-in">
@@ -9,7 +10,7 @@
           </Transition>
         </RouterView>
       </ErrorBoundary>
-    </VaultLayout>
+    </component>
 
     <!-- classic 模板 / 分销控制台（保持原有结构不变） -->
     <template v-else>
@@ -35,10 +36,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAppStore } from './stores/app'
-import { getActiveTemplate } from './templates/registry'
+import { getActiveTheme, themePreview } from './templates/registry'
+import ThemePreviewBar from './templates/ThemePreviewBar.vue'
 import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
 import Loading from './components/Loading.vue'
@@ -55,8 +57,14 @@ const VaultLayout = defineAsyncComponent(() => import('./templates/vault/layout/
 const appStore = useAppStore()
 const route = useRoute()
 const isResellerConsole = computed(() => route.meta.resellerConsole === true)
-// getActiveTemplate 读取 appStore.config（响应式），config 加载后会重新计算
-const isVault = computed(() => getActiveTemplate() === 'vault')
+// Resolve after public config, then keep the document coherent until a refresh.
+const TechLayout = defineAsyncComponent(() => import('./templates/tech/TechLayout.vue'))
+const activeTheme = computed(() => getActiveTheme())
+const storefrontLayout = computed(() => activeTheme.value === 'theme-3' ? TechLayout : activeTheme.value === 'theme-2' ? VaultLayout : null)
+watchEffect(() => {
+  if (isResellerConsole.value) delete document.documentElement.dataset.storefrontTheme
+  else document.documentElement.dataset.storefrontTheme = activeTheme.value
+})
 </script>
 
 <style>
