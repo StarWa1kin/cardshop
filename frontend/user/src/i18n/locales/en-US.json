@@ -11,7 +11,18 @@
     "browseHint": "Digital essentials, curated",
     "choose": "Make it yours",
     "chooseHint": "Find the option that fits",
-    "ordersHint": "Keep track of your orders"
+    "ordersHint": "Keep track of your orders",
+    "cyber": {
+      "eyebrow": "Night market · Online 24/7",
+      "title": "Under the neon,",
+      "titleAccent": "digital goods, instantly.",
+      "subtitle": "Cruise the neon district and pick your next digital upgrade.",
+      "explore": "Jack in",
+      "boot1": "Connecting to night market",
+      "boot2": "Loading catalog",
+      "boot3": "Syncing cart",
+      "boot4": "Ready. Welcome back"
+    }
   },
   "siteContact": {
     "wechat": "WeChat",

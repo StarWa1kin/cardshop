@@ -6,11 +6,14 @@ import (
 	"github.com/dujiao-next/internal/shared/jsonmap"
 )
 
-var ErrInvalidTheme = errors.New("theme_id must be theme-1, theme-2 or theme-3")
+var ErrInvalidTheme = errors.New("theme_id must be theme-1, theme-2, theme-3 or theme-4")
+
+// themeIDs mirrors STOREFRONT_THEMES in frontend/shared/storefrontTheme.ts.
+var themeIDs = map[string]bool{"theme-1": true, "theme-2": true, "theme-3": true, "theme-4": true}
 
 func IsThemeID(raw interface{}) bool {
 	value, ok := raw.(string)
-	return ok && (value == "theme-1" || value == "theme-2" || value == "theme-3")
+	return ok && themeIDs[value]
 }
 
 func ValidateThemeSetting(value jsonmap.JSON) error {

@@ -1,5 +1,5 @@
 /** Presentation-only policy shared by the two frontends. No business state. */
-export const STOREFRONT_THEMES = ['theme-1', 'theme-2', 'theme-3'] as const
+export const STOREFRONT_THEMES = ['theme-1', 'theme-2', 'theme-3', 'theme-4'] as const
 export type StorefrontTheme = typeof STOREFRONT_THEMES[number]
 export type ColorMode = 'light' | 'dark'
 

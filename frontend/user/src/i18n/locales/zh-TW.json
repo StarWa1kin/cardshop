@@ -11,7 +11,18 @@
     "browseHint": "精選商品，清晰呈現",
     "choose": "按需選擇",
     "chooseHint": "靈活規格，自由選購",
-    "ordersHint": "隨時查看訂單進度"
+    "ordersHint": "隨時查看訂單進度",
+    "cyber": {
+      "eyebrow": "數位夜市 · 全天候在線",
+      "title": "霓虹之下",
+      "titleAccent": "數位好物即刻到手",
+      "subtitle": "穿過霓虹街區，挑選你的下一件數位裝備。",
+      "explore": "進入市場",
+      "boot1": "接入夜市網路",
+      "boot2": "載入商品目錄",
+      "boot3": "同步購物車",
+      "boot4": "準備就緒，歡迎回來"
+    }
   },
   "siteContact": {
     "wechat": "微信",

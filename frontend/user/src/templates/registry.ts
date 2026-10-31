@@ -18,17 +18,20 @@ export function getActiveTheme(): StorefrontTheme {
   return documentTheme
 }
 
-const vaultViews = import.meta.glob('./vault/**/*.vue')
-const techViews = import.meta.glob('./tech/**/*.vue')
 type ViewLoader = () => Promise<unknown>
+const vaultViews = import.meta.glob('./vault/**/*.vue')
+// Themes 3+ override only the pages they restyle; everything else falls back to vault.
+const ownViews: Partial<Record<StorefrontTheme, { dir: string, views: Record<string, ViewLoader> }>> = {
+  'theme-3': { dir: 'tech', views: import.meta.glob('./tech/**/*.vue') },
+  'theme-4': { dir: 'cyber', views: import.meta.glob('./cyber/**/*.vue') },
+}
 
-// Tech reuses the existing purchasing pages and their exact business handlers.
+// Derived themes reuse the existing purchasing pages and their exact business handlers.
 export const templateView = (name: string, classicLoader: ViewLoader): ViewLoader => () => {
   const theme = getActiveTheme()
-  if (theme === 'theme-3') {
-    const ownView = techViews[`./tech/${name}.vue`]
-    if (ownView) return ownView()
-  }
+  const own = ownViews[theme]
+  const ownView = own?.views[`./${own.dir}/${name}.vue`]
+  if (ownView) return ownView()
   if (theme !== 'theme-1') {
     const sharedView = vaultViews[`./vault/${name}.vue`]
     if (sharedView) return sharedView()

@@ -11,7 +11,18 @@
     "browseHint": "精选商品，清晰呈现",
     "choose": "按需选择",
     "chooseHint": "灵活规格，自由选购",
-    "ordersHint": "随时查看订单进度"
+    "ordersHint": "随时查看订单进度",
+    "cyber": {
+      "eyebrow": "数字夜市 · 全天候在线",
+      "title": "霓虹之下",
+      "titleAccent": "数字好物即刻到手",
+      "subtitle": "穿过霓虹街区，挑选你的下一件数字装备。",
+      "explore": "进入市场",
+      "boot1": "接入夜市网络",
+      "boot2": "加载商品目录",
+      "boot3": "同步购物车",
+      "boot4": "准备就绪，欢迎回来"
+    }
   },
   "siteContact": {
     "wechat": "微信",
