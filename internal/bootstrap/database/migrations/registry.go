@@ -3,6 +3,7 @@ package migrations
 import (
 	"github.com/dujiao-next/internal/constants"
 	affiliatedomain "github.com/dujiao-next/internal/modules/affiliate/domain"
+	analyticsdomain "github.com/dujiao-next/internal/modules/analytics/domain"
 	apicredentialdomain "github.com/dujiao-next/internal/modules/apicredential/domain"
 	auditlogdomain "github.com/dujiao-next/internal/modules/auditlog/domain"
 	cardsecretdomain "github.com/dujiao-next/internal/modules/cardsecret/domain"
@@ -94,6 +95,8 @@ func AutoMigrate() error {
 		&memberleveldomain.MemberLevel{},
 		&memberleveldomain.MemberLevelPrice{},
 		&contentdomain.Media{},
+		&analyticsdomain.VisitDaily{},
+		&analyticsdomain.VisitVisitorDaily{},
 	); err != nil {
 		return err
 	}

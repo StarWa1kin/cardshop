@@ -37,6 +37,11 @@ type KPI struct {
 	AutoAvailableSecrets int64  `json:"auto_available_secrets"`
 	ManualAvailableUnits int64  `json:"manual_available_units"`
 	TotalUserBalance     string `json:"total_user_balance"`
+	// 访问统计：UV 为区间内各日独立访客数之和，不是区间去重值。
+	HomePV    int64 `json:"home_pv"`
+	HomeUV    int64 `json:"home_uv"`
+	ProductPV int64 `json:"product_pv"`
+	ProductUV int64 `json:"product_uv"`
 }
 
 type Funnel struct {
@@ -71,15 +76,20 @@ type TrendPoint struct {
 	PaymentsFailed  int64  `json:"payments_failed"`
 	GMVPaid         string `json:"gmv_paid"`
 	Profit          string `json:"profit"`
+	HomePV          int64  `json:"home_pv"`
+	HomeUV          int64  `json:"home_uv"`
+	ProductPV       int64  `json:"product_pv"`
+	ProductUV       int64  `json:"product_uv"`
 }
 
 type RankingsResponse struct {
-	Range       string           `json:"range"`
-	From        string           `json:"from"`
-	To          string           `json:"to"`
-	Timezone    string           `json:"timezone"`
-	TopProducts []ProductRanking `json:"top_products"`
-	TopChannels []ChannelRanking `json:"top_channels"`
+	Range           string               `json:"range"`
+	From            string               `json:"from"`
+	To              string               `json:"to"`
+	Timezone        string               `json:"timezone"`
+	TopProducts     []ProductRanking     `json:"top_products"`
+	TopChannels     []ChannelRanking     `json:"top_channels"`
+	TopProductViews []ProductViewRanking `json:"top_product_views"`
 }
 
 type ProductRanking struct {
@@ -93,6 +103,14 @@ type ProductRanking struct {
 	PaidAmount    string       `json:"paid_amount"`
 	TotalCost     string       `json:"total_cost"`
 	Profit        string       `json:"profit"`
+}
+
+// ProductViewRanking 是商品浏览排行项。
+type ProductViewRanking struct {
+	ProductID uint   `json:"product_id"`
+	Title     string `json:"title"`
+	PV        int64  `json:"pv"`
+	UV        int64  `json:"uv"`
 }
 
 type ChannelRanking struct {

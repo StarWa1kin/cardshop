@@ -718,6 +718,21 @@ export interface AdminDashboardInventoryAlert {
   available_stock: number
 }
 
+// 商品浏览量：UV 为区间内各日独立访客数之和，不是区间去重值。
+export interface AdminProductViewItem {
+  product_id: number
+  pv: number
+  uv: number
+}
+
+export interface AdminProductViewsResult {
+  range: string
+  from: string
+  to: string
+  timezone: string
+  items: AdminProductViewItem[]
+}
+
 // --- Affiliate ---
 export interface AdminAffiliateUser {
   id: number

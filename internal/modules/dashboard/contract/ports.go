@@ -20,6 +20,9 @@ type Repository interface {
 	GetTopProducts(startAt, endAt time.Time, limit int) ([]ProductRankingRow, error)
 	GetTopChannels(startAt, endAt time.Time, limit int) ([]ChannelRankingRow, error)
 	GetTotalUserBalance() (float64, error)
+	GetTrafficOverview(fromDate, toDate string) (TrafficOverviewRow, error)
+	GetTrafficTrends(fromDate, toDate string) ([]TrafficTrendRow, error)
+	GetTopProductViews(fromDate, toDate string, limit int) ([]ProductViewRankingRow, error)
 }
 
 // SettingReader keeps the dashboard core independent from settings persistence.
@@ -105,6 +108,32 @@ type ProductRankingRow struct {
 	Quantity          int64
 	PaidAmount        float64
 	TotalCost         float64
+}
+
+// TrafficOverviewRow 是区间内的访问汇总。
+// UV 为区间内各日独立访客数之和，不是区间去重值。
+type TrafficOverviewRow struct {
+	HomePV    int64
+	HomeUV    int64
+	ProductPV int64
+	ProductUV int64
+}
+
+// TrafficTrendRow 是单日访问趋势。
+type TrafficTrendRow struct {
+	Day       string
+	HomePV    int64
+	HomeUV    int64
+	ProductPV int64
+	ProductUV int64
+}
+
+// ProductViewRankingRow 是商品浏览排行项。
+type ProductViewRankingRow struct {
+	ProductID uint
+	Title     string
+	PV        int64
+	UV        int64
 }
 
 type ChannelRankingRow struct {

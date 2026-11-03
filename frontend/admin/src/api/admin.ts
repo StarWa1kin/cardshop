@@ -407,6 +407,7 @@ export const adminAPI = {
   getDashboardTrends: (params?: Record<string, unknown>) => api.get('/admin/dashboard/trends', { params }),
   getDashboardRankings: (params?: Record<string, unknown>) => api.get('/admin/dashboard/rankings', { params }),
   getDashboardInventoryAlerts: () => api.get('/admin/dashboard/inventory-alerts'),
+  getProductViews: (params?: Record<string, unknown>) => api.get('/admin/analytics/product-views', { params }),
   updatePassword: (data: { old_password: string; new_password: string }) => api.put('/admin/password', data),
   getOrders: (params?: Record<string, unknown>) => api.get('/admin/orders', { params }),
   getOrder: (id: number) => api.get(`/admin/orders/${id}`),

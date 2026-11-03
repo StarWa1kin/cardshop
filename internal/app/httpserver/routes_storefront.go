@@ -6,6 +6,7 @@ import (
 	affiliatebootstrap "github.com/dujiao-next/internal/bootstrap/affiliate"
 	"github.com/dujiao-next/internal/config"
 	affiliatetransport "github.com/dujiao-next/internal/modules/affiliate/transport/http"
+	analyticstransport "github.com/dujiao-next/internal/modules/analytics/transport/http"
 	apicredentialtransport "github.com/dujiao-next/internal/modules/apicredential/transport/http"
 	auditlogtransport "github.com/dujiao-next/internal/modules/auditlog/transport/http"
 	captchatransport "github.com/dujiao-next/internal/modules/captcha/transport/http"
@@ -64,6 +65,7 @@ func registerStorefrontRoutes(
 	loginRule middleware.RateLimitRule,
 	guestReadRule middleware.RateLimitRule,
 	guestWriteRule middleware.RateLimitRule,
+	visitTrackRule middleware.RateLimitRule,
 ) {
 	storefront := apiV1.Group("")
 	storefront.Use(middleware.ResellerTenantMiddleware(c.ResellerDomainResolver))
@@ -80,6 +82,11 @@ func registerStorefrontRoutes(
 		affiliatetransport.RegisterPublicRoutes(public, affiliateHandler)
 		memberleveltransport.RegisterPublicRoutes(public, publicMemberLevelHandler)
 	}
+
+	// 访问统计上报：单独限流，避免脚本刷量把 PV 打成垃圾数据。
+	visitTracking := storefront.Group("/public")
+	visitTracking.Use(middleware.RateLimitMiddleware(redisClient, visitTrackRule, middleware.KeyByIP))
+	analyticstransport.RegisterPublicRoutes(visitTracking, analyticstransport.NewPublicHandler(c.VisitCollector))
 
 	// 游客接口
 	guest := storefront.Group("/guest")

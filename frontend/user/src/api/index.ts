@@ -61,6 +61,8 @@ export { walletAPI, giftCardAPI } from './wallet'
 export { affiliateAPI } from './affiliate'
 export { resellerAPI } from './reseller'
 export { apiCredentialAPI } from './credential'
+export { visitAPI } from './visit'
+export type { TrackVisitPayload } from './visit'
 
 // Default export for backward compatibility
 export { default } from './client'

@@ -56,6 +56,10 @@ interface DashboardOverview {
     auto_available_secrets: number
     manual_available_units: number
     total_user_balance: string
+    home_pv: number
+    home_uv: number
+    product_pv: number
+    product_uv: number
   }
   funnel: DashboardFunnel
   alerts: DashboardAlertItem[]
@@ -69,6 +73,10 @@ interface DashboardTrendPoint {
   payments_failed: number
   gmv_paid: string
   profit: string
+  home_pv: number
+  home_uv: number
+  product_pv: number
+  product_uv: number
 }
 
 interface DashboardTrends {
@@ -92,6 +100,13 @@ interface DashboardProductRanking {
   profit: string
 }
 
+interface DashboardProductViewRanking {
+  product_id: number
+  title: string
+  pv: number
+  uv: number
+}
+
 interface DashboardChannelRanking {
   channel_id: number
   channel_name: string
@@ -110,6 +125,7 @@ interface DashboardRankings {
   timezone: string
   top_products: DashboardProductRanking[]
   top_channels: DashboardChannelRanking[]
+  top_product_views: DashboardProductViewRanking[]
 }
 
 const { t, locale } = useI18n()
@@ -160,6 +176,14 @@ const maxPaymentTrend = computed(() => {
   return maxValue
 })
 
+const maxTrafficTrend = computed(() => {
+  let maxValue = 1
+  trendPoints.value.forEach((point) => {
+    maxValue = Math.max(maxValue, point.home_pv, point.home_uv, point.product_pv)
+  })
+  return maxValue
+})
+
 const funnelSteps = computed(() => {
   const funnel = overview.value?.funnel
   if (!funnel) return []
@@ -184,6 +208,7 @@ const orderTotalHeight = (value: number) => `${Math.max(4, Math.round((value / m
 const orderPaidHeight = (value: number) => `${Math.max(4, Math.round((value / maxOrderTrend.value) * 100))}%`
 const paymentSuccessHeight = (value: number) => `${Math.max(4, Math.round((value / maxPaymentTrend.value) * 100))}%`
 const paymentFailedHeight = (value: number) => `${Math.max(4, Math.round((value / maxPaymentTrend.value) * 100))}%`
+const trafficHeight = (value: number) => `${Math.max(4, Math.round((value / maxTrafficTrend.value) * 100))}%`
 const funnelWidth = (value: number) => `${Math.max(4, Math.round((value / maxFunnelValue.value) * 100))}%`
 
 const shortDate = (value?: string) => {
@@ -522,6 +547,27 @@ onMounted(() => {
 
       <Card class="min-w-0">
         <CardHeader class="pb-2">
+          <CardTitle class="text-xs font-medium text-muted-foreground">{{ t('admin.dashboard.kpi.homePV') }}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div class="text-2xl font-semibold">{{ overview?.kpi.home_pv ?? 0 }}</div>
+          <div class="mt-1 text-xs text-muted-foreground">{{ t('admin.dashboard.kpi.homeUV') }}: {{ overview?.kpi.home_uv ?? 0 }}</div>
+          <div class="mt-1 text-[10px] text-muted-foreground">{{ t('admin.dashboard.kpi.uvHint') }}</div>
+        </CardContent>
+      </Card>
+
+      <Card class="min-w-0">
+        <CardHeader class="pb-2">
+          <CardTitle class="text-xs font-medium text-muted-foreground">{{ t('admin.dashboard.kpi.productPV') }}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div class="text-2xl font-semibold">{{ overview?.kpi.product_pv ?? 0 }}</div>
+          <div class="mt-1 text-xs text-muted-foreground">{{ t('admin.dashboard.kpi.productUV') }}: {{ overview?.kpi.product_uv ?? 0 }}</div>
+        </CardContent>
+      </Card>
+
+      <Card class="min-w-0">
+        <CardHeader class="pb-2">
           <CardTitle class="text-xs font-medium text-muted-foreground">{{ t('admin.dashboard.period') }}</CardTitle>
         </CardHeader>
         <CardContent>
@@ -581,6 +627,58 @@ onMounted(() => {
                   </div>
                   <div class="whitespace-nowrap text-[10px] text-muted-foreground">{{ shortDate(point.date) }}</div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+
+    <div class="grid gap-4 xl:grid-cols-2 [&>*]:min-w-0">
+      <Card class="min-w-0">
+        <CardHeader class="pb-2">
+          <CardTitle class="text-sm">{{ t('admin.dashboard.trends.trafficTitle') }}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div v-if="loadingTrends" class="text-sm text-muted-foreground">{{ t('admin.common.loading') }}</div>
+          <div v-else-if="trendPoints.length === 0" class="text-sm text-muted-foreground">{{ t('admin.dashboard.emptyTrend') }}</div>
+          <div v-else class="space-y-3">
+            <div class="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+              <span class="inline-flex items-center gap-1"><span class="h-2 w-2 rounded-full bg-primary"></span>{{ t('admin.dashboard.trends.homePV') }}</span>
+              <span class="inline-flex items-center gap-1"><span class="h-2 w-2 rounded-full bg-violet-500"></span>{{ t('admin.dashboard.trends.homeUV') }}</span>
+              <span class="inline-flex items-center gap-1"><span class="h-2 w-2 rounded-full bg-amber-500"></span>{{ t('admin.dashboard.trends.productPV') }}</span>
+            </div>
+            <div class="overflow-x-auto">
+              <div class="inline-flex items-end gap-2 rounded-lg bg-muted/20 px-2 py-3">
+                <div v-for="point in trendPoints" :key="`${point.date}-traffic`" class="flex shrink-0 flex-col items-center gap-1">
+                  <div class="flex h-32 items-end gap-0.5">
+                    <div class="w-2 rounded-t bg-primary/80" :style="{ height: trafficHeight(point.home_pv) }" :title="`${t('admin.dashboard.trends.homePV')}: ${point.home_pv}`"></div>
+                    <div class="w-2 rounded-t bg-violet-500/80" :style="{ height: trafficHeight(point.home_uv) }" :title="`${t('admin.dashboard.trends.homeUV')}: ${point.home_uv}`"></div>
+                    <div class="w-2 rounded-t bg-amber-500/80" :style="{ height: trafficHeight(point.product_pv) }" :title="`${t('admin.dashboard.trends.productPV')}: ${point.product_pv}`"></div>
+                  </div>
+                  <div class="whitespace-nowrap text-[10px] text-muted-foreground">{{ shortDate(point.date) }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card class="min-w-0">
+        <CardHeader class="pb-2">
+          <CardTitle class="text-sm">{{ t('admin.dashboard.rankings.topProductViewsTitle') }}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div v-if="loadingRankings" class="text-sm text-muted-foreground">{{ t('admin.common.loading') }}</div>
+          <div v-else-if="!rankings || rankings.top_product_views.length === 0" class="text-sm text-muted-foreground">{{ t('admin.dashboard.rankings.empty') }}</div>
+          <div v-else class="space-y-2">
+            <div v-for="item in rankings.top_product_views" :key="`view-${item.product_id}`" class="min-w-0 rounded-lg border border-border px-3 py-2">
+              <router-link :to="{ path: '/products', query: { product_id: item.product_id } }" class="line-clamp-1 min-w-0 text-sm font-medium text-primary underline-offset-4 hover:underline">
+                {{ item.title }}
+              </router-link>
+              <div class="mt-1 flex flex-col gap-1 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+                <span class="font-semibold text-foreground">{{ t('admin.dashboard.rankings.pv') }}: {{ item.pv }}</span>
+                <span>{{ t('admin.dashboard.rankings.uv') }}: {{ item.uv }}</span>
               </div>
             </div>
           </div>

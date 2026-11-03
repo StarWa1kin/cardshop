@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/dujiao-next/internal/cache"
+	analyticsdomain "github.com/dujiao-next/internal/modules/analytics/domain"
 	dashboardcontract "github.com/dujiao-next/internal/modules/dashboard/contract"
 	reportingapp "github.com/dujiao-next/internal/modules/reporting/application"
 	reportingdomain "github.com/dujiao-next/internal/modules/reporting/domain"
@@ -76,6 +77,11 @@ func (s *Service) GetOverview(ctx context.Context, input reportingdomain.Query) 
 	if err != nil {
 		return nil, err
 	}
+	trafficFrom, trafficTo := analyticsdomain.StatDateRange(window.StartAt, window.EndAt)
+	traffic, err := s.repo.GetTrafficOverview(trafficFrom, trafficTo)
+	if err != nil {
+		return nil, err
+	}
 
 	totalCost := effectiveDashboardCost(profitOverview.TotalCost, profitOverview.RefundedCost, setting.Accounting.RefundReversesCost) + profitOverview.PaymentFee
 	totalProfit := profitOverview.TotalRevenue - totalCost
@@ -129,6 +135,10 @@ func (s *Service) GetOverview(ctx context.Context, input reportingdomain.Query) 
 			AutoAvailableSecrets: stockStats.AutoAvailableSecrets,
 			ManualAvailableUnits: stockStats.ManualAvailableUnits,
 			TotalUserBalance:     formatMoneyValue(totalUserBalance),
+			HomePV:               traffic.HomePV,
+			HomeUV:               traffic.HomeUV,
+			ProductPV:            traffic.ProductPV,
+			ProductUV:            traffic.ProductUV,
 		},
 		Funnel: Funnel{
 			OrdersCreated:         overview.OrdersTotal,
@@ -200,6 +210,11 @@ func (s *Service) GetTrends(ctx context.Context, input reportingdomain.Query) (*
 	if err != nil {
 		return nil, err
 	}
+	trafficFrom, trafficTo := analyticsdomain.StatDateRange(window.StartAt, window.EndAt)
+	trafficRows, err := s.repo.GetTrafficTrends(trafficFrom, trafficTo)
+	if err != nil {
+		return nil, err
+	}
 
 	orderMap := make(map[string]dashboardcontract.OrderTrendRow, len(orderRows))
 	for _, item := range orderRows {
@@ -213,6 +228,10 @@ func (s *Service) GetTrends(ctx context.Context, input reportingdomain.Query) (*
 	for _, item := range profitRows {
 		profitMap[item.Day] = item
 	}
+	trafficMap := make(map[string]dashboardcontract.TrafficTrendRow, len(trafficRows))
+	for _, item := range trafficRows {
+		trafficMap[item.Day] = item
+	}
 
 	points := make([]TrendPoint, 0)
 	for cursor := time.Date(window.StartAt.Year(), window.StartAt.Month(), window.StartAt.Day(), 0, 0, 0, 0, window.StartAt.Location()); cursor.Before(window.EndAt); cursor = cursor.AddDate(0, 0, 1) {
@@ -220,6 +239,7 @@ func (s *Service) GetTrends(ctx context.Context, input reportingdomain.Query) (*
 		orderItem := orderMap[day]
 		paymentItem := paymentMap[day]
 		profitItem := profitMap[day]
+		trafficItem := trafficMap[day]
 		dayCost := effectiveDashboardCost(profitItem.Cost, profitItem.RefundedCost, setting.Accounting.RefundReversesCost) + profitItem.PaymentFee
 		dayProfit := profitItem.Revenue - dayCost
 		points = append(points, TrendPoint{
@@ -230,6 +250,10 @@ func (s *Service) GetTrends(ctx context.Context, input reportingdomain.Query) (*
 			PaymentsFailed:  paymentItem.PaymentsFailed,
 			GMVPaid:         formatMoneyValue(paymentItem.GMVPaid),
 			Profit:          formatMoneyValue(dayProfit),
+			HomePV:          trafficItem.HomePV,
+			HomeUV:          trafficItem.HomeUV,
+			ProductPV:       trafficItem.ProductPV,
+			ProductUV:       trafficItem.ProductUV,
 		})
 	}
 
@@ -282,6 +306,11 @@ func (s *Service) GetRankings(ctx context.Context, input reportingdomain.Query) 
 	if err != nil {
 		return nil, err
 	}
+	trafficFrom, trafficTo := analyticsdomain.StatDateRange(window.StartAt, window.EndAt)
+	productViewRows, err := s.repo.GetTopProductViews(trafficFrom, trafficTo, setting.Ranking.TopProductsLimit)
+	if err != nil {
+		return nil, err
+	}
 
 	products := make([]ProductRanking, 0, len(productRows))
 	for _, item := range productRows {
@@ -322,13 +351,28 @@ func (s *Service) GetRankings(ctx context.Context, input reportingdomain.Query) 
 		})
 	}
 
+	productViews := make([]ProductViewRanking, 0, len(productViewRows))
+	for _, item := range productViewRows {
+		title := strings.TrimSpace(item.Title)
+		if title == "" {
+			title = "-"
+		}
+		productViews = append(productViews, ProductViewRanking{
+			ProductID: item.ProductID,
+			Title:     title,
+			PV:        item.PV,
+			UV:        item.UV,
+		})
+	}
+
 	response := &RankingsResponse{
-		Range:       window.Range,
-		From:        window.StartAt.Format(time.RFC3339),
-		To:          window.EndAt.Add(-time.Second).Format(time.RFC3339),
-		Timezone:    window.Timezone,
-		TopProducts: products,
-		TopChannels: channels,
+		Range:           window.Range,
+		From:            window.StartAt.Format(time.RFC3339),
+		To:              window.EndAt.Add(-time.Second).Format(time.RFC3339),
+		Timezone:        window.Timezone,
+		TopProducts:     products,
+		TopChannels:     channels,
+		TopProductViews: productViews,
 	}
 
 	_ = cache.SetJSON(ctx, cacheKey, response, dashboardCacheTTL)

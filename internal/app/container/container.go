@@ -5,6 +5,8 @@ import (
 	"github.com/dujiao-next/internal/config"
 	affiliateapp "github.com/dujiao-next/internal/modules/affiliate/application"
 	affiliatecontract "github.com/dujiao-next/internal/modules/affiliate/contract"
+	analyticsapp "github.com/dujiao-next/internal/modules/analytics/application"
+	analyticscontract "github.com/dujiao-next/internal/modules/analytics/contract"
 	apicredentialapp "github.com/dujiao-next/internal/modules/apicredential/application"
 	apicredentialcontract "github.com/dujiao-next/internal/modules/apicredential/contract"
 	auditlogapp "github.com/dujiao-next/internal/modules/auditlog/application"
@@ -112,6 +114,7 @@ type Container struct {
 	NotificationLogRepo    *notificationgormstore.LogStore
 	AdminLoginLogRepo      auditlogcontract.AdminLoginRepository
 	DashboardRepo          dashboardcontract.Repository
+	VisitStatsRepo         analyticscontract.Repository
 	AffiliateRepo          affiliatecontract.Store
 	ResellerStore          *resellergormstore.Store
 	ApiCredentialRepo      apicredentialcontract.Repository
@@ -165,6 +168,8 @@ type Container struct {
 	AdminLoginLogService          *auditlogapp.AdminLoginService
 	NotificationLogService        *notificationapp.LogService
 	DashboardService              *dashboardapp.Service
+	VisitCollector                *analyticsapp.Collector
+	VisitStatsService             *analyticsapp.Service
 	NotificationService           *notificationapp.Service
 	AffiliateService              *affiliateapp.Service
 	ResellerDomainResolver        *reseller.DomainResolver

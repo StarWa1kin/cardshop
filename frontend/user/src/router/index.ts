@@ -3,6 +3,7 @@ import { useUserAuthStore } from '../stores/userAuth'
 import { useAppStore } from '../stores/app'
 import { useTelegramMiniAppStore } from '../stores/telegramMiniApp'
 import { captureAffiliateFromRoute } from '../utils/affiliate'
+import { trackRouteVisit } from '../utils/visit'
 import { templateView, themePreview } from '../templates/registry'
 import { GOOGLE_REDIRECT_FRONTEND_CALLBACK_PATH } from '../utils/googleRedirect'
 
@@ -372,7 +373,8 @@ router.beforeEach(async (to, _from, next) => {
 })
 
 // Update SEO on route change
-router.afterEach(() => {
+router.afterEach((to) => {
+    trackRouteVisit(to)
     const appStore = useAppStore()
     const telegramMiniAppStore = useTelegramMiniAppStore()
     appStore.applySEO()

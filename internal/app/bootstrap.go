@@ -29,6 +29,9 @@ func BuildRunner(cfg *config.Config, mode string) (*Runner, error) {
 		addr := cfg.Server.Host + ":" + cfg.Server.Port
 		httpService := NewHTTPService(addr, engine)
 		services = append(services, httpService)
+		if dependencies.VisitCollector != nil {
+			services = append(services, newAnalyticsService(dependencies.VisitCollector))
+		}
 	}
 
 	// 初始化 Worker 服务

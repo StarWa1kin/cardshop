@@ -7,6 +7,7 @@ import (
 	settingsbootstrap "github.com/dujiao-next/internal/bootstrap/settingshttp"
 	"github.com/dujiao-next/internal/config"
 	affiliatetransport "github.com/dujiao-next/internal/modules/affiliate/transport/http"
+	analyticstransport "github.com/dujiao-next/internal/modules/analytics/transport/http"
 	apicredentialtransport "github.com/dujiao-next/internal/modules/apicredential/transport/http"
 	auditlogtransport "github.com/dujiao-next/internal/modules/auditlog/transport/http"
 	cardsecrettransport "github.com/dujiao-next/internal/modules/cardsecret/transport/http"
@@ -100,6 +101,9 @@ func registerAdminRoutes(
 
 	// 仪表盘
 	dashboardtransport.RegisterAdminRoutes(authorized, adminDashboardHandler)
+
+	// 访问统计（商品列表按页补 PV/UV）
+	analyticstransport.RegisterAdminRoutes(authorized, analyticstransport.NewAdminHandler(c.VisitStatsService))
 
 	// 广告代理
 

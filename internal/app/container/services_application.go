@@ -3,6 +3,8 @@ package container
 import (
 	"context"
 
+	analyticsapp "github.com/dujiao-next/internal/modules/analytics/application"
+	analyticscatalogreader "github.com/dujiao-next/internal/modules/analytics/infrastructure/catalogreader"
 	categoryapp "github.com/dujiao-next/internal/modules/catalog/category/application"
 
 	"github.com/dujiao-next/internal/logger"
@@ -135,4 +137,12 @@ func (c *Container) initApplicationServices() {
 		gormstore.NewBannerStore(gormdb.DB),
 		contentapp.SystemClock{},
 	)
+	// 访问统计：采集器常驻（PV 内存聚合后批量落库），读取侧只服务后台。
+	c.VisitCollector = analyticsapp.NewCollector(analyticsapp.CollectorOptions{
+		Repository: c.VisitStatsRepo,
+		Products:   analyticscatalogreader.New(c.ProductRepo),
+		Salt:       c.Config.App.SecretKey,
+	})
+	c.VisitCollector.Start()
+	c.VisitStatsService = analyticsapp.NewService(c.VisitStatsRepo)
 }

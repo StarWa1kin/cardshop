@@ -23,6 +23,7 @@ func BuiltinRoleSeeds() []RoleSeed {
 				{Object: "/admin/dashboard/trends", Action: "GET"},
 				{Object: "/admin/dashboard/rankings", Action: "GET"},
 				{Object: "/admin/dashboard/inventory-alerts", Action: "GET"},
+				{Object: "/admin/analytics/product-views", Action: "GET"},
 				{Object: "/admin/compliance/status", Action: "GET"},
 				{Object: "/admin/authz/me", Action: "GET"},
 				{Object: "/admin/2fa/status", Action: "GET"},
