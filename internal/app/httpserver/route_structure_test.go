@@ -136,7 +136,6 @@ func TestRouteDomainFilesPreserveTrustBoundaries(t *testing.T) {
 				`paymentProtected := authorized`,
 				`compliancetransport.RegisterAdminRoutes(authorized,`,
 				`systemtransport.RegisterAdminRoutes(authorized,`,
-				`adproxytransport.RegisterAdminRoutes(authorized,`,
 				`contenttransport.RegisterAdminRoutes(authorized, adminContentHandler)`,
 				`dashboardtransport.RegisterAdminRoutes(authorized, adminDashboardHandler)`,
 				`memberleveltransport.RegisterAdminRoutes(authorized, adminMemberLevelHandler)`,

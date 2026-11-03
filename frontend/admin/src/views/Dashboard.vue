@@ -9,8 +9,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { formatMoney, getLocalizedText } from '@/utils/format'
 import { formatSkuDisplayLabel } from '@/utils/sku'
 import type { AdminDashboardInventoryAlert } from '@/api/types'
-// 暂停 Dashboard 广告：禁用组件挂载及广告请求、曝光上报。
-// import DashboardAd from '@/components/admin/DashboardAd.vue'
 
 interface DashboardAlertItem {
   type: string
@@ -413,12 +411,6 @@ onMounted(() => {
       {{ dashboardError }}
     </div>
 
-    <!-- 暂停顶部广告位
-    <div class="min-w-0">
-      <DashboardAd slot-code="dashboard_top_banner" layout="banner" />
-    </div>
-    -->
-
     <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4 [&>*]:min-w-0">
       <Card class="min-w-0">
         <CardHeader class="pb-2">
@@ -537,12 +529,6 @@ onMounted(() => {
           <div class="mt-1 text-xs text-muted-foreground">{{ overview?.timezone || '-' }}</div>
         </CardContent>
       </Card>
-
-      <!-- 暂停 KPI 广告位
-      <div class="min-w-0">
-        <DashboardAd slot-code="dashboard_kpi_card" layout="card" />
-      </div>
-      -->
     </div>
 
     <div class="grid gap-4 xl:grid-cols-2 [&>*]:min-w-0">
@@ -682,12 +668,6 @@ onMounted(() => {
         </CardContent>
       </Card>
     </div>
-
-    <!-- 暂停赞助推荐广告位
-    <div class="min-w-0">
-      <DashboardAd slot-code="dashboard_sponsored" layout="compact" />
-    </div>
-    -->
 
     <div class="grid gap-4 xl:grid-cols-2 [&>*]:min-w-0">
       <Card class="min-w-0">
