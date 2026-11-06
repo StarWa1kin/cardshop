@@ -26,6 +26,7 @@
       </main>
       <Footer v-if="!isResellerConsole" />
       <BackToTop v-if="!isResellerConsole" />
+      <FloatingContact v-if="!isResellerConsole" stacked />
       <MobileBottomNav v-if="!isResellerConsole" />
     </template>
 
@@ -49,6 +50,7 @@ import Toast from './components/Toast.vue'
 import ConfirmDialog from './components/ConfirmDialog.vue'
 import ErrorBoundary from './components/ErrorBoundary.vue'
 import BackToTop from './components/BackToTop.vue'
+import FloatingContact from './components/FloatingContact.vue'
 import MobileBottomNav from './components/MobileBottomNav.vue'
 
 // vault 外壳按需加载，classic 用户不会拉取其 chunk/样式

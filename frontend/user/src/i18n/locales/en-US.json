@@ -25,6 +25,10 @@
     }
   },
   "siteContact": {
+    "floatingTitle": "Live support",
+    "floatingSubtitle": "Pick a channel to reach us",
+    "floatingOpen": "Contact support",
+    "floatingClose": "Close support panel",
     "wechat": "WeChat",
     "scanHint": "Scan with {channel}, or save the image and open it in the app.",
     "accountHint": "Copy the account and search for it in {channel}.",

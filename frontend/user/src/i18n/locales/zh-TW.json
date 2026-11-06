@@ -25,6 +25,10 @@
     }
   },
   "siteContact": {
+    "floatingTitle": "線上客服",
+    "floatingSubtitle": "選擇一種方式聯絡我們",
+    "floatingOpen": "聯絡客服",
+    "floatingClose": "收起客服面板",
     "wechat": "微信",
     "scanHint": "使用{channel}掃描 QR Code，或儲存圖片後在應用程式中辨識。",
     "accountHint": "複製帳號後，在{channel}中搜尋新增。",

@@ -112,7 +112,7 @@
           <RouterLink to="/guest/orders" class="flex items-center gap-[7px] py-[5px] text-[14.5px] text-muted-foreground hover:text-primary"><ClipboardList class="h-4 w-4" /> {{ t('navbar.guestOrders') }}</RouterLink>
           <a v-if="contact?.telegram" :href="contact.telegram" target="_blank" rel="noopener noreferrer" class="flex items-center gap-[7px] py-[5px] text-[14.5px] text-muted-foreground hover:text-primary"><Send class="h-4 w-4" /> Telegram</a>
           <a v-if="contact?.whatsapp" :href="contact.whatsapp" target="_blank" rel="noopener noreferrer" class="flex items-center gap-[7px] py-[5px] text-[14.5px] text-muted-foreground hover:text-primary"><MessageCircle class="h-4 w-4" /> WhatsApp</a>
-          <ContactAccounts compact />
+          <ContactAccounts variant="compact" />
         </div>
         <div>
           <h4 class="mb-3 text-sm font-bold">{{ t('vault.footer.legal') }}</h4>
@@ -132,11 +132,15 @@
         <span>简体中文 · 繁體 · English</span>
       </div>
     </footer>
+
+    <!-- 悬浮客服：theme-2/3/4 共用本外壳，底部无移动端导航，故不需要抬高 -->
+    <FloatingContact />
   </div>
 </template>
 
 <script setup lang="ts">
 import ContactAccounts from '@/components/ContactAccounts.vue'
+import FloatingContact from '@/components/FloatingContact.vue'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {

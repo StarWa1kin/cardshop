@@ -25,6 +25,10 @@
     }
   },
   "siteContact": {
+    "floatingTitle": "在线客服",
+    "floatingSubtitle": "选择一种方式联系我们",
+    "floatingOpen": "联系客服",
+    "floatingClose": "收起客服面板",
     "wechat": "微信",
     "scanHint": "使用{channel}扫描二维码，或保存图片后在应用中识别。",
     "accountHint": "复制账号后，在{channel}中搜索添加。",
