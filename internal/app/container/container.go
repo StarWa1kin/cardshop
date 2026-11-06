@@ -48,6 +48,8 @@ import (
 	usercontract "github.com/dujiao-next/internal/modules/identity/user/contract"
 	userauthapp "github.com/dujiao-next/internal/modules/identity/userauth/application"
 	usertotpapp "github.com/dujiao-next/internal/modules/identity/userauth/totp/application"
+	lotteryapp "github.com/dujiao-next/internal/modules/lottery/application"
+	lotterygormstore "github.com/dujiao-next/internal/modules/lottery/infrastructure/gormstore"
 	memberlevelapp "github.com/dujiao-next/internal/modules/memberlevel/application"
 	memberlevelcontract "github.com/dujiao-next/internal/modules/memberlevel/contract"
 	memberlevelgormstore "github.com/dujiao-next/internal/modules/memberlevel/infrastructure/gormstore"
@@ -115,6 +117,7 @@ type Container struct {
 	AdminLoginLogRepo      auditlogcontract.AdminLoginRepository
 	DashboardRepo          dashboardcontract.Repository
 	VisitStatsRepo         analyticscontract.Repository
+	LotteryRepo            *lotterygormstore.Store
 	AffiliateRepo          affiliatecontract.Store
 	ResellerStore          *resellergormstore.Store
 	ApiCredentialRepo      apicredentialcontract.Repository
@@ -170,6 +173,7 @@ type Container struct {
 	DashboardService              *dashboardapp.Service
 	VisitCollector                *analyticsapp.Collector
 	VisitStatsService             *analyticsapp.Service
+	LotteryService                *lotteryapp.Service
 	NotificationService           *notificationapp.Service
 	AffiliateService              *affiliateapp.Service
 	ResellerDomainResolver        *reseller.DomainResolver

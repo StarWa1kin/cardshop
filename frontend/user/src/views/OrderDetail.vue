@@ -129,6 +129,9 @@
           </div>
         </div>
 
+        <!-- 下单抽奖：仅登录用户的订单详情有入口，游客订单页不渲染该组件 -->
+        <LotteryCard :order-no="order.order_no" />
+
         <div v-if="showRefundRecordsCard" class="rounded-2xl border bg-card shadow-sm p-6">
           <h2 class="text-lg font-bold mb-4">{{ t('orderDetail.refundRecordsTitle') }}</h2>
           <div v-if="refundRecords.length > 0" class="overflow-x-auto rounded-xl border">
@@ -443,6 +446,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import EmptyState from '../components/EmptyState.vue'
 import BreadcrumbNav from '../components/BreadcrumbNav.vue'
 import SmartImage from '../components/SmartImage.vue'
+import LotteryCard from '../components/LotteryCard.vue'
 import { useOrderDetail } from '../composables/useOrderDetail'
 
 const { t } = useI18n()

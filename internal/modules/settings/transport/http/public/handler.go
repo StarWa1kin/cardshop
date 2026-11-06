@@ -217,7 +217,7 @@ func (h *Handler) GetConfig(c *gin.Context) {
 		data["nav_config"] = navConfigVal
 	} else {
 		data["nav_config"] = map[string]interface{}{
-			"builtin":      map[string]interface{}{"blog": true, "notice": true, "about": true},
+			"builtin":      map[string]interface{}{"blog": true, "notice": true, "about": true, "lottery": false},
 			"custom_items": make([]interface{}, 0),
 		}
 	}

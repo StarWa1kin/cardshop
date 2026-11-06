@@ -159,6 +159,11 @@ const router = createRouter({
             component: templateView('Payment', paymentViewLoader),
         },
         {
+            path: '/lottery',
+            name: 'lottery',
+            component: templateView('Lottery', () => import('../views/Lottery.vue')),
+        },
+        {
             path: '/me',
             name: 'personal-center',
             component: templateView('PersonalCenter', () => import('../views/PersonalCenter.vue')),
@@ -198,6 +203,13 @@ const router = createRouter({
             name: 'personal-center-gift-cards',
             component: templateView('PersonalCenter', () => import('../views/PersonalCenter.vue')),
             props: { section: 'giftCard' },
+            meta: { requiresUserAuth: true }
+        },
+        {
+            path: '/me/lottery',
+            name: 'personal-center-lottery',
+            component: templateView('PersonalCenter', () => import('../views/PersonalCenter.vue')),
+            props: { section: 'lottery' },
             meta: { requiresUserAuth: true }
         },
         {

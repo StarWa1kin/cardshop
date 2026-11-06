@@ -6,6 +6,11 @@ import (
 	analyticsapp "github.com/dujiao-next/internal/modules/analytics/application"
 	analyticscatalogreader "github.com/dujiao-next/internal/modules/analytics/infrastructure/catalogreader"
 	categoryapp "github.com/dujiao-next/internal/modules/catalog/category/application"
+	lotteryapp "github.com/dujiao-next/internal/modules/lottery/application"
+	lotteryawardreader "github.com/dujiao-next/internal/modules/lottery/infrastructure/awardreader"
+	lotteryorderreader "github.com/dujiao-next/internal/modules/lottery/infrastructure/orderreader"
+	lotterysettingscurrency "github.com/dujiao-next/internal/modules/lottery/infrastructure/settingscurrency"
+	lotterydrawgormuow "github.com/dujiao-next/internal/workflows/lotterydraw/infrastructure/gormuow"
 
 	"github.com/dujiao-next/internal/logger"
 	cardsecretapp "github.com/dujiao-next/internal/modules/cardsecret/application"
@@ -145,4 +150,14 @@ func (c *Container) initApplicationServices() {
 	})
 	c.VisitCollector.Start()
 	c.VisitStatsService = analyticsapp.NewService(c.VisitStatsRepo)
+
+	// 下单抽奖：订单读取只走"订单号 + 用户ID"，游客订单查不到，因此游客天然无法抽奖。
+	c.LotteryService = lotteryapp.NewService(lotteryapp.Options{
+		Repository: c.LotteryRepo,
+		Runner:     lotterydrawgormuow.New(c.LotteryRepo, c.WalletService),
+		Orders:     lotteryorderreader.New(c.OrderStore),
+		Coupons:    lotteryawardreader.New(c.CouponRepo, c.ProductRepo),
+		Products:   lotteryawardreader.New(c.CouponRepo, c.ProductRepo),
+		Currency:   lotterysettingscurrency.New(c.SettingService),
+	})
 }

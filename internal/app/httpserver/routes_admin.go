@@ -24,6 +24,7 @@ import (
 	adminauthtransport "github.com/dujiao-next/internal/modules/identity/adminauth/transport/http"
 	adminauthztransport "github.com/dujiao-next/internal/modules/identity/adminauthorization/transport/http"
 	adminusertransport "github.com/dujiao-next/internal/modules/identity/user/transport/http/admin"
+	lotterytransport "github.com/dujiao-next/internal/modules/lottery/transport/http"
 	memberleveltransport "github.com/dujiao-next/internal/modules/memberlevel/transport/http"
 	notificationtransport "github.com/dujiao-next/internal/modules/notification/transport/http"
 	ordertransport "github.com/dujiao-next/internal/modules/order/transport/http"
@@ -158,6 +159,9 @@ func registerAdminRoutes(
 	fulfillmenttransport.RegisterAdminRoutes(authorized, adminFulfillmentHandler)
 	cardsecrettransport.RegisterAdminRoutes(authorized, adminCardSecretHandler)
 	giftcardtransport.RegisterAdminRoutes(authorized, adminGiftCardHandler)
+
+	// 下单抽奖（规则/奖品/中奖结果）
+	lotterytransport.RegisterAdminRoutes(authorized, lotterytransport.NewAdminHandler(c.LotteryService))
 
 	// 优惠券与活动价
 	coupontransport.RegisterAdminRoutes(authorized, adminCouponHandler)

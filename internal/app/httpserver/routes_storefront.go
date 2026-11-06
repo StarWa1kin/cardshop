@@ -16,6 +16,7 @@ import (
 	contenttransport "github.com/dujiao-next/internal/modules/content/transport/http"
 	giftcardtransport "github.com/dujiao-next/internal/modules/giftcard/transport/http"
 	userauthtransport "github.com/dujiao-next/internal/modules/identity/userauth/transport/http"
+	lotterytransport "github.com/dujiao-next/internal/modules/lottery/transport/http"
 	memberleveltransport "github.com/dujiao-next/internal/modules/memberlevel/transport/http"
 	ordertransport "github.com/dujiao-next/internal/modules/order/transport/http"
 	paymenttransport "github.com/dujiao-next/internal/modules/payment/transport/http"
@@ -145,6 +146,7 @@ func registerStorefrontRoutes(
 		paymenttransport.RegisterUserLatestRoute(user, paymentLatestHandler)
 		wallettransport.RegisterUserRoutes(user, userWalletHandler)
 		giftcardtransport.RegisterUserRoutes(user, userGiftCardHandler)
+		lotterytransport.RegisterUserRoutes(user, lotterytransport.NewUserHandler(c.LotteryService))
 		affiliatetransport.RegisterUserRoutes(user, affiliateHandler)
 
 		resellerConsole := user.Group("/reseller")

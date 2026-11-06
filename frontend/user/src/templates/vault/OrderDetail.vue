@@ -52,6 +52,11 @@
         :fulfillment-downloading="fulfillmentDownloading"
         @download="handleDownloadFulfillment"
       />
+
+      <!-- 下单抽奖：仅登录用户的订单详情有入口 -->
+      <div class="mt-6">
+        <LotteryCard :order-no="order.order_no" />
+      </div>
     </template>
   </div>
 </template>
@@ -62,6 +67,7 @@ import { AlertCircle } from 'lucide-vue-next'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import VaultOrderBody from './components/VaultOrderBody.vue'
+import LotteryCard from '../../components/LotteryCard.vue'
 import { useOrderDetail } from '../../composables/useOrderDetail'
 
 const { t } = useI18n()

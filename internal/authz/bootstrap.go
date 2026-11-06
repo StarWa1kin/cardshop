@@ -70,6 +70,12 @@ func BuiltinRoleSeeds() []RoleSeed {
 				{Object: "/admin/gift-cards/generate", Action: "POST"},
 				{Object: "/admin/gift-cards/batch-status", Action: "PATCH"},
 				{Object: "/admin/gift-cards/export", Action: "POST"},
+				// 下单抽奖：规则、奖品与中奖结果
+				{Object: "/admin/lottery/config", Action: "*"},
+				{Object: "/admin/lottery/prizes", Action: "*"},
+				{Object: "/admin/lottery/prizes/:id", Action: "*"},
+				{Object: "/admin/lottery/draws", Action: "GET"},
+				{Object: "/admin/lottery/draws/:id/deliver", Action: "PATCH"},
 				{Object: "/admin/upload", Action: "POST"},
 				{Object: "/admin/media/batch-delete", Action: "POST"},
 				{Object: "/admin/media/:id", Action: "PUT"},
@@ -119,6 +125,7 @@ func BuiltinRoleSeeds() []RoleSeed {
 				{Object: "/admin/payments", Action: "GET"},
 				{Object: "/admin/payments/:id", Action: "GET"},
 				{Object: "/admin/gift-cards", Action: "GET"},
+				{Object: "/admin/lottery/draws", Action: "GET"}, // 客服需要核对用户的中奖与发放情况
 			},
 			Immutable: true,
 		},

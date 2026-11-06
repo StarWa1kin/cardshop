@@ -130,6 +130,8 @@ const (
 	WalletTxnTypeGiftCard    = "gift_card_redeem"
 	// WalletTxnTypeOrderUnderpaidCredit 记录"支付成功但金额不足以履约订单"时转入用户余额的款项。
 	WalletTxnTypeOrderUnderpaidCredit = "order_underpaid_credit"
+	// WalletTxnTypeLotteryPrize 记录下单抽奖中出的余额奖品。
+	WalletTxnTypeLotteryPrize = "lottery_prize"
 )
 
 // 钱包交易方向常量

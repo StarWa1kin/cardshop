@@ -1,7 +1,7 @@
 import { computed, type Component } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
-    Home, LayoutGrid, Newspaper, Bell, Info,
+    Home, LayoutGrid, Newspaper, Bell, Info, Dices,
     Link2, FileText, Globe, Star, Heart, MessageCircle, Gift, Zap, Shield,
     BookOpen, Code, Phone, MapPin, Music, Camera,
 } from 'lucide-vue-next'
@@ -45,10 +45,12 @@ interface NavConfigRaw {
     custom_items?: CustomNavItemRaw[]
 }
 
-const builtinNavDefs: Record<string, { path: string; label: string; icon: Component }> = {
-    blog: { path: '/blog', label: 'nav.blog', icon: Newspaper },
-    notice: { path: '/notice', label: 'nav.notice', icon: Bell },
-    about: { path: '/about', label: 'nav.about', icon: Info },
+const builtinNavDefs: Record<string, { path: string; label: string; icon: Component; defaultEnabled: boolean }> = {
+    blog: { path: '/blog', label: 'nav.blog', icon: Newspaper, defaultEnabled: true },
+    notice: { path: '/notice', label: 'nav.notice', icon: Bell, defaultEnabled: true },
+    about: { path: '/about', label: 'nav.about', icon: Info, defaultEnabled: true },
+    // 抽奖默认不挂导航：活动没配就露出入口，用户点进去只会看到"活动未开启"。
+    lottery: { path: '/lottery', label: 'nav.lottery', icon: Dices, defaultEnabled: false },
 }
 
 /** 后台自定义导航项可选的图标，key 与 SettingsNavigationTab.vue 的 presetIcons 一一对应 */
@@ -92,7 +94,8 @@ export const useNavConfig = () => {
         const builtin = navConfig.value?.builtin
         const result: NavItem[] = []
         for (const [key, def] of Object.entries(builtinNavDefs)) {
-            if (builtin && builtin[key] === false) continue
+            const enabled = builtin?.[key] ?? def.defaultEnabled
+            if (!enabled) continue
             result.push({ key, path: def.path, label: t(def.label), icon: def.icon, type: 'route', target: '_self' })
         }
         return result

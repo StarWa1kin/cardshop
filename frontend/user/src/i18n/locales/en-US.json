@@ -86,7 +86,8 @@
     "products": "Products",
     "blog": "Blog",
     "notice": "Notice",
-    "about": "About"
+    "about": "About",
+    "lottery": "Lucky draw"
   },
   "vault": {
     "hero": {
@@ -336,7 +337,8 @@
       "affiliate": "Affiliate",
       "reseller": "Reseller Center",
       "giftCard": "Gift Card",
-      "api": "API Integration"
+      "api": "API Integration",
+      "lottery": "Lucky draw"
     },
     "common": {
       "loadFailed": "Failed to load personal center data, please try again later",
@@ -1724,6 +1726,87 @@
     "fulfillmentTotalLines": "{count} items in total",
     "fulfillmentDownloading": "Downloading...",
     "fulfillmentTruncatedHint": "Showing first 100 items only. Please download for full content."
+  },
+  "lottery": {
+    "defaultTitle": "Order lucky draw",
+    "wheelLabel": "Prize wheel",
+    "drawButton": "Spin now",
+    "spinning": "Spinning…",
+    "missLabel": "No prize",
+    "remainingBadge": "{count} left",
+    "historyTitle": "Draws for this order",
+    "info": {
+      "perOrder": "{count} draw(s) per order",
+      "expiresAt": "Draw closes: {time}",
+      "dailyLimit": "Up to {count} draw(s) per day"
+    },
+    "reasons": {
+      "disabled": "The lucky draw is not running right now",
+      "order_not_found": "This order cannot join the draw",
+      "not_paid": "You can spin once the order is paid",
+      "amount_too_low": "This order does not reach the minimum amount",
+      "expired": "The draw window for this order has closed",
+      "exhausted": "You have used all draws for this order",
+      "daily_limit": "You have used today's draws, come back tomorrow",
+      "no_prize": "All prizes are gone, stay tuned for the next event",
+      "not_started": "This order was paid before the activity started"
+    },
+    "result": {
+      "winTitle": "You won!",
+      "missTitle": "No prize this time",
+      "balanceCredited": "{amount} has been credited to your wallet",
+      "couponCode": "Coupon code: {code}",
+      "copyCoupon": "Copy code",
+      "copied": "Copied",
+      "pendingHint": "This prize is delivered manually; we will handle it shortly"
+    },
+    "prizeTypes": {
+      "none": "No prize",
+      "balance": "Wallet balance",
+      "coupon": "Coupon",
+      "product": "Product",
+      "custom": "Custom prize"
+    },
+    "delivery": {
+      "none": "Credited",
+      "pending": "Pending delivery",
+      "delivered": "Delivered"
+    },
+    "panel": {
+      "title": "My draws",
+      "subtitle": "Review your draw history and prize delivery status",
+      "onlyWin": "Wins only",
+      "showAll": "Show all",
+      "empty": "No draw records yet",
+      "emptyHint": "After an order is paid, open its detail page to spin",
+      "table": {
+        "prize": "Prize",
+        "detail": "Reward",
+        "orderNo": "Order",
+        "delivery": "Delivery",
+        "time": "Drawn at"
+      }
+    },
+    "errors": {
+      "drawFailed": "The draw failed, please try again later",
+      "recordsFailed": "Failed to load draw records",
+      "loadFailed": "Failed to load the lucky draw"
+    },
+    "page": {
+      "loginRequired": "Sign in to spin",
+      "loginRequiredHint": "The draw is for registered accounts. Sign in and use a paid order to join.",
+      "disabledHint": "The activity is not running right now. Stay tuned for the next one.",
+      "pickOrder": "Pick an order to spin with",
+      "noDrawableOrder": "No order can join the draw right now. Come back after a payment goes through.",
+      "recentWins": "Recent wins",
+      "allRecords": "All records",
+      "noWinYet": "No wins yet — give the wheel a spin.",
+      "orderSummary": "{orders} orders · {count} draws left",
+      "searchOrder": "Search order number",
+      "noMatchedOrder": "No matching orders",
+      "currentOrder": "Current order"
+    },
+    "hubHint": "Tap the center of the wheel to spin"
   },
   "guestOrders": {
     "title": "Guest Order Lookup",

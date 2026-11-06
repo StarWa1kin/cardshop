@@ -21,6 +21,7 @@ import (
 	emailverificationdomain "github.com/dujiao-next/internal/modules/identity/emailverification/domain"
 	externalidentitydomain "github.com/dujiao-next/internal/modules/identity/externalidentity/domain"
 	userdomain "github.com/dujiao-next/internal/modules/identity/user/domain"
+	lotterydomain "github.com/dujiao-next/internal/modules/lottery/domain"
 	memberleveldomain "github.com/dujiao-next/internal/modules/memberlevel/domain"
 	notificationdomain "github.com/dujiao-next/internal/modules/notification/domain"
 	orderdomain "github.com/dujiao-next/internal/modules/order/domain"
@@ -97,6 +98,9 @@ func AutoMigrate() error {
 		&contentdomain.Media{},
 		&analyticsdomain.VisitDaily{},
 		&analyticsdomain.VisitVisitorDaily{},
+		&lotterydomain.Config{},
+		&lotterydomain.Prize{},
+		&lotterydomain.Draw{},
 	); err != nil {
 		return err
 	}

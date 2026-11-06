@@ -275,6 +275,7 @@
             </Button>
           </div>
           <GiftCardPanel v-else-if="currentSection === 'giftCard'" />
+          <LotteryPanel v-else-if="currentSection === 'lottery'" />
           <ApiPanel v-else-if="currentSection === 'api'" />
           <OrdersPanel v-else />
         </section>
@@ -297,6 +298,7 @@ import SecurityPanel from './personal/SecurityPanel.vue'
 import OrdersPanel from './personal/OrdersPanel.vue'
 import WalletPanel from './personal/WalletPanel.vue'
 import GiftCardPanel from './personal/GiftCardPanel.vue'
+import LotteryPanel from './personal/LotteryPanel.vue'
 import AffiliatePanel from './personal/AffiliatePanel.vue'
 import ApiPanel from './personal/ApiPanel.vue'
 import { usePersonalCenter, type PersonalSection } from '../composables/usePersonalCenter'
