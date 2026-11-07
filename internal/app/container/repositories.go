@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	affiliategormstore "github.com/dujiao-next/internal/modules/affiliate/infrastructure/gormstore"
+	analyticsgormstore "github.com/dujiao-next/internal/modules/analytics/infrastructure/gormstore"
 	apicredentialgormstore "github.com/dujiao-next/internal/modules/apicredential/infrastructure/gormstore"
 	auditloggormstore "github.com/dujiao-next/internal/modules/auditlog/infrastructure/gormstore"
 	cardsecretgormstore "github.com/dujiao-next/internal/modules/cardsecret/infrastructure/gormstore"
@@ -21,6 +22,7 @@ import (
 	emailverificationstore "github.com/dujiao-next/internal/modules/identity/emailverification/infrastructure/gormstore"
 	externalidentitystore "github.com/dujiao-next/internal/modules/identity/externalidentity/infrastructure/gormstore"
 	userstore "github.com/dujiao-next/internal/modules/identity/user/infrastructure/gormstore"
+	lotterygormstore "github.com/dujiao-next/internal/modules/lottery/infrastructure/gormstore"
 	memberlevelgormstore "github.com/dujiao-next/internal/modules/memberlevel/infrastructure/gormstore"
 	notificationgormstore "github.com/dujiao-next/internal/modules/notification/infrastructure/gormstore"
 	ordergormstore "github.com/dujiao-next/internal/modules/order/infrastructure/gormstore"
@@ -67,6 +69,8 @@ func (c *Container) initRepositories() error {
 	c.NotificationLogRepo = notificationgormstore.NewLogStore(db)
 	c.AdminLoginLogRepo = auditloggormstore.NewAdminLoginStore(db)
 	c.DashboardRepo = dashboardgormstore.New(db)
+	c.VisitStatsRepo = analyticsgormstore.New(db)
+	c.LotteryRepo = lotterygormstore.New(db)
 	c.AffiliateRepo = affiliategormstore.New(db)
 	c.ResellerStore = resellergormstore.New(db)
 	c.ApiCredentialRepo = apicredentialgormstore.New(db)

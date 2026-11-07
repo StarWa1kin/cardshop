@@ -59,6 +59,7 @@ const form = reactive({
     blog: true,
     notice: true,
     about: true,
+    lottery: false,
   },
   customItems: [] as CustomNavItem[],
 })
@@ -94,6 +95,8 @@ const fetchNavConfig = async () => {
         form.builtin.blog = b.blog !== false
         form.builtin.notice = b.notice !== false
         form.builtin.about = b.about !== false
+        // 抽奖入口默认关闭，没显式打开就不挂到前台导航
+        form.builtin.lottery = b.lottery === true
       }
       if (Array.isArray(d.custom_items)) {
         form.customItems = (d.custom_items as Array<Record<string, unknown>>).map((item) => ({
@@ -175,6 +178,13 @@ defineExpose({ save, submitting })
         <div class="flex items-center justify-between py-4">
           <Label class="text-sm font-medium">{{ t('admin.settings.navigation.builtin.about') }}</Label>
           <Switch v-model="form.builtin.about" />
+        </div>
+        <div class="flex items-center justify-between py-4">
+          <div>
+            <Label class="text-sm font-medium">{{ t('admin.settings.navigation.builtin.lottery') }}</Label>
+            <p class="mt-1 text-xs text-muted-foreground">{{ t('admin.settings.navigation.builtin.lotteryHint') }}</p>
+          </div>
+          <Switch v-model="form.builtin.lottery" />
         </div>
       </div>
     </div>

@@ -326,14 +326,16 @@ func normalizeStorefrontTemplate(raw interface{}) string {
 }
 
 func normalizeNavConfig(value map[string]interface{}) jsonmap.JSON {
-	// builtin: blog / notice / about 开关，默认 true
+	// builtin: blog / notice / about 开关，默认 true；
+	// lottery 默认关闭——没配活动就挂个抽奖入口，点进去只会看到"活动未开启"。
 	builtin := map[string]interface{}{
-		"blog":   true,
-		"notice": true,
-		"about":  true,
+		"blog":    true,
+		"notice":  true,
+		"about":   true,
+		"lottery": false,
 	}
 	if builtinRaw, ok := value["builtin"].(map[string]interface{}); ok {
-		for _, key := range []string{"blog", "notice", "about"} {
+		for _, key := range []string{"blog", "notice", "about", "lottery"} {
 			if raw, exists := builtinRaw[key]; exists {
 				builtin[key] = parseSettingBool(raw)
 			}

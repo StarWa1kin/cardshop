@@ -45,6 +45,8 @@ import {
   Crown,
   Bell,
   ImageIcon,
+  Dices,
+  Trophy,
 } from 'lucide-vue-next'
 import { Menu } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
@@ -321,6 +323,18 @@ const navGroups = computed<NavGroup[]>(() => {
           to: '/gift-cards',
           icon: Gift,
           permission: 'GET:/admin/gift-cards',
+        },
+        {
+          label: t('admin.navItems.lottery'),
+          to: '/lottery',
+          icon: Dices,
+          permission: 'GET:/admin/lottery/config',
+        },
+        {
+          label: t('admin.navItems.lotteryDraws'),
+          to: '/lottery/draws',
+          icon: Trophy,
+          permission: 'GET:/admin/lottery/draws',
         },
       ],
     },

@@ -3,6 +3,7 @@ package migrations
 import (
 	"github.com/dujiao-next/internal/constants"
 	affiliatedomain "github.com/dujiao-next/internal/modules/affiliate/domain"
+	analyticsdomain "github.com/dujiao-next/internal/modules/analytics/domain"
 	apicredentialdomain "github.com/dujiao-next/internal/modules/apicredential/domain"
 	auditlogdomain "github.com/dujiao-next/internal/modules/auditlog/domain"
 	cardsecretdomain "github.com/dujiao-next/internal/modules/cardsecret/domain"
@@ -20,6 +21,7 @@ import (
 	emailverificationdomain "github.com/dujiao-next/internal/modules/identity/emailverification/domain"
 	externalidentitydomain "github.com/dujiao-next/internal/modules/identity/externalidentity/domain"
 	userdomain "github.com/dujiao-next/internal/modules/identity/user/domain"
+	lotterydomain "github.com/dujiao-next/internal/modules/lottery/domain"
 	memberleveldomain "github.com/dujiao-next/internal/modules/memberlevel/domain"
 	notificationdomain "github.com/dujiao-next/internal/modules/notification/domain"
 	orderdomain "github.com/dujiao-next/internal/modules/order/domain"
@@ -94,6 +96,11 @@ func AutoMigrate() error {
 		&memberleveldomain.MemberLevel{},
 		&memberleveldomain.MemberLevelPrice{},
 		&contentdomain.Media{},
+		&analyticsdomain.VisitDaily{},
+		&analyticsdomain.VisitVisitorDaily{},
+		&lotterydomain.Config{},
+		&lotterydomain.Prize{},
+		&lotterydomain.Draw{},
 	); err != nil {
 		return err
 	}

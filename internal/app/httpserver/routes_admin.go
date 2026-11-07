@@ -6,8 +6,8 @@ import (
 	affiliatebootstrap "github.com/dujiao-next/internal/bootstrap/affiliate"
 	settingsbootstrap "github.com/dujiao-next/internal/bootstrap/settingshttp"
 	"github.com/dujiao-next/internal/config"
-	adproxytransport "github.com/dujiao-next/internal/modules/adproxy/transport/http"
 	affiliatetransport "github.com/dujiao-next/internal/modules/affiliate/transport/http"
+	analyticstransport "github.com/dujiao-next/internal/modules/analytics/transport/http"
 	apicredentialtransport "github.com/dujiao-next/internal/modules/apicredential/transport/http"
 	auditlogtransport "github.com/dujiao-next/internal/modules/auditlog/transport/http"
 	cardsecrettransport "github.com/dujiao-next/internal/modules/cardsecret/transport/http"
@@ -24,6 +24,7 @@ import (
 	adminauthtransport "github.com/dujiao-next/internal/modules/identity/adminauth/transport/http"
 	adminauthztransport "github.com/dujiao-next/internal/modules/identity/adminauthorization/transport/http"
 	adminusertransport "github.com/dujiao-next/internal/modules/identity/user/transport/http/admin"
+	lotterytransport "github.com/dujiao-next/internal/modules/lottery/transport/http"
 	memberleveltransport "github.com/dujiao-next/internal/modules/memberlevel/transport/http"
 	notificationtransport "github.com/dujiao-next/internal/modules/notification/transport/http"
 	ordertransport "github.com/dujiao-next/internal/modules/order/transport/http"
@@ -102,8 +103,10 @@ func registerAdminRoutes(
 	// 仪表盘
 	dashboardtransport.RegisterAdminRoutes(authorized, adminDashboardHandler)
 
+	// 访问统计（商品列表按页补 PV/UV）
+	analyticstransport.RegisterAdminRoutes(authorized, analyticstransport.NewAdminHandler(c.VisitStatsService))
+
 	// 广告代理
-	adproxytransport.RegisterAdminRoutes(authorized, adproxytransport.NewAdminHandler(c.AdProxyService))
 
 	// 商品 / 分类管理
 	producthttp.RegisterAdminRoutes(authorized, adminCatalogProductHandler)
@@ -159,6 +162,9 @@ func registerAdminRoutes(
 	fulfillmenttransport.RegisterAdminRoutes(authorized, adminFulfillmentHandler)
 	cardsecrettransport.RegisterAdminRoutes(authorized, adminCardSecretHandler)
 	giftcardtransport.RegisterAdminRoutes(authorized, adminGiftCardHandler)
+
+	// 下单抽奖（规则/奖品/中奖结果）
+	lotterytransport.RegisterAdminRoutes(authorized, lotterytransport.NewAdminHandler(c.LotteryService))
 
 	// 优惠券与活动价
 	coupontransport.RegisterAdminRoutes(authorized, adminCouponHandler)

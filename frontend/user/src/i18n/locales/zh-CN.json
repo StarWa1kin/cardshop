@@ -11,9 +11,24 @@
     "browseHint": "精选商品，清晰呈现",
     "choose": "按需选择",
     "chooseHint": "灵活规格，自由选购",
-    "ordersHint": "随时查看订单进度"
+    "ordersHint": "随时查看订单进度",
+    "cyber": {
+      "eyebrow": "数字夜市 · 全天候在线",
+      "title": "霓虹之下",
+      "titleAccent": "数字好物即刻到手",
+      "subtitle": "穿过霓虹街区，挑选你的下一件数字装备。",
+      "explore": "进入市场",
+      "boot1": "接入夜市网络",
+      "boot2": "加载商品目录",
+      "boot3": "同步购物车",
+      "boot4": "准备就绪，欢迎回来"
+    }
   },
   "siteContact": {
+    "floatingTitle": "在线客服",
+    "floatingSubtitle": "选择一种方式联系我们",
+    "floatingOpen": "联系客服",
+    "floatingClose": "收起客服面板",
     "wechat": "微信",
     "scanHint": "使用{channel}扫描二维码，或保存图片后在应用中识别。",
     "accountHint": "复制账号后，在{channel}中搜索添加。",
@@ -75,7 +90,8 @@
     "products": "商品中心",
     "blog": "博客",
     "notice": "公告",
-    "about": "关于"
+    "about": "关于",
+    "lottery": "幸运抽奖"
   },
   "vault": {
     "hero": {
@@ -278,7 +294,8 @@
       "affiliate": "推广返利",
       "reseller": "分销中心",
       "giftCard": "礼品卡兑换",
-      "api": "API 对接"
+      "api": "API 对接",
+      "lottery": "幸运抽奖"
     },
     "common": {
       "loadFailed": "个人中心数据加载失败，请稍后重试",
@@ -1666,6 +1683,87 @@
     "fulfillmentTotalLines": "共 {count} 条交付内容",
     "fulfillmentDownloading": "下载中...",
     "fulfillmentTruncatedHint": "当前仅显示前 100 条预览，请下载获取完整交付内容"
+  },
+  "lottery": {
+    "defaultTitle": "下单抽奖",
+    "wheelLabel": "抽奖大转盘",
+    "drawButton": "立即抽奖",
+    "spinning": "抽奖中…",
+    "missLabel": "谢谢参与",
+    "remainingBadge": "剩余 {count} 次",
+    "historyTitle": "本单抽奖记录",
+    "info": {
+      "perOrder": "每笔订单可抽 {count} 次",
+      "expiresAt": "抽奖截止：{time}",
+      "dailyLimit": "每日最多可抽 {count} 次"
+    },
+    "reasons": {
+      "disabled": "抽奖活动暂未开启",
+      "order_not_found": "该订单不支持抽奖",
+      "not_paid": "订单支付完成后即可抽奖",
+      "amount_too_low": "订单实付金额未达到抽奖门槛",
+      "expired": "该订单已超过抽奖有效期",
+      "exhausted": "本单的抽奖次数已用完",
+      "daily_limit": "今日抽奖次数已用完，明天再来",
+      "no_prize": "奖品已全部抽完，敬请期待下次活动",
+      "not_started": "该订单的支付时间早于活动开始时间，不参与本次抽奖"
+    },
+    "result": {
+      "winTitle": "恭喜中奖！",
+      "missTitle": "很遗憾，未中奖",
+      "balanceCredited": "{amount} 已充入钱包余额",
+      "couponCode": "优惠券码：{code}",
+      "copyCoupon": "复制券码",
+      "copied": "已复制",
+      "pendingHint": "该奖品需要人工发放，我们会尽快为你处理"
+    },
+    "prizeTypes": {
+      "none": "谢谢参与",
+      "balance": "钱包余额",
+      "coupon": "优惠券",
+      "product": "商品奖品",
+      "custom": "自定义奖品"
+    },
+    "delivery": {
+      "none": "已到账",
+      "pending": "待发放",
+      "delivered": "已发放"
+    },
+    "panel": {
+      "title": "我的抽奖",
+      "subtitle": "查看历史抽奖与中奖结果，奖品发放状态实时更新",
+      "onlyWin": "只看中奖",
+      "showAll": "查看全部",
+      "empty": "还没有抽奖记录",
+      "emptyHint": "下单付款成功后，到订单详情页即可参与抽奖",
+      "table": {
+        "prize": "奖品",
+        "detail": "奖品内容",
+        "orderNo": "来源订单",
+        "delivery": "发放状态",
+        "time": "抽奖时间"
+      }
+    },
+    "errors": {
+      "drawFailed": "抽奖失败，请稍后重试",
+      "recordsFailed": "获取抽奖记录失败",
+      "loadFailed": "加载抽奖活动失败"
+    },
+    "page": {
+      "loginRequired": "登录后即可抽奖",
+      "loginRequiredHint": "抽奖仅对注册账号开放，登录后用已付款订单参与。",
+      "disabledHint": "活动暂未开启，敬请期待下一场。",
+      "pickOrder": "选择参与抽奖的订单",
+      "noDrawableOrder": "当前没有可参与抽奖的订单。完成一笔付款后再回来试试手气。",
+      "recentWins": "最近中奖",
+      "allRecords": "全部记录",
+      "noWinYet": "还没有中奖记录，去转一把。",
+      "orderSummary": "共 {orders} 笔 · 剩余 {count} 次",
+      "searchOrder": "搜索订单号",
+      "noMatchedOrder": "没有匹配的订单",
+      "currentOrder": "当前订单"
+    },
+    "hubHint": "点击转盘中心开始抽奖"
   },
   "guestOrders": {
     "title": "游客订单查询",

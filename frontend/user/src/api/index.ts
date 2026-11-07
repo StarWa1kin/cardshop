@@ -61,6 +61,20 @@ export { walletAPI, giftCardAPI } from './wallet'
 export { affiliateAPI } from './affiliate'
 export { resellerAPI } from './reseller'
 export { apiCredentialAPI } from './credential'
+export { visitAPI } from './visit'
+export type { TrackVisitPayload } from './visit'
+export { lotteryAPI, LOTTERY_MISS_SLICE } from './lottery'
+export type {
+    LotteryWheel,
+    LotteryWheelSlice,
+    LotteryDraw,
+    LotteryChance,
+    LotteryChanceReason,
+    LotteryDrawResult,
+    LotteryDrawableOrder,
+    LotteryPrizeType,
+    LotteryDeliveryStatus,
+} from './lottery'
 
 // Default export for backward compatibility
 export { default } from './client'

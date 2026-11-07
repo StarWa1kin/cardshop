@@ -1,14 +1,14 @@
 import { computed, onMounted, ref, type Component } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { Banknote, Home, ShoppingBag, Wallet, Gift, ShieldCheck, UserCircle, Megaphone, Key } from 'lucide-vue-next'
+import { Banknote, Dices, Home, ShoppingBag, Wallet, Gift, ShieldCheck, UserCircle, Megaphone, Key } from 'lucide-vue-next'
 import { orderStatusLabel, orderStatusVariant } from '../utils/status'
 import type { PageAlert } from '../utils/alerts'
 import { useAppStore } from '../stores/app'
 import { useUserProfileStore } from '../stores/userProfile'
 import type { PublicMemberLevel } from '../api'
 
-export type PersonalSection = 'overview' | 'profile' | 'security' | 'orders' | 'wallet' | 'giftCard' | 'affiliate' | 'reseller' | 'api'
+export type PersonalSection = 'overview' | 'profile' | 'security' | 'orders' | 'wallet' | 'giftCard' | 'lottery' | 'affiliate' | 'reseller' | 'api'
 
 export interface PersonalSectionItem {
   key: PersonalSection
@@ -32,6 +32,7 @@ export function usePersonalCenter(sectionGetter: () => PersonalSection) {
     { key: 'affiliate', label: 'personalCenter.tabs.affiliate', icon: Megaphone },
     { key: 'reseller', label: 'personalCenter.tabs.reseller', icon: Banknote },
     { key: 'giftCard', label: 'personalCenter.tabs.giftCard', icon: Gift },
+    { key: 'lottery', label: 'personalCenter.tabs.lottery', icon: Dices },
     { key: 'security', label: 'personalCenter.tabs.security', icon: ShieldCheck },
     { key: 'api', label: 'personalCenter.tabs.api', icon: Key },
     { key: 'profile', label: 'personalCenter.tabs.profile', icon: UserCircle },
@@ -46,6 +47,7 @@ export function usePersonalCenter(sectionGetter: () => PersonalSection) {
     affiliate: '/me/affiliate',
     reseller: '/me/reseller',
     giftCard: '/me/gift-cards',
+    lottery: '/me/lottery',
     api: '/me/api',
   }
 

@@ -730,36 +730,19 @@ export interface AdminDashboardInventoryAlert {
   available_stock: number
 }
 
-// --- Ad Proxy ---
-export interface AdRenderSlotDTO {
-  code: string
-  scene: string
-  layout: string
-  render_mode: string
-  max_items: number
+// 商品浏览量：UV 为区间内各日独立访客数之和，不是区间去重值。
+export interface AdminProductViewItem {
+  product_id: number
+  pv: number
+  uv: number
 }
 
-export interface AdRenderItemDTO {
-  id: number
-  advertiser_name: string
-  title: string
-  subtitle: string
-  cta_label: string
-  badge: string
-  image: string
-  mobile_image: string
-  icon: string
-  link_type: string
-  open_in_new_tab: boolean
-  theme: string
-  dismissible: boolean
-  click_url: string
-  impression_token: string
-}
-
-export interface AdRenderResponse {
-  slot: AdRenderSlotDTO
-  items: AdRenderItemDTO[]
+export interface AdminProductViewsResult {
+  range: string
+  from: string
+  to: string
+  timezone: string
+  items: AdminProductViewItem[]
 }
 
 // --- Affiliate ---

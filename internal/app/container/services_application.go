@@ -3,9 +3,14 @@ package container
 import (
 	"context"
 
-	adproxyapp "github.com/dujiao-next/internal/modules/adproxy/application"
-	adproxygateway "github.com/dujiao-next/internal/modules/adproxy/infrastructure/adgateway"
+	analyticsapp "github.com/dujiao-next/internal/modules/analytics/application"
+	analyticscatalogreader "github.com/dujiao-next/internal/modules/analytics/infrastructure/catalogreader"
 	categoryapp "github.com/dujiao-next/internal/modules/catalog/category/application"
+	lotteryapp "github.com/dujiao-next/internal/modules/lottery/application"
+	lotteryawardreader "github.com/dujiao-next/internal/modules/lottery/infrastructure/awardreader"
+	lotteryorderreader "github.com/dujiao-next/internal/modules/lottery/infrastructure/orderreader"
+	lotterysettingscurrency "github.com/dujiao-next/internal/modules/lottery/infrastructure/settingscurrency"
+	lotterydrawgormuow "github.com/dujiao-next/internal/workflows/lotterydraw/infrastructure/gormuow"
 
 	"github.com/dujiao-next/internal/logger"
 	cardsecretapp "github.com/dujiao-next/internal/modules/cardsecret/application"
@@ -35,7 +40,6 @@ import (
 
 // initApplicationServices 装配内容、购物车、订单、履约和营销用例。
 func (c *Container) initApplicationServices() {
-	c.AdProxyService = adproxyapp.NewService(adproxygateway.New())
 	postStore := gormstore.NewPostStore(gormdb.DB)
 	postCategoryStore := gormstore.NewPostCategoryStore(gormdb.DB)
 	c.ContentPostService = contentapp.NewPostService(
@@ -138,4 +142,22 @@ func (c *Container) initApplicationServices() {
 		gormstore.NewBannerStore(gormdb.DB),
 		contentapp.SystemClock{},
 	)
+	// 访问统计：采集器常驻（PV 内存聚合后批量落库），读取侧只服务后台。
+	c.VisitCollector = analyticsapp.NewCollector(analyticsapp.CollectorOptions{
+		Repository: c.VisitStatsRepo,
+		Products:   analyticscatalogreader.New(c.ProductRepo),
+		Salt:       c.Config.App.SecretKey,
+	})
+	c.VisitCollector.Start()
+	c.VisitStatsService = analyticsapp.NewService(c.VisitStatsRepo)
+
+	// 下单抽奖：订单读取只走"订单号 + 用户ID"，游客订单查不到，因此游客天然无法抽奖。
+	c.LotteryService = lotteryapp.NewService(lotteryapp.Options{
+		Repository: c.LotteryRepo,
+		Runner:     lotterydrawgormuow.New(c.LotteryRepo, c.WalletService),
+		Orders:     lotteryorderreader.New(c.OrderStore),
+		Coupons:    lotteryawardreader.New(c.CouponRepo, c.ProductRepo),
+		Products:   lotteryawardreader.New(c.CouponRepo, c.ProductRepo),
+		Currency:   lotterysettingscurrency.New(c.SettingService),
+	})
 }

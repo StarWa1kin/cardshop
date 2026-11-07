@@ -70,7 +70,7 @@
               </svg>
               <span>WhatsApp</span>
             </a>
-          <ContactAccounts compact />
+          <ContactAccounts variant="compact" />
           </div>
         </div>
       </div>

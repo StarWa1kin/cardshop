@@ -34,13 +34,18 @@ describe('storefront theme independent controls', () => {
     await select('theme-3')
     expect(api.updateSettings).not.toHaveBeenCalled()
     const previews = Array.from(host.querySelectorAll('a'))
-    expect(previews.map(a => new URL(a.href).searchParams.get('theme_preview'))).toEqual(['theme-1', 'theme-2', 'theme-3'])
+    expect(previews.map(a => new URL(a.href).searchParams.get('theme_preview'))).toEqual(['theme-1', 'theme-2', 'theme-3', 'theme-4'])
   })
   it('applies only the dedicated setting and confirms success', async () => {
     await flush(); await select('theme-3'); button('apply').click(); await flush()
     expect(api.updateSettings).toHaveBeenCalledExactlyOnceWith({ key: 'storefront_theme_config', value: { theme_id: 'theme-3' } })
     expect(notify.notifySuccess).toHaveBeenCalledOnce()
     expect(button('apply').disabled).toBe(true)
+  })
+  it('applies the cyberpunk theme', async () => {
+    await flush(); await select('theme-4'); button('apply').click(); await flush()
+    expect(api.updateSettings).toHaveBeenCalledExactlyOnceWith({ key: 'storefront_theme_config', value: { theme_id: 'theme-4' } })
+    expect(host.textContent).toContain('theme.active')
   })
   it('keeps the previous active theme and pending selection on save failure', async () => {
     await flush(); api.updateSettings.mockRejectedValueOnce(new Error('offline'))

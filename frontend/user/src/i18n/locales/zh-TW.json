@@ -11,9 +11,24 @@
     "browseHint": "精選商品，清晰呈現",
     "choose": "按需選擇",
     "chooseHint": "靈活規格，自由選購",
-    "ordersHint": "隨時查看訂單進度"
+    "ordersHint": "隨時查看訂單進度",
+    "cyber": {
+      "eyebrow": "數位夜市 · 全天候在線",
+      "title": "霓虹之下",
+      "titleAccent": "數位好物即刻到手",
+      "subtitle": "穿過霓虹街區，挑選你的下一件數位裝備。",
+      "explore": "進入市場",
+      "boot1": "接入夜市網路",
+      "boot2": "載入商品目錄",
+      "boot3": "同步購物車",
+      "boot4": "準備就緒，歡迎回來"
+    }
   },
   "siteContact": {
+    "floatingTitle": "線上客服",
+    "floatingSubtitle": "選擇一種方式聯絡我們",
+    "floatingOpen": "聯絡客服",
+    "floatingClose": "收起客服面板",
     "wechat": "微信",
     "scanHint": "使用{channel}掃描 QR Code，或儲存圖片後在應用程式中辨識。",
     "accountHint": "複製帳號後，在{channel}中搜尋新增。",
@@ -75,7 +90,8 @@
     "products": "商品中心",
     "blog": "部落格",
     "notice": "公告",
-    "about": "關於"
+    "about": "關於",
+    "lottery": "幸運抽獎"
   },
   "vault": {
     "hero": {
@@ -325,7 +341,8 @@
       "affiliate": "推廣返利",
       "reseller": "分銷中心",
       "giftCard": "禮品卡兌換",
-      "api": "API 對接"
+      "api": "API 對接",
+      "lottery": "幸運抽獎"
     },
     "common": {
       "loadFailed": "個人中心資料載入失敗，請稍後重試",
@@ -1713,6 +1730,87 @@
     "fulfillmentTotalLines": "共 {count} 條交付內容",
     "fulfillmentDownloading": "下載中...",
     "fulfillmentTruncatedHint": "當前僅顯示前 100 條預覽，請下載獲取完整交付內容"
+  },
+  "lottery": {
+    "defaultTitle": "下單抽獎",
+    "wheelLabel": "抽獎大轉盤",
+    "drawButton": "立即抽獎",
+    "spinning": "抽獎中…",
+    "missLabel": "謝謝參與",
+    "remainingBadge": "剩餘 {count} 次",
+    "historyTitle": "本單抽獎記錄",
+    "info": {
+      "perOrder": "每筆訂單可抽 {count} 次",
+      "expiresAt": "抽獎截止：{time}",
+      "dailyLimit": "每日最多可抽 {count} 次"
+    },
+    "reasons": {
+      "disabled": "抽獎活動尚未開啟",
+      "order_not_found": "該訂單不支援抽獎",
+      "not_paid": "訂單付款完成後即可抽獎",
+      "amount_too_low": "訂單實付金額未達到抽獎門檻",
+      "expired": "該訂單已超過抽獎有效期",
+      "exhausted": "本單的抽獎次數已用完",
+      "daily_limit": "今日抽獎次數已用完，明天再來",
+      "no_prize": "獎品已全部抽完，敬請期待下次活動",
+      "not_started": "該訂單的付款時間早於活動開始時間，不參與本次抽獎"
+    },
+    "result": {
+      "winTitle": "恭喜中獎！",
+      "missTitle": "很遺憾，未中獎",
+      "balanceCredited": "{amount} 已充入錢包餘額",
+      "couponCode": "優惠券碼：{code}",
+      "copyCoupon": "複製券碼",
+      "copied": "已複製",
+      "pendingHint": "該獎品需要人工發放，我們會盡快為你處理"
+    },
+    "prizeTypes": {
+      "none": "謝謝參與",
+      "balance": "錢包餘額",
+      "coupon": "優惠券",
+      "product": "商品獎品",
+      "custom": "自訂獎品"
+    },
+    "delivery": {
+      "none": "已入帳",
+      "pending": "待發放",
+      "delivered": "已發放"
+    },
+    "panel": {
+      "title": "我的抽獎",
+      "subtitle": "查看歷史抽獎與中獎結果，獎品發放狀態即時更新",
+      "onlyWin": "只看中獎",
+      "showAll": "查看全部",
+      "empty": "尚無抽獎記錄",
+      "emptyHint": "下單付款成功後，到訂單詳情頁即可參與抽獎",
+      "table": {
+        "prize": "獎品",
+        "detail": "獎品內容",
+        "orderNo": "來源訂單",
+        "delivery": "發放狀態",
+        "time": "抽獎時間"
+      }
+    },
+    "errors": {
+      "drawFailed": "抽獎失敗，請稍後重試",
+      "recordsFailed": "取得抽獎記錄失敗",
+      "loadFailed": "載入抽獎活動失敗"
+    },
+    "page": {
+      "loginRequired": "登入後即可抽獎",
+      "loginRequiredHint": "抽獎僅對註冊帳號開放，登入後用已付款訂單參與。",
+      "disabledHint": "活動尚未開啟，敬請期待下一場。",
+      "pickOrder": "選擇參與抽獎的訂單",
+      "noDrawableOrder": "目前沒有可參與抽獎的訂單。完成一筆付款後再回來試試手氣。",
+      "recentWins": "最近中獎",
+      "allRecords": "全部記錄",
+      "noWinYet": "還沒有中獎記錄，去轉一把。",
+      "orderSummary": "共 {orders} 筆 · 剩餘 {count} 次",
+      "searchOrder": "搜尋訂單號",
+      "noMatchedOrder": "沒有符合的訂單",
+      "currentOrder": "目前訂單"
+    },
+    "hubHint": "點擊轉盤中心開始抽獎"
   },
   "guestOrders": {
     "title": "遊客訂單查詢",

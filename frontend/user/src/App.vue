@@ -26,6 +26,7 @@
       </main>
       <Footer v-if="!isResellerConsole" />
       <BackToTop v-if="!isResellerConsole" />
+      <FloatingContact v-if="!isResellerConsole" stacked />
       <MobileBottomNav v-if="!isResellerConsole" />
     </template>
 
@@ -36,11 +37,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, watchEffect } from 'vue'
+import { computed, defineAsyncComponent, watchEffect, type Component } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAppStore } from './stores/app'
 import { getActiveTheme, themePreview } from './templates/registry'
 import ThemePreviewBar from './templates/ThemePreviewBar.vue'
+import type { StorefrontTheme } from '../../shared/storefrontTheme'
 import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
 import Loading from './components/Loading.vue'
@@ -48,6 +50,7 @@ import Toast from './components/Toast.vue'
 import ConfirmDialog from './components/ConfirmDialog.vue'
 import ErrorBoundary from './components/ErrorBoundary.vue'
 import BackToTop from './components/BackToTop.vue'
+import FloatingContact from './components/FloatingContact.vue'
 import MobileBottomNav from './components/MobileBottomNav.vue'
 
 // vault 外壳按需加载，classic 用户不会拉取其 chunk/样式
@@ -59,8 +62,10 @@ const route = useRoute()
 const isResellerConsole = computed(() => route.meta.resellerConsole === true)
 // Resolve after public config, then keep the document coherent until a refresh.
 const TechLayout = defineAsyncComponent(() => import('./templates/tech/TechLayout.vue'))
+const CyberLayout = defineAsyncComponent(() => import('./templates/cyber/CyberLayout.vue'))
+const layouts: Partial<Record<StorefrontTheme, Component>> = { 'theme-2': VaultLayout, 'theme-3': TechLayout, 'theme-4': CyberLayout }
 const activeTheme = computed(() => getActiveTheme())
-const storefrontLayout = computed(() => activeTheme.value === 'theme-3' ? TechLayout : activeTheme.value === 'theme-2' ? VaultLayout : null)
+const storefrontLayout = computed(() => layouts[activeTheme.value] ?? null)
 watchEffect(() => {
   if (isResellerConsole.value) delete document.documentElement.dataset.storefrontTheme
   else document.documentElement.dataset.storefrontTheme = activeTheme.value

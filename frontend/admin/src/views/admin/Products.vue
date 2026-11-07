@@ -4,7 +4,7 @@ import { useDebounceFn } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { adminAPI } from '@/api/admin'
-import type { AdminProduct, AdminCategory, AdminProductSKU } from '@/api/types'
+import type { AdminProduct, AdminCategory, AdminProductSKU, AdminProductViewsResult } from '@/api/types'
 import IdCell from '@/components/IdCell.vue'
 import { getFirstImageUrl } from '@/utils/image'
 import { formatMoney, getLocalizedText } from '@/utils/format'
@@ -38,6 +38,9 @@ const editingSortValue = ref('')
 const editingCategoryId = ref<number | null>(null)
 
 const products = ref<AdminProduct[]>([])
+// 浏览量与商品列表分开取：统计属于 analytics 模块，不污染 catalog 的列表接口。
+const viewsRange = ref('7d')
+const productViews = ref(new Map<number, { pv: number; uv: number }>())
 const categories = ref<AdminCategory[]>([])
 const categoryMap = ref(new Map<number, AdminCategory>())
 const categoryChildCountMap = ref(new Map<number, number>())
@@ -242,11 +245,41 @@ const fetchProducts = async (options: ListFetchOptions = {}) => {
     if (res.data.pagination) {
       Object.assign(pagination, res.data.pagination)
     }
+    void fetchProductViews()
   } catch (err) {
     if (!options.preserveRows) products.value = []
   } finally {
     if (!options.preserveRows) loading.value = false
   }
+}
+
+const fetchProductViews = async () => {
+  const ids = products.value.map((item) => item.id).filter((id) => id > 0)
+  if (ids.length === 0) {
+    productViews.value = new Map()
+    return
+  }
+  try {
+    const res = await adminAPI.getProductViews({
+      range: viewsRange.value,
+      tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      product_ids: ids.join(','),
+    })
+    const result = res.data.data as unknown as AdminProductViewsResult | null
+    const next = new Map<number, { pv: number; uv: number }>()
+    ;(result?.items || []).forEach((item) => {
+      next.set(item.product_id, { pv: item.pv, uv: item.uv })
+    })
+    productViews.value = next
+  } catch {
+    productViews.value = new Map()
+  }
+}
+
+const productViewOf = (productId: number) => productViews.value.get(productId) || { pv: 0, uv: 0 }
+
+const handleViewsRangeChange = () => {
+  void fetchProductViews()
 }
 
 const fetchCategories = async () => {
@@ -543,6 +576,18 @@ watch(
             </SelectContent>
           </Select>
         </div>
+        <div class="w-full md:w-40">
+          <Select v-model="viewsRange" @update:modelValue="handleViewsRangeChange">
+            <SelectTrigger class="h-9 w-full">
+              <SelectValue :placeholder="t('admin.products.filters.viewsRange')" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="today">{{ t('admin.dashboard.range.today') }}</SelectItem>
+              <SelectItem value="7d">{{ t('admin.dashboard.range.last7Days') }}</SelectItem>
+              <SelectItem value="30d">{{ t('admin.dashboard.range.last30Days') }}</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
         <Button variant="outline" size="sm" class="h-9 w-full sm:w-auto" @click="resetFilters">
           {{ t('admin.common.reset') }}
         </Button>
@@ -590,17 +635,18 @@ watch(
             <TableHead class="px-6 py-3 min-w-[220px]">{{ t('admin.products.table.category') }}</TableHead>
             <TableHead class="px-6 py-3">{{ t('admin.products.table.sort') }}</TableHead>
             <TableHead class="px-6 py-3">{{ t('admin.products.table.status') }}</TableHead>
+            <TableHead class="px-6 py-3">{{ t('admin.products.table.views') }}</TableHead>
             <TableHead class="px-6 py-3 text-right">{{ t('admin.products.table.action') }}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody class="divide-y divide-border">
           <TableRow v-if="loading">
-            <TableCell :colspan="8" class="p-0">
-              <TableSkeleton :columns="7" :rows="5" />
+            <TableCell :colspan="9" class="p-0">
+              <TableSkeleton :columns="8" :rows="5" />
             </TableCell>
           </TableRow>
           <TableRow v-else-if="products.length === 0">
-            <TableCell colspan="8" class="px-6 py-8 text-center text-muted-foreground">{{ t('admin.products.empty') }}</TableCell>
+            <TableCell colspan="9" class="px-6 py-8 text-center text-muted-foreground">{{ t('admin.products.empty') }}</TableCell>
           </TableRow>
           <TableRow v-for="product in products" :key="product.id" class="hover:bg-muted/30">
             <TableCell class="w-10 px-3 py-4">
@@ -730,6 +776,12 @@ watch(
               >
                 {{ product.is_active ? t('admin.products.status.active') : t('admin.products.status.inactive') }}
               </span>
+            </TableCell>
+            <TableCell class="px-6 py-4">
+              <div class="text-xs text-muted-foreground" :title="t('admin.products.table.viewsHint')">
+                <div class="font-medium text-foreground">{{ t('admin.products.table.pv') }}: {{ productViewOf(product.id).pv }}</div>
+                <div class="mt-0.5">{{ t('admin.products.table.uv') }}: {{ productViewOf(product.id).uv }}</div>
+              </div>
             </TableCell>
             <TableCell class="px-6 py-4 text-right">
               <div class="flex flex-wrap items-center justify-end gap-2">

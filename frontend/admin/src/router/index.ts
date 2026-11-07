@@ -61,6 +61,18 @@ const routes = [
         meta: { permission: 'GET:/admin/gift-cards' },
       },
       {
+        path: 'lottery',
+        name: 'lottery',
+        component: () => import('@/views/admin/Lottery.vue'),
+        meta: { permission: 'GET:/admin/lottery/config' },
+      },
+      {
+        path: 'lottery/draws',
+        name: 'lottery-draws',
+        component: () => import('@/views/admin/LotteryDraws.vue'),
+        meta: { permission: 'GET:/admin/lottery/draws' },
+      },
+      {
         path: 'orders',
         name: 'orders',
         component: () => import('@/views/admin/Orders.vue'),

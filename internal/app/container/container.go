@@ -3,9 +3,10 @@ package container
 import (
 	"github.com/dujiao-next/internal/authz"
 	"github.com/dujiao-next/internal/config"
-	adproxyapp "github.com/dujiao-next/internal/modules/adproxy/application"
 	affiliateapp "github.com/dujiao-next/internal/modules/affiliate/application"
 	affiliatecontract "github.com/dujiao-next/internal/modules/affiliate/contract"
+	analyticsapp "github.com/dujiao-next/internal/modules/analytics/application"
+	analyticscontract "github.com/dujiao-next/internal/modules/analytics/contract"
 	apicredentialapp "github.com/dujiao-next/internal/modules/apicredential/application"
 	apicredentialcontract "github.com/dujiao-next/internal/modules/apicredential/contract"
 	auditlogapp "github.com/dujiao-next/internal/modules/auditlog/application"
@@ -47,6 +48,8 @@ import (
 	usercontract "github.com/dujiao-next/internal/modules/identity/user/contract"
 	userauthapp "github.com/dujiao-next/internal/modules/identity/userauth/application"
 	usertotpapp "github.com/dujiao-next/internal/modules/identity/userauth/totp/application"
+	lotteryapp "github.com/dujiao-next/internal/modules/lottery/application"
+	lotterygormstore "github.com/dujiao-next/internal/modules/lottery/infrastructure/gormstore"
 	memberlevelapp "github.com/dujiao-next/internal/modules/memberlevel/application"
 	memberlevelcontract "github.com/dujiao-next/internal/modules/memberlevel/contract"
 	memberlevelgormstore "github.com/dujiao-next/internal/modules/memberlevel/infrastructure/gormstore"
@@ -113,6 +116,8 @@ type Container struct {
 	NotificationLogRepo    *notificationgormstore.LogStore
 	AdminLoginLogRepo      auditlogcontract.AdminLoginRepository
 	DashboardRepo          dashboardcontract.Repository
+	VisitStatsRepo         analyticscontract.Repository
+	LotteryRepo            *lotterygormstore.Store
 	AffiliateRepo          affiliatecontract.Store
 	ResellerStore          *resellergormstore.Store
 	ApiCredentialRepo      apicredentialcontract.Repository
@@ -167,6 +172,9 @@ type Container struct {
 	AdminLoginLogService          *auditlogapp.AdminLoginService
 	NotificationLogService        *notificationapp.LogService
 	DashboardService              *dashboardapp.Service
+	VisitCollector                *analyticsapp.Collector
+	VisitStatsService             *analyticsapp.Service
+	LotteryService                *lotteryapp.Service
 	NotificationService           *notificationapp.Service
 	AffiliateService              *affiliateapp.Service
 	ResellerDomainResolver        *reseller.DomainResolver
@@ -188,7 +196,6 @@ type Container struct {
 	ChannelClientService          *channelclientapp.Service
 	TelegramBroadcastService      *broadcastapp.Service
 	MemberLevelService            *memberlevelapp.Service
-	AdProxyService                *adproxyapp.Service
 	OrderRiskControlService       *orderriskapp.Service
 	ComplianceService             *complianceapp.Service
 

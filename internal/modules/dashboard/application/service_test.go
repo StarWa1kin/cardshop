@@ -11,10 +11,13 @@ import (
 )
 
 type dashboardServiceRepoStub struct {
-	overview       dashboardcontract.OverviewRow
-	profitOverview dashboardcontract.ProfitOverviewRow
-	profitTrends   []dashboardcontract.ProfitTrendRow
-	stock          dashboardcontract.StockStatsRow
+	overview        dashboardcontract.OverviewRow
+	profitOverview  dashboardcontract.ProfitOverviewRow
+	profitTrends    []dashboardcontract.ProfitTrendRow
+	stock           dashboardcontract.StockStatsRow
+	traffic         dashboardcontract.TrafficOverviewRow
+	trafficTrends   []dashboardcontract.TrafficTrendRow
+	productViewRows []dashboardcontract.ProductViewRankingRow
 }
 
 func (s dashboardServiceRepoStub) GetOverview(startAt, endAt time.Time) (dashboardcontract.OverviewRow, error) {
@@ -59,6 +62,18 @@ func (s dashboardServiceRepoStub) GetTopChannels(startAt, endAt time.Time, limit
 
 func (s dashboardServiceRepoStub) GetTotalUserBalance() (float64, error) {
 	return 0, nil
+}
+
+func (s dashboardServiceRepoStub) GetTrafficOverview(fromDate, toDate string) (dashboardcontract.TrafficOverviewRow, error) {
+	return s.traffic, nil
+}
+
+func (s dashboardServiceRepoStub) GetTrafficTrends(fromDate, toDate string) ([]dashboardcontract.TrafficTrendRow, error) {
+	return s.trafficTrends, nil
+}
+
+func (s dashboardServiceRepoStub) GetTopProductViews(fromDate, toDate string, limit int) ([]dashboardcontract.ProductViewRankingRow, error) {
+	return s.productViewRows, nil
 }
 
 type dashboardSettingReaderStub struct {

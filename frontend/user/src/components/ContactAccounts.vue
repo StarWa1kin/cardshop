@@ -6,8 +6,16 @@ import { MessageCircle, Copy, X } from 'lucide-vue-next'
 import { useAppStore } from '@/stores/app'
 import { getImageUrl } from '@/utils/image'
 
-const props = defineProps<{ compact?: boolean }>()
+const props = defineProps<{
+  /** default: 关于页大按钮｜compact: 页脚文本行｜panel: 悬浮客服面板行 */
+  variant?: 'default' | 'compact' | 'panel'
+}>()
 const { t } = useI18n()
+const triggerClass = computed(() => {
+  if (props.variant === 'compact') return 'flex items-center gap-2 py-1 text-sm text-muted-foreground transition-colors hover:text-primary'
+  if (props.variant === 'panel') return 'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground'
+  return 'flex items-center justify-center gap-3 rounded-xl border bg-secondary px-6 py-4 font-bold text-muted-foreground transition-colors hover:text-foreground'
+})
 const appStore = useAppStore()
 const feedback = ref('')
 const imageFailed = ref(false)
@@ -37,10 +45,8 @@ async function copyAccount(account: string) {
 <template>
   <DialogRoot v-for="channel in channels" :key="channel.key" @update:open="feedback = ''; imageFailed = false">
     <DialogTrigger as-child>
-      <button type="button" :class="props.compact
-        ? 'flex items-center gap-2 py-1 text-sm text-muted-foreground transition-colors hover:text-primary'
-        : 'flex items-center justify-center gap-3 rounded-xl border bg-secondary px-6 py-4 font-bold text-muted-foreground transition-colors hover:text-foreground'">
-        <MessageCircle :class="[props.compact ? 'h-4 w-4' : 'h-6 w-6', channel.key === 'qq' ? 'text-sky-500' : 'text-emerald-500']" />
+      <button type="button" :class="triggerClass">
+        <MessageCircle :class="[props.variant === 'default' || !props.variant ? 'h-6 w-6' : 'h-4 w-4', channel.key === 'qq' ? 'text-sky-500' : 'text-emerald-500']" />
         {{ channel.label }}
       </button>
     </DialogTrigger>

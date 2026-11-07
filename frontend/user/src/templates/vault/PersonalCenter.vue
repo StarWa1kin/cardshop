@@ -179,6 +179,7 @@
             <Button as-child size="sm" class="mt-4 rounded-full"><RouterLink to="/reseller">{{ t('resellerConsole.nav.dashboard') }}</RouterLink></Button>
           </div>
           <GiftCardPanel v-else-if="currentSection === 'giftCard'" />
+          <LotteryPanel v-else-if="currentSection === 'lottery'" />
           <ApiPanel v-else-if="currentSection === 'api'" />
           <OrdersPanel v-else />
         </div>
@@ -198,6 +199,7 @@ import SecurityPanel from '../../views/personal/SecurityPanel.vue'
 import OrdersPanel from '../../views/personal/OrdersPanel.vue'
 import WalletPanel from '../../views/personal/WalletPanel.vue'
 import GiftCardPanel from '../../views/personal/GiftCardPanel.vue'
+import LotteryPanel from '../../views/personal/LotteryPanel.vue'
 import AffiliatePanel from '../../views/personal/AffiliatePanel.vue'
 import ApiPanel from '../../views/personal/ApiPanel.vue'
 import { usePersonalCenter, type PersonalSection } from '../../composables/usePersonalCenter'

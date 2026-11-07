@@ -300,6 +300,109 @@ export interface ComplianceAcknowledgePayload {
   segment3: string
 }
 
+export type AdminLotteryPrizeType = 'none' | 'balance' | 'coupon' | 'product' | 'custom'
+export type AdminLotteryDeliveryStatus = 'none' | 'pending' | 'delivered'
+
+export interface AdminLotteryConfig {
+  id: number
+  enabled: boolean
+  title: string
+  notice: string
+  min_order_amount: string
+  /** 活动开始时间；支付时间早于它的订单不参与。空表示不限 */
+  starts_at?: string | null
+  draws_per_order: number
+  daily_draw_limit: number
+  valid_hours: number
+  updated_at?: string
+}
+
+export interface AdminLotteryConfigPayload {
+  enabled: boolean
+  title: string
+  notice: string
+  min_order_amount: string
+  starts_at?: string
+  draws_per_order: number
+  daily_draw_limit: number
+  valid_hours: number
+}
+
+export interface AdminLotteryPrize {
+  id: number
+  name: string
+  type: AdminLotteryPrizeType
+  /** 中奖概率，万分比（1 = 0.01%） */
+  probability: number
+  /** 剩余库存，-1 表示不限 */
+  stock: number
+  awarded_count: number
+  amount: string
+  coupon_id?: number | null
+  product_id?: number | null
+  icon: string
+  color: string
+  description: string
+  sort_order: number
+  enabled: boolean
+  created_at?: string
+  updated_at?: string
+}
+
+export interface AdminLotteryPrizePayload {
+  name: string
+  type: AdminLotteryPrizeType
+  probability: number
+  stock: number
+  amount?: string
+  coupon_id?: number | null
+  product_id?: number | null
+  icon?: string
+  color?: string
+  description?: string
+  sort_order?: number
+  enabled?: boolean
+}
+
+export interface AdminLotteryPrizeOverview {
+  prizes: AdminLotteryPrize[]
+  probability_scale: number
+  configured_total: number
+  remainder_probability: number
+}
+
+export interface AdminLotteryDraw {
+  id: number
+  order_no: string
+  seq: number
+  prize_id: number
+  prize_name: string
+  prize_type: AdminLotteryPrizeType
+  is_win: boolean
+  amount: string
+  currency: string
+  coupon_code?: string
+  product_id?: number | null
+  product_name?: string
+  delivery_status: AdminLotteryDeliveryStatus
+  delivery_remark?: string
+  delivered_at?: string
+  created_at: string
+  user_id?: number
+}
+
+export interface AdminLotteryDrawTotals {
+  total: number
+  win_count: number
+  pending: number
+  won_amount: string
+}
+
+export interface AdminLotteryDeliverPayload {
+  remark?: string
+  revert?: boolean
+}
+
 export const adminAPI = {
   login: (data: AdminLoginRequest) => api.post('/admin/login', data),
   verify2FA: (data: Verify2FAPayload) => api.post('/admin/login/verify-2fa', data),
@@ -417,6 +520,7 @@ export const adminAPI = {
   getDashboardTrends: (params?: Record<string, unknown>) => api.get('/admin/dashboard/trends', { params }),
   getDashboardRankings: (params?: Record<string, unknown>) => api.get('/admin/dashboard/rankings', { params }),
   getDashboardInventoryAlerts: () => api.get('/admin/dashboard/inventory-alerts'),
+  getProductViews: (params?: Record<string, unknown>) => api.get('/admin/analytics/product-views', { params }),
   updatePassword: (data: { old_password: string; new_password: string }) => api.put('/admin/password', data),
   getOrders: (params?: Record<string, unknown>) => api.get('/admin/orders', { params }),
   getOrder: (id: number) => api.get(`/admin/orders/${id}`),
@@ -646,16 +750,21 @@ export const adminAPI = {
   getTelegramBroadcastUsers: (params?: Record<string, unknown>) =>
     api.get('/admin/telegram-bot/users', { params }),
 
-  // 广告代理
-  renderAdSlot: (slotCode: string, params?: Record<string, string>) =>
-    api.get(`/admin/ads/render/${slotCode}`, { params }),
-  reportAdImpression: (data: { tenant: string; client: string; slot_code: string; items: { ad_id: number; impression_token: string }[] }) =>
-    api.post('/admin/ads/impression', data),
-
   // 文章分类
   getPostCategories: (params?: Record<string, unknown>) => api.get('/admin/post-categories', { params }),
   createPostCategory: (data: any) => api.post('/admin/post-categories', data),
   updatePostCategory: (id: number, data: any) => api.put(`/admin/post-categories/${id}`, data),
   deletePostCategory: (id: number) => api.delete(`/admin/post-categories/${id}`),
   patchPostCategoryStatus: (id: number, is_active: boolean) => api.patch(`/admin/post-categories/${id}/status`, { is_active }),
+
+  // 下单抽奖
+  getLotteryConfig: () => api.get('/admin/lottery/config'),
+  updateLotteryConfig: (data: AdminLotteryConfigPayload) => api.put('/admin/lottery/config', data),
+  getLotteryPrizes: () => api.get('/admin/lottery/prizes'),
+  createLotteryPrize: (data: AdminLotteryPrizePayload) => api.post('/admin/lottery/prizes', data),
+  updateLotteryPrize: (id: number, data: AdminLotteryPrizePayload) => api.put(`/admin/lottery/prizes/${id}`, data),
+  deleteLotteryPrize: (id: number) => api.delete(`/admin/lottery/prizes/${id}`),
+  getLotteryDraws: (params?: Record<string, unknown>) => api.get('/admin/lottery/draws', { params }),
+  deliverLotteryDraw: (id: number, data: AdminLotteryDeliverPayload) =>
+    api.patch(`/admin/lottery/draws/${id}/deliver`, data),
 }

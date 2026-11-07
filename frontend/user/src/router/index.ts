@@ -3,6 +3,7 @@ import { useUserAuthStore } from '../stores/userAuth'
 import { useAppStore } from '../stores/app'
 import { useTelegramMiniAppStore } from '../stores/telegramMiniApp'
 import { captureAffiliateFromRoute } from '../utils/affiliate'
+import { trackRouteVisit } from '../utils/visit'
 import { templateView, themePreview } from '../templates/registry'
 import { GOOGLE_REDIRECT_FRONTEND_CALLBACK_PATH } from '../utils/googleRedirect'
 
@@ -158,6 +159,11 @@ const router = createRouter({
             component: templateView('Payment', paymentViewLoader),
         },
         {
+            path: '/lottery',
+            name: 'lottery',
+            component: templateView('Lottery', () => import('../views/Lottery.vue')),
+        },
+        {
             path: '/me',
             name: 'personal-center',
             component: templateView('PersonalCenter', () => import('../views/PersonalCenter.vue')),
@@ -197,6 +203,13 @@ const router = createRouter({
             name: 'personal-center-gift-cards',
             component: templateView('PersonalCenter', () => import('../views/PersonalCenter.vue')),
             props: { section: 'giftCard' },
+            meta: { requiresUserAuth: true }
+        },
+        {
+            path: '/me/lottery',
+            name: 'personal-center-lottery',
+            component: templateView('PersonalCenter', () => import('../views/PersonalCenter.vue')),
+            props: { section: 'lottery' },
             meta: { requiresUserAuth: true }
         },
         {
@@ -372,7 +385,8 @@ router.beforeEach(async (to, _from, next) => {
 })
 
 // Update SEO on route change
-router.afterEach(() => {
+router.afterEach((to) => {
+    trackRouteVisit(to)
     const appStore = useAppStore()
     const telegramMiniAppStore = useTelegramMiniAppStore()
     appStore.applySEO()

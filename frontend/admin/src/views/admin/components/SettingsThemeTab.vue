@@ -62,7 +62,7 @@ onMounted(load)
     <div v-if="loading" class="flex items-center gap-2 p-8 text-sm text-muted-foreground"><LoaderCircle class="h-4 w-4 animate-spin" />{{ t('admin.settings.theme.loading') }}</div>
     <div v-else-if="loadError" class="flex items-center gap-4 p-6" role="alert"><p>{{ t('admin.settings.theme.loadError') }}</p><Button variant="outline" @click="load">{{ t('admin.settings.theme.retry') }}</Button></div>
     <template v-else>
-      <fieldset class="grid gap-4 p-6 lg:grid-cols-3" :disabled="submitting">
+      <fieldset class="grid gap-4 p-6 sm:grid-cols-2 2xl:grid-cols-4" :disabled="submitting">
         <legend class="sr-only">{{ t('admin.settings.theme.title') }}</legend>
         <div v-for="(id, index) in STOREFRONT_THEMES" :key="id" class="theme-choice" :class="{ selected: selected === id }">
           <label class="theme-choice-label">
@@ -96,7 +96,11 @@ onMounted(load)
 .theme-choice-label{display:flex;flex-direction:column;gap:10px;padding:12px 16px;cursor:pointer}
 .theme-miniature{--m-bg:#f4f7fa;--m-card:#fff;--m-ink:#172632;--m-line:#dce5eb;--m-accent:#0071e3;background:var(--m-bg);color:var(--m-ink);border:1px solid var(--m-line);border-radius:7px;overflow:hidden;margin:0 -4px 4px;aspect-ratio:1.55;display:flex;flex-direction:column}
 .theme-miniature.dark{--m-bg:#121820;--m-card:#202d37;--m-ink:#e3edf5;--m-line:#354450}
-.theme-2{--m-accent:#6366f1}.theme-3{--m-accent:#12cbd8}
+.theme-2{--m-accent:#6366f1}.theme-3{--m-accent:#12cbd8}.theme-4{--m-accent:#ff2a6d}
+.theme-4.dark{--m-bg:#0b0614;--m-card:#150d26;--m-ink:#f3eeff;--m-line:#2d2047}
+.theme-4 .mini-nav{border-bottom-color:var(--m-accent)}.theme-4 .mini-hero small{color:#05d9e8}.theme-4 .mini-hero .mini-cta{border-radius:0;clip-path:polygon(0 0,calc(100% - 4px) 0,100% 4px,100% 100%,4px 100%,0 calc(100% - 4px))}
+.theme-4 .mini-art{background:repeating-linear-gradient(0deg,color-mix(in srgb,var(--m-accent) 18%,transparent) 0 1px,transparent 1px 5px)}.theme-4 .mini-art i{border-radius:0;transform:skewX(-14deg);border-color:#05d9e8}
+.theme-4 .mini-products>div{border-radius:0;border-top:2px solid var(--m-accent)}.theme-4 .mini-tabs i{border-radius:0}
 .mini-nav{display:flex;align-items:center;gap:8px;height:25px;padding:7px 10px;border-bottom:1px solid var(--m-line)}
 .mini-nav b{width:9px;height:9px;background:var(--m-accent);border-radius:2px}.mini-nav span{height:2px;width:20px;background:var(--m-line)}.mini-nav i{margin-left:auto;width:7px;height:7px;border:1px solid var(--m-line);border-radius:50%}
 .mini-hero{display:flex;padding:14px 12px 8px;gap:8px;flex:1;min-height:0}.mini-hero>div:first-child{display:flex;flex-direction:column;gap:6px;flex:1}.mini-hero small{font-size:5px;letter-spacing:.08em;color:var(--m-accent)}.mini-hero strong{font-size:13px}.mini-hero em{height:3px;width:70%;background:var(--m-line)}.mini-hero .mini-cta{height:12px;width:37px;background:var(--m-accent);border-radius:3px;margin-top:2px}

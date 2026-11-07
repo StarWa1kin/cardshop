@@ -23,12 +23,11 @@ func BuiltinRoleSeeds() []RoleSeed {
 				{Object: "/admin/dashboard/trends", Action: "GET"},
 				{Object: "/admin/dashboard/rankings", Action: "GET"},
 				{Object: "/admin/dashboard/inventory-alerts", Action: "GET"},
+				{Object: "/admin/analytics/product-views", Action: "GET"},
 				{Object: "/admin/compliance/status", Action: "GET"},
 				{Object: "/admin/authz/me", Action: "GET"},
 				{Object: "/admin/2fa/status", Action: "GET"},
-				{Object: "/admin/ads/render/:slotCode", Action: "GET"},
 				{Object: "/admin/password", Action: "PUT"},                       // 所有管理员均可修改自己密码
-				{Object: "/admin/ads/impression", Action: "POST"},                // 广告曝光埋点，所有管理员可触发
 				{Object: "/admin/2fa/setup", Action: "POST"},                     // 自助绑定 2FA
 				{Object: "/admin/2fa/enable", Action: "POST"},                    // 自助启用 2FA
 				{Object: "/admin/2fa/disable", Action: "POST"},                   // 自助关闭 2FA
@@ -71,6 +70,12 @@ func BuiltinRoleSeeds() []RoleSeed {
 				{Object: "/admin/gift-cards/generate", Action: "POST"},
 				{Object: "/admin/gift-cards/batch-status", Action: "PATCH"},
 				{Object: "/admin/gift-cards/export", Action: "POST"},
+				// 下单抽奖：规则、奖品与中奖结果
+				{Object: "/admin/lottery/config", Action: "*"},
+				{Object: "/admin/lottery/prizes", Action: "*"},
+				{Object: "/admin/lottery/prizes/:id", Action: "*"},
+				{Object: "/admin/lottery/draws", Action: "GET"},
+				{Object: "/admin/lottery/draws/:id/deliver", Action: "PATCH"},
 				{Object: "/admin/upload", Action: "POST"},
 				{Object: "/admin/media/batch-delete", Action: "POST"},
 				{Object: "/admin/media/:id", Action: "PUT"},
@@ -122,6 +127,7 @@ func BuiltinRoleSeeds() []RoleSeed {
 				{Object: "/admin/payments", Action: "GET"},
 				{Object: "/admin/payments/:id", Action: "GET"},
 				{Object: "/admin/gift-cards", Action: "GET"},
+				{Object: "/admin/lottery/draws", Action: "GET"}, // 客服需要核对用户的中奖与发放情况
 			},
 			Immutable: true,
 		},

@@ -24,10 +24,11 @@ func TestDashboardImplementationLivesInBoundedContextDirectories(t *testing.T) {
 		"Repository", "SettingReader", "OverviewRow", "PaymentOrderAlertCountsRow",
 		"OrderTrendRow", "PaymentTrendRow", "ProfitOverviewRow", "ProfitTrendRow",
 		"StockStatsRow", "InventoryAlertRow", "ProductRankingRow", "ChannelRankingRow",
+		"TrafficOverviewRow", "TrafficTrendRow", "ProductViewRankingRow",
 	})
 	assertFileDeclaresTypes(t, filepath.Join(applicationRoot, "types.go"), []string{
 		"OverviewResponse", "KPI", "Funnel", "AlertItem", "TrendResponse",
-		"TrendPoint", "RankingsResponse", "ProductRanking", "ChannelRanking",
+		"TrendPoint", "RankingsResponse", "ProductRanking", "ProductViewRanking", "ChannelRanking",
 	})
 
 	storeFunctions := map[string][]string{
@@ -38,6 +39,7 @@ func TestDashboardImplementationLivesInBoundedContextDirectories(t *testing.T) {
 		"product.go":   {"GetTopProducts"},
 		"profit.go":    {"GetProfitOverview", "GetProfitTrends"},
 		"channel.go":   {"GetTopChannels"},
+		"traffic.go":   {"GetTrafficOverview", "GetTrafficTrends", "GetTopProductViews"},
 	}
 	for file, functions := range storeFunctions {
 		assertFileDeclaresFunctions(t, filepath.Join(storeRoot, file), functions)
@@ -50,7 +52,7 @@ func TestDashboardImplementationLivesInBoundedContextDirectories(t *testing.T) {
 	}
 	assertDirectoryGoFileBudget(t, applicationRoot, 4)
 	assertDirectoryGoFileBudget(t, contractRoot, 2)
-	assertDirectoryGoFileBudget(t, storeRoot, 16)
+	assertDirectoryGoFileBudget(t, storeRoot, 18)
 	assertDirectoryGoFileBudget(t, transportRoot, 6)
 	assertProductionImportsAbsent(t, applicationRoot, moduleImportPath+"/internal/models")
 	assertProductionImportsAbsent(t, contractRoot, moduleImportPath+"/internal/models")
