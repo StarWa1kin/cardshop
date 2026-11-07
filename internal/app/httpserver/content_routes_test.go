@@ -22,6 +22,7 @@ import (
 	adminstore "github.com/dujiao-next/internal/modules/identity/admin/infrastructure/gormstore"
 	adminauthapp "github.com/dujiao-next/internal/modules/identity/adminauth/application"
 	"github.com/dujiao-next/internal/modules/identity/jwttoken"
+	uploadtransport "github.com/dujiao-next/internal/modules/upload/transport/http"
 	"github.com/dujiao-next/internal/platform/http/response"
 	"github.com/gin-gonic/gin"
 	"github.com/glebarez/sqlite"
@@ -51,6 +52,8 @@ var contentAdminRouteContract = []adminRoute{
 	{method: http.MethodPost, object: "/admin/media/batch-delete"},
 	{method: http.MethodPut, object: "/admin/media/:id"},
 	{method: http.MethodDelete, object: "/admin/media/:id"},
+	{method: http.MethodPost, object: "/admin/media/:id/compress"},
+	{method: http.MethodPut, object: "/admin/media/:id/file"},
 }
 
 var contentPublicRouteContract = []adminRoute{
@@ -92,6 +95,8 @@ func TestContentRoutesStayInExpectedRouterTrustGroups(t *testing.T) {
 	}{
 		{file: "routes_storefront.go", statement: "contenttransport.RegisterPublicRoutes(public, publicContentHandler)"},
 		{file: "routes_admin.go", statement: "contenttransport.RegisterAdminRoutes(authorized, adminContentHandler)"},
+		{file: "routes_admin.go", statement: "contenttransport.RegisterAdminMediaCompressRoutes(authorized,"},
+		{file: "routes_admin.go", statement: "uploadtransport.RegisterAdminMediaReplaceRoutes(authorized,"},
 	}
 
 	for _, registration := range registrations {
@@ -271,5 +276,7 @@ func newContentRouteAccessRouter(adminRepo admincontract.Store, authzService *au
 		c.Abort()
 	})
 	contenttransport.RegisterAdminRoutes(admin, contenttransport.NewAdminHandler(nil, nil, nil, nil))
+	contenttransport.RegisterAdminMediaCompressRoutes(admin, contenttransport.NewMediaCompressHandler(nil))
+	uploadtransport.RegisterAdminMediaReplaceRoutes(admin, uploadtransport.NewMediaReplaceHandler(nil, nil))
 	return router
 }

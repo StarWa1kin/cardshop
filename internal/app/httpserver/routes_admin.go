@@ -108,6 +108,7 @@ func registerAdminRoutes(
 	// 商品 / 分类管理
 	producthttp.RegisterAdminRoutes(authorized, adminCatalogProductHandler)
 	contenttransport.RegisterAdminRoutes(authorized, adminContentHandler)
+	contenttransport.RegisterAdminMediaCompressRoutes(authorized, contenttransport.NewMediaCompressHandler(c.ContentMediaCompressService))
 	categoryhttp.RegisterAdminRoutes(authorized, adminCatalogCategoryHandler)
 
 	// 设置管理
@@ -120,6 +121,7 @@ func registerAdminRoutes(
 	settingstransport.RegisterAdminOrderEmailTemplateRoutes(authorized, settingstransport.NewOrderEmailTemplateHandler(c.SettingService))
 	settingstransport.RegisterAdminAffiliateRoutes(authorized, settingstransport.NewAffiliateHandler(c.SettingService))
 	settingstransport.RegisterAdminTelegramBotRoutes(authorized, settingstransport.NewTelegramBotHandler(c.SettingService))
+	settingstransport.RegisterAdminTinyPNGRoutes(authorized, settingstransport.NewTinyPNGHandler(c.SettingService))
 	adminauthtransport.RegisterAdminPasswordRoutes(authorized, adminLoginHandler)
 
 	// 系统信息与版本检测
@@ -148,6 +150,7 @@ func registerAdminRoutes(
 
 	// 文件上传
 	uploadtransport.RegisterAdminRoutes(authorized, uploadtransport.NewAdminHandler(c.UploadService, c.ContentMediaService))
+	uploadtransport.RegisterAdminMediaReplaceRoutes(authorized, uploadtransport.NewMediaReplaceHandler(c.UploadService, c.ContentMediaService))
 
 	// 订单管理
 	ordertransport.RegisterAdminRoutes(authorized, adminOrderHandler)

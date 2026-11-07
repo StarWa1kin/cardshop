@@ -111,3 +111,27 @@ type Clock interface {
 type WarningLogger interface {
 	Warnw(message string, keysAndValues ...interface{})
 }
+
+// CompressedImage 是图片压缩服务返回的结果。
+type CompressedImage struct {
+	Data     []byte
+	MimeType string
+	// CompressionCount 是压缩服务返回的本月已用次数；未知时为 0。
+	CompressionCount int
+}
+
+// ImageCompressor 调用外部服务压缩图片，输出格式必须与输入一致。
+type ImageCompressor interface {
+	Compress(ctx context.Context, apiKey string, data []byte) (*CompressedImage, error)
+}
+
+// CompressorKeyProvider 提供图片压缩服务的 API Key。
+type CompressorKeyProvider interface {
+	GetTinyPNGAPIKey() (string, error)
+}
+
+// MediaFileReplacer 读取素材文件并原地替换内容，保证引用 URL 不变。
+type MediaFileReplacer interface {
+	ReadFile(name string) ([]byte, error)
+	ReplaceFile(name string, data []byte) error
+}

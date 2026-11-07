@@ -508,6 +508,9 @@ const (
 
 	SettingKeyCallbackRoutesConfig = "callback_routes_config"
 
+	// SettingKeyTinyPNGConfig 保存素材压缩使用的 TinyPNG API Key，只能通过专用脱敏接口读写。
+	SettingKeyTinyPNGConfig = "tinypng_config"
+
 	SettingKeyHomeAnnouncement   = "home_announcement"
 	SettingFieldPaymentCallback  = "payment_callback"
 	SettingFieldDujiaoPayWebhook = "dujiaopay_webhook"

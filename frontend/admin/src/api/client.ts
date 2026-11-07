@@ -8,13 +8,21 @@ export type { ApiResponse }
 const t = (key: string, params?: Record<string, unknown>) =>
   (params ? i18n.global.t(key, params) : i18n.global.t(key)) as string
 
-interface NotifiedError extends Error {
+export interface NotifiedError extends Error {
   __notified?: boolean
+  /** 业务状态码（响应体里的 status_code），仅业务错误时存在 */
+  statusCode?: number
+  /** 业务错误响应里的 data，便于调用方读取 error_code 等附加信息 */
+  data?: unknown
 }
 
-const createNotifiedError = (message: string): NotifiedError => {
+const createNotifiedError = (message: string, extra?: Pick<NotifiedError, 'statusCode' | 'data'>): NotifiedError => {
   const error = new Error(message) as NotifiedError
   error.__notified = true
+  if (extra) {
+    error.statusCode = extra.statusCode
+    error.data = extra.data
+  }
   return error
 }
 
@@ -33,6 +41,8 @@ interface RequestOptions {
   headers?: Record<string, string>
   blob?: boolean
   data?: any
+  /** 单个请求的超时时间（毫秒），默认 10 秒 */
+  timeout?: number
   [key: string]: any
 }
 
@@ -66,7 +76,7 @@ function getHttpErrorMessage(status: number): string {
 }
 
 const baseURL = `${API_BASE_URL}${API_PREFIX}`
-const timeout = 10000
+const defaultTimeout = 10000
 
 function responseHeadersToObject(headers: Headers): Record<string, string> {
   const result: Record<string, string> = {}
@@ -118,7 +128,7 @@ async function request(method: string, path: string, bodyOrOptions?: any, option
   }
 
   const controller = new AbortController()
-  const timer = setTimeout(() => controller.abort(), timeout)
+  const timer = setTimeout(() => controller.abort(), opts.timeout ?? defaultTimeout)
 
   let response: Response
   try {
@@ -205,7 +215,7 @@ async function request(method: string, path: string, bodyOrOptions?: any, option
       return Promise.reject(createNotifiedError(message))
     }
     notifyError(message)
-    return Promise.reject(createNotifiedError(message))
+    return Promise.reject(createNotifiedError(message, { statusCode: data.status_code, data: data.data }))
   }
 
   return { data }

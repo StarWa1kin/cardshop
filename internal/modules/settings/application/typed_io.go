@@ -365,3 +365,37 @@ func (s *Service) UpdateTelegramBotRuntimeStatus(status settingsmessaging.Telegr
 	_, err := s.Update(constants.SettingKeyTelegramBotRuntimeStatus, settingsmessaging.EncodeTelegramBotRuntimeStatus(status))
 	return err
 }
+
+// GetTinyPNGSetting 获取 TinyPNG 素材压缩配置。
+func (s *Service) GetTinyPNGSetting() (settingsintegration.TinyPNGSetting, error) {
+	if s == nil {
+		return settingsintegration.TinyPNGSetting{}, nil
+	}
+	value, err := s.GetByKey(constants.SettingKeyTinyPNGConfig)
+	if err != nil {
+		return settingsintegration.TinyPNGSetting{}, err
+	}
+	return settingsintegration.DecodeTinyPNGSetting(value), nil
+}
+
+// PatchTinyPNGSetting 基于补丁更新 TinyPNG 配置。
+func (s *Service) PatchTinyPNGSetting(patch settingsintegration.TinyPNGSettingPatch) (settingsintegration.TinyPNGSetting, error) {
+	current, err := s.GetTinyPNGSetting()
+	if err != nil {
+		return settingsintegration.TinyPNGSetting{}, err
+	}
+	next := settingsintegration.ApplyTinyPNGSettingPatch(current, patch)
+	if _, err := s.Update(constants.SettingKeyTinyPNGConfig, map[string]interface{}(settingsintegration.EncodeTinyPNGSetting(next))); err != nil {
+		return settingsintegration.TinyPNGSetting{}, err
+	}
+	return next, nil
+}
+
+// GetTinyPNGAPIKey 返回素材压缩使用的 API Key，未配置时返回空字符串。
+func (s *Service) GetTinyPNGAPIKey() (string, error) {
+	setting, err := s.GetTinyPNGSetting()
+	if err != nil {
+		return "", err
+	}
+	return setting.APIKey, nil
+}

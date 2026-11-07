@@ -113,6 +113,37 @@ func (s *MediaService) RecordLocalFile(ctx context.Context, localPath, scene str
 	}
 }
 
+// Get 获取单个素材，不存在时返回 ErrMediaNotFound。
+func (s *MediaService) Get(ctx context.Context, id uint) (*domain.Media, error) {
+	media, err := s.store.GetByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	if media == nil {
+		return nil, contract.ErrMediaNotFound
+	}
+	return media, nil
+}
+
+// RecordReplacement 在素材文件被原地替换后更新元数据。
+// 换上的是一张新图，压缩记录随之清空；路径、名称和原始文件名保持不变。
+func (s *MediaService) RecordReplacement(ctx context.Context, id uint, result UploadResult) (*domain.Media, error) {
+	media, err := s.Get(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	media.MimeType = result.MimeType
+	media.Size = result.Size
+	media.Width = result.Width
+	media.Height = result.Height
+	media.OriginalSize = 0
+	media.CompressedAt = nil
+	if err := s.store.Update(ctx, media); err != nil {
+		return nil, err
+	}
+	return media, nil
+}
+
 // Rename 重命名素材。
 func (s *MediaService) Rename(ctx context.Context, id uint, name string) error {
 	name = strings.TrimSpace(name)

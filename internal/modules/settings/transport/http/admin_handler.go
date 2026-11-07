@@ -42,6 +42,11 @@ type updateRequest struct {
 // Get 获取设置。
 func (h *AdminHandler) Get(c *gin.Context) {
 	key := c.DefaultQuery("key", constants.SettingKeySiteConfig)
+	if strings.TrimSpace(key) == constants.SettingKeyTinyPNGConfig {
+		// 通用接口会原样返回设置值，带密钥的配置只能走专用脱敏接口。
+		ginutil.RespondErrorWithMsg(c, response.CodeBadRequest, "tinypng_config must be read through /admin/settings/tinypng", nil)
+		return
+	}
 
 	value, err := h.settings.GetByKey(key)
 	if err != nil {
@@ -70,6 +75,10 @@ func (h *AdminHandler) Update(c *gin.Context) {
 			"google_auth_config must be updated through /admin/settings/google-auth",
 			nil,
 		)
+		return
+	}
+	if strings.TrimSpace(req.Key) == constants.SettingKeyTinyPNGConfig {
+		ginutil.RespondErrorWithMsg(c, response.CodeBadRequest, "tinypng_config must be updated through /admin/settings/tinypng", nil)
 		return
 	}
 

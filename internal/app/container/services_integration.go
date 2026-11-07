@@ -10,6 +10,7 @@ import (
 	contentapp "github.com/dujiao-next/internal/modules/content/application"
 	localfilestore "github.com/dujiao-next/internal/modules/content/infrastructure/filestore/local"
 	contentgormstore "github.com/dujiao-next/internal/modules/content/infrastructure/gormstore"
+	contenttinify "github.com/dujiao-next/internal/modules/content/infrastructure/tinify"
 	dashboardapp "github.com/dujiao-next/internal/modules/dashboard/application"
 	downstreamcallbackapp "github.com/dujiao-next/internal/modules/downstreamcallback/application"
 	downstreamcallbackcontract "github.com/dujiao-next/internal/modules/downstreamcallback/contract"
@@ -65,6 +66,17 @@ func (c *Container) initIntegrationServices() {
 		contentapp.WarningLoggerFunc(logger.Warnw),
 	)
 	c.ContentMediaService = mediaCore
+	tinifyClient, err := contenttinify.New(contenttinify.Options{})
+	if err != nil {
+		logger.Errorw("provider_init_tinify_failed", "error", err)
+		panic(err)
+	}
+	c.ContentMediaCompressService = contentapp.NewMediaCompressService(
+		contentgormstore.NewMediaStore(gormdb.DB),
+		localfilestore.New(),
+		tinifyClient,
+		c.SettingService,
+	)
 	productMappingService, err := catalogmappingbootstrap.New(catalogmappingbootstrap.Dependencies{
 		Mappings:    c.ProductMappingRepo,
 		SKUMappings: c.SKUMappingRepo,

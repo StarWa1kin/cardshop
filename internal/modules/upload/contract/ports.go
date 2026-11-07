@@ -25,3 +25,8 @@ type StoreInput struct {
 type Store interface {
 	Save(input StoreInput) (publicURL string, err error)
 }
+
+// Replacer 是可选的存储能力：按公开 URL 原地覆盖已有文件。
+type Replacer interface {
+	Replace(publicURL string, source io.Reader) error
+}

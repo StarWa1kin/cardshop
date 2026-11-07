@@ -75,6 +75,8 @@ func BuiltinRoleSeeds() []RoleSeed {
 				{Object: "/admin/media/batch-delete", Action: "POST"},
 				{Object: "/admin/media/:id", Action: "PUT"},
 				{Object: "/admin/media/:id", Action: "DELETE"},
+				{Object: "/admin/media/:id/compress", Action: "POST"},
+				{Object: "/admin/media/:id/file", Action: "PUT"},
 				{Object: "/admin/media", Action: "GET"},
 				{Object: "/admin/affiliates/users", Action: "GET"},
 				{Object: "/admin/affiliates/users/:id/status", Action: "PATCH"},
@@ -240,6 +242,7 @@ func BuiltinRoleSeeds() []RoleSeed {
 				{Object: "/admin/settings/affiliate", Action: "*"},
 				{Object: "/admin/settings/telegram-bot", Action: "*"},
 				{Object: "/admin/settings/telegram-bot/runtime-status", Action: "GET"},
+				{Object: "/admin/settings/tinypng", Action: "*"},
 				// 权限管理（仅 system_admin 可操作）
 				{Object: "/admin/authz/me", Action: "GET"},
 				{Object: "/admin/authz/roles", Action: "*"},

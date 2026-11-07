@@ -44,3 +44,8 @@ func RegisterAdminTelegramBotRoutes(admin gin.IRoutes, handler *TelegramBotHandl
 	admin.PUT("/settings/telegram-bot", handler.UpdateTelegramBotConfig)
 	admin.GET("/settings/telegram-bot/runtime-status", handler.GetTelegramBotRuntimeStatus)
 }
+
+func RegisterAdminTinyPNGRoutes(admin gin.IRoutes, handler *TinyPNGHandler) {
+	admin.GET("/settings/tinypng", handler.GetTinyPNG)
+	admin.PUT("/settings/tinypng", handler.UpdateTinyPNG)
+}

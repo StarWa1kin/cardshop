@@ -17,6 +17,11 @@ type Media struct {
 	Height    int        `gorm:"not null;default:0" json:"height"`
 	CreatedAt time.Time  `gorm:"index" json:"created_at"`
 	DeletedAt *time.Time `gorm:"index" json:"-"`
+
+	// OriginalSize 记录首次压缩前的文件大小；0 表示从未被压缩替换过。
+	OriginalSize int64 `gorm:"not null;default:0" json:"original_size"`
+	// CompressedAt 记录最近一次通过 TinyPNG 压缩的时间。
+	CompressedAt *time.Time `json:"compressed_at"`
 }
 
 func (Media) TableName() string {

@@ -148,6 +148,7 @@ type Container struct {
 	ContentPostCategoryService    *contentapp.PostCategoryService
 	ContentBannerService          *contentapp.BannerService
 	ContentMediaService           *contentapp.MediaService
+	ContentMediaCompressService   *contentapp.MediaCompressService
 	CategoryService               *categoryapp.Service
 	SettingService                *settingsapp.Service
 	SitemapService                *sitemapapp.Service

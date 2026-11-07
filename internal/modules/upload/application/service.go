@@ -7,6 +7,7 @@ import (
 	"io"
 	"mime/multipart"
 	"net/http"
+	"path"
 	"path/filepath"
 	"strings"
 	"time"
@@ -58,10 +59,17 @@ func NewService(policy Policy, store contract.Store) *Service {
 	return &Service{policy: policy, store: store}
 }
 
-// SaveFileWithMeta 保存上传的文件并返回完整元数据
-func (s *Service) SaveFileWithMeta(file *multipart.FileHeader, scene string) (*contract.Result, error) {
-	normalizedScene := normalizeUploadScene(scene)
+// inspectedFile 是通过上传校验的文件；调用方负责关闭 src。
+type inspectedFile struct {
+	src         multipart.File
+	ext         string
+	contentType string
+	width       int
+	height      int
+}
 
+// inspect 执行上传和替换共用的校验：大小、扩展名、MIME、图片尺寸和 SVG 安全检查。
+func (s *Service) inspect(file *multipart.FileHeader, normalizedScene string) (*inspectedFile, error) {
 	// 验证文件大小
 	if file.Size > s.policy.MaxSize {
 		return nil, newUploadValidationError("文件大小超过限制（最大 %d MB）", s.policy.MaxSize/1024/1024)
@@ -80,11 +88,18 @@ func (s *Service) SaveFileWithMeta(file *multipart.FileHeader, scene string) (*c
 	if err != nil {
 		return nil, err
 	}
-	defer src.Close()
+	inspected, err := s.inspectContent(src, ext, normalizedScene)
+	if err != nil {
+		_ = src.Close()
+		return nil, err
+	}
+	return inspected, nil
+}
 
+func (s *Service) inspectContent(src multipart.File, ext, normalizedScene string) (*inspectedFile, error) {
 	// 读取文件头部识别 MIME 类型
 	buffer := make([]byte, 512)
-	_, err = src.Read(buffer)
+	_, err := src.Read(buffer)
 	if err != nil && err != io.EOF {
 		return nil, err
 	}
@@ -141,21 +156,31 @@ func (s *Service) SaveFileWithMeta(file *multipart.FileHeader, scene string) (*c
 		if err := validateSVGSafety(svgData); err != nil {
 			return nil, newUploadValidationError("%s", err.Error())
 		}
-		if _, err := src.Seek(0, 0); err != nil {
-			return nil, err
-		}
 	}
 
 	if _, err := src.Seek(0, 0); err != nil {
 		return nil, err
 	}
+	return &inspectedFile{src: src, ext: ext, contentType: contentType, width: imgWidth, height: imgHeight}, nil
+}
+
+// SaveFileWithMeta 保存上传的文件并返回完整元数据
+func (s *Service) SaveFileWithMeta(file *multipart.FileHeader, scene string) (*contract.Result, error) {
+	normalizedScene := normalizeUploadScene(scene)
+	inspected, err := s.inspect(file, normalizedScene)
+	if err != nil {
+		return nil, err
+	}
+	defer inspected.src.Close()
+
 	// 生成唯一文件名
-	filename := fmt.Sprintf("%s%s", uuid.New().String(), ext)
+	filename := fmt.Sprintf("%s%s", uuid.New().String(), inspected.ext)
 	now := time.Now()
 	year := now.Format("2006")
 	month := now.Format("01")
+
 	storedURL, err := s.store.Save(contract.StoreInput{
-		Source:   src,
+		Source:   inspected.src,
 		Scene:    normalizedScene,
 		Year:     year,
 		Month:    month,
@@ -168,11 +193,73 @@ func (s *Service) SaveFileWithMeta(file *multipart.FileHeader, scene string) (*c
 	return &contract.Result{
 		URL:      storedURL,
 		Filename: file.Filename,
-		MimeType: contentType,
+		MimeType: inspected.contentType,
 		Size:     file.Size,
-		Width:    imgWidth,
-		Height:   imgHeight,
+		Width:    inspected.width,
+		Height:   inspected.height,
 	}, nil
+}
+
+// ReplaceFileWithMeta 用新上传的文件原地覆盖已有文件，公开 URL 保持不变。
+// 校验规则与普通上传一致；新文件格式必须与原文件扩展名一致，否则同一地址会返回与后缀不符的内容。
+func (s *Service) ReplaceFileWithMeta(file *multipart.FileHeader, publicURL, scene string) (*contract.Result, error) {
+	replacer, ok := s.store.(contract.Replacer)
+	if !ok {
+		return nil, fmt.Errorf("upload service: store does not support replacing files")
+	}
+	normalizedScene := normalizeUploadScene(scene)
+	targetExt := strings.ToLower(path.Ext(publicURL))
+	newExt := strings.ToLower(filepath.Ext(file.Filename))
+	if canonicalExtension(targetExt) != canonicalExtension(newExt) {
+		return nil, newUploadValidationError("新文件格式（%s）与原素材（%s）不一致，为保持图片地址不变，请上传相同格式的文件", displayExtension(newExt), displayExtension(targetExt))
+	}
+
+	inspected, err := s.inspect(file, normalizedScene)
+	if err != nil {
+		return nil, err
+	}
+	defer inspected.src.Close()
+
+	// 扩展名一致但内容是其它格式（例如改了后缀的 JPG）时同样拒绝。
+	if expected, known := imageTypeByExtension[canonicalExtension(targetExt)]; known && inspected.contentType != expected {
+		return nil, newUploadValidationError("文件内容（%s）与原素材格式（%s）不一致，请上传相同格式的文件", inspected.contentType, displayExtension(targetExt))
+	}
+
+	if err := replacer.Replace(publicURL, inspected.src); err != nil {
+		return nil, err
+	}
+	return &contract.Result{
+		URL:      publicURL,
+		Filename: file.Filename,
+		MimeType: inspected.contentType,
+		Size:     file.Size,
+		Width:    inspected.width,
+		Height:   inspected.height,
+	}, nil
+}
+
+var imageTypeByExtension = map[string]string{
+	".png":  "image/png",
+	".jpg":  "image/jpeg",
+	".gif":  "image/gif",
+	".webp": "image/webp",
+	".svg":  "image/svg+xml",
+}
+
+// canonicalExtension 把同一格式的不同写法归一，例如 .jpeg 与 .jpg。
+func canonicalExtension(ext string) string {
+	ext = strings.ToLower(ext)
+	if ext == ".jpeg" {
+		return ".jpg"
+	}
+	return ext
+}
+
+func displayExtension(ext string) string {
+	if ext == "" {
+		return "无扩展名"
+	}
+	return ext
 }
 
 func normalizeUploadScene(raw string) string {

@@ -335,7 +335,19 @@ export interface AdminMedia {
   scene: string
   width: number
   height: number
+  original_size?: number
+  compressed_at?: string | null
   created_at: string
+}
+
+export interface MediaCompressResult {
+  media: AdminMedia
+  before_size: number
+  after_size: number
+  saved_bytes: number
+  saved_percent: number
+  replaced: boolean
+  compression_count: number
 }
 
 export interface AdminBanner {

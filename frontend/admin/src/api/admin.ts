@@ -341,6 +341,14 @@ export const adminAPI = {
   updateMedia: (id: number, data: { name: string }) => api.put(`/admin/media/${id}`, data),
   deleteMedia: (id: number) => api.delete(`/admin/media/${id}`),
   batchDeleteMedia: (ids: number[]) => api.post('/admin/media/batch-delete', { ids }),
+  // TinyPNG 压缩要上传、压缩再下载，给足超时时间（后端自身 60 秒超时）
+  compressMedia: (id: number) => api.post(`/admin/media/${id}/compress`, undefined, { timeout: 90000 }),
+  // 用新文件覆盖素材原文件，地址不变
+  replaceMediaFile: (id: number, file: File) => {
+    const payload = new FormData()
+    payload.append('file', file)
+    return api.put(`/admin/media/${id}/file`, payload, { timeout: 60000 })
+  },
 
   getProducts: (params?: Record<string, unknown>) => api.get('/admin/products', { params }),
   getProduct: (id: number) => api.get(`/admin/products/${id}`),
@@ -376,6 +384,8 @@ export const adminAPI = {
   getSMTPSettings: () => api.get('/admin/settings/smtp'),
   updateSMTPSettings: (data: Record<string, unknown>) => api.put('/admin/settings/smtp', data),
   testSMTPSettings: (data: Record<string, unknown>) => api.post('/admin/settings/smtp/test', data),
+  getTinyPNGSettings: () => api.get('/admin/settings/tinypng'),
+  updateTinyPNGSettings: (data: { api_key?: string; clear_api_key?: boolean }) => api.put('/admin/settings/tinypng', data),
   getCaptchaSettings: () => api.get('/admin/settings/captcha'),
   updateCaptchaSettings: (data: Record<string, unknown>) => api.put('/admin/settings/captcha', data),
   getTelegramAuthSettings: () => api.get('/admin/settings/telegram-auth'),

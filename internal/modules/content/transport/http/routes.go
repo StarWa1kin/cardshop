@@ -37,3 +37,9 @@ func RegisterAdminRoutes(admin gin.IRoutes, handler *AdminHandler) {
 	admin.PUT("/media/:id", handler.UpdateMedia)
 	admin.DELETE("/media/:id", handler.DeleteMedia)
 }
+
+// RegisterAdminMediaCompressRoutes 注册后台素材压缩路由。
+// 调用方必须传入已经挂载认证、RBAC 和后台安全中间件的 RouterGroup。
+func RegisterAdminMediaCompressRoutes(admin gin.IRoutes, handler *MediaCompressHandler) {
+	admin.POST("/media/:id/compress", handler.CompressMedia)
+}
